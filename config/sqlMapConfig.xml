@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC     
+    "-//mybatis.org//DTD Config 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+<configuration>    
+
+    <typeAliases>
+		
+        <typeAlias alias="Blog" type="com.entity.Blog" /> 
+		
+        <typeAlias alias="BlogType" type="com.entity.BlogType" /> 
+		
+        <typeAlias alias="Note" type="com.entity.Note" /> 
+		
+        <typeAlias alias="NoteTime" type="com.entity.NoteTime" /> 
+		
+        <typeAlias alias="NoteType" type="com.entity.NoteType" /> 
+		
+        <typeAlias alias="Rss" type="com.entity.Rss" /> 
+		
+        <typeAlias alias="RssSubscribe" type="com.entity.RssSubscribe" /> 
+		
+        <typeAlias alias="RssType" type="com.entity.RssType" /> 
+		
+        <typeAlias alias="Tag" type="com.entity.Tag" /> 
+		
+        <typeAlias alias="Type" type="com.entity.Type" /> 
+		
+        <typeAlias alias="User" type="com.entity.User" /> 
+		
+        <typeAlias alias="WebLink" type="com.entity.WebLink" /> 
+		
+        <typeAlias alias="WebLinktype" type="com.entity.WebLinktype" /> 
+		
+    </typeAliases>    
+    
+</configuration> 
