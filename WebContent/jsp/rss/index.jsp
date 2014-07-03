@@ -15,17 +15,35 @@
 		    'trigger' : 'click'
 		})
 		$('#js-tree').jstree({ 'core' : {
-			'data' : [
-			   { "id" : "ajson1", "parent" : "#", "text" : "Simple root node" },
-			   { "id" : "ajson2", "parent" : "#", "text" : "Root node 2" },
-			   { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" },
-			   { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" },
-			]
+			"check_callback" : true,
+			'data' :  {
+			    'url' : '${base}/rss/returnRssTypeTree',
+			      'data' : function (node) {
+			        return { 'id' : node.id };
+			      }
+			    }
 		} });
 		$(".rss-title").click(function(){
 			$(".main-content").load("./rss-list.html");
 		});
+		$("#renameTypeNameBtn").click(function(){
+			var ref = $('#js-tree').jstree(true),
+			sel = ref.get_selected();
+			if(!sel.length) { return false; }
+			sel = sel[0];
+			ref.edit(sel);
+		});
 	});
+	function addRssType(){
+		var jsTree = $('#js-tree').jstree(true),
+		sel = jsTree.get_selected();
+		if(!sel.length) { return false; }
+		sel = sel[0];
+		sel = jsTree.create_node(sel, {"type":"file"});
+		if(sel) {
+			jsTree.edit(sel);
+		}
+	}
 </script>
 </head>
 <body>
@@ -92,17 +110,19 @@
 			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="新增类型" data-content='<form role="form" class="form-inline" style="width:230px;">
       <div class="form-group" >
         <label for="exampleInputEmail2" class="sr-only">类型</label>
-        <input type="email" placeholder="类型" id="exampleInputEmail2" class="form-control">
+        <input type="text" placeholder="类型" id="typeName" class="form-control">
       </div>
-      <button class="btn btn-default" type="submit">新增</button>
+      <button class="btn btn-default" onClick="addRssType();" type="button">新增</button>
     </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="标题" >新增</button>
-			  <button type="button" class="btn btn-default">修改</button>
-			  <button type="button" class="btn btn-default">删除</button>
+			  <button type="button" class="btn btn-default" id="renameTypeNameBtn">修改</button>
+			  <button type="button" class="btn btn-default" id="deleteTypeNameBtn">删除</button>
 			</div>
 	  </div>
 
 		<div class="well">
-			<div id="js-tree"></div>
+			<div id="js-tree">
+				
+			</div>
 	    </div>
 	</div>
 
