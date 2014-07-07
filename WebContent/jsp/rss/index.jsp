@@ -15,14 +15,15 @@
 		    'trigger' : 'click'
 		})
 		$('#js-tree').jstree({ 'core' : {
-			"check_callback" : true,
 			'data' :  {
-			    'url' : '${base}/rss/returnRssTypeTree',
-			      'data' : function (node) {
-			        return { 'id' : node.id };
-			      }
+			    'url' :  function (node) {
+			    	return "${base}/rss/returnRssTypeTree";
+			    },
+			    'data' : function (node) {
+			            return { 'id' : node.id };
+			        }
 			    }
-		} });
+		}});
 		$(".rss-title").click(function(){
 			$(".main-content").load("./rss-list.html");
 		});

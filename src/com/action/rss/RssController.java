@@ -44,6 +44,7 @@ public class RssController extends BaseAction{
 			jsonObject.put("id", "root");
 			jsonObject.put("parent", "#");
 			jsonObject.put("text", "订阅");
+			jsonObject.put("children", true);
 			jsonArray.add(jsonObject);
 			response.getWriter().write(jsonArray.toJSONString());
 		}else{
