@@ -13,4 +13,21 @@ public class RssTypeMapperServiceImpl extends BaseServiceImpl<RssType> implement
 	@Autowired
 	RssTypeMapperDao rssTypeMapperDao;
 
+	@Override
+	public boolean isChildren(int parentId,int userId) {
+		RssType rssType = new RssType();
+		if(parentId != -1){
+			rssType.setParentId(parentId);
+		}
+		if(userId != -1){
+			rssType.setUserId(userId);
+		}
+		int count = rssTypeMapperDao.count(rssType);
+		if(count > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }

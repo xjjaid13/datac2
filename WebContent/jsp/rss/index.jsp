@@ -13,17 +13,26 @@
 	$(function(){
 		$('.btn-default').popover({
 		    'trigger' : 'click'
-		})
-		$('#js-tree').jstree({ 'core' : {
-			'data' :  {
-			    'url' :  function (node) {
-			    	return "${base}/rss/returnRssTypeTree";
-			    },
-			    'data' : function (node) {
-			            return { 'id' : node.id };
+		});
+		$('#js-tree').jstree({ 'core' : 
+			{
+				"check_callback" : true,
+				'data' :  {
+				    'url' :  function (node) {
+				    	return "${base}/rss/returnRssTypeTree";
+				    },
+				    'data' : function (node) {
+				        return { 'id' : node.id };
 			        }
 			    }
-		}});
+			    
+			}
+		});
+
+		
+		$('#js-tree').on("select_node.jstree", function (e, data) {
+	        
+	    });
 		$(".rss-title").click(function(){
 			$(".main-content").load("./rss-list.html");
 		});
@@ -40,10 +49,18 @@
 		sel = jsTree.get_selected();
 		if(!sel.length) { return false; }
 		sel = sel[0];
-		sel = jsTree.create_node(sel, {"type":"file"});
-		if(sel) {
-			jsTree.edit(sel);
-		}
+		jsTree.open_node(sel,function(){
+			var typeName = $("#typeName").val();
+			$.ajax({
+				url : '${base}/rss/myAddRssType',
+				data : 'parentId='+sel[0]+"&typeName="+typeName,
+				dataType : 'json',
+				success : function(ajaxData){
+					jsTree.create_node(sel, {"type":"file","id":ajaxData.rssTypeId,"text":typeName});
+					jsTree.open_node(sel);
+				}
+			});
+		});
 	}
 </script>
 </head>

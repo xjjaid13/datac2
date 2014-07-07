@@ -7,14 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.action.BaseAction;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.entity.RssType;
 import com.entity.User;
 import com.service.RssTypeMapperService;
@@ -40,13 +41,16 @@ public class RssController extends BaseAction{
 		JSONObject jsonObject = createJosnObject();
 		RssType rssType = new RssType();
 		JSONArray jsonArray = new JSONArray();
+		response.setContentType("application/json; charset=utf-8");
 		if("#".equals(id)){
-			jsonObject.put("id", "root");
+			jsonObject.put("id", "0");
 			jsonObject.put("parent", "#");
 			jsonObject.put("text", "订阅");
-			jsonObject.put("children", true);
+			if(rssTypeMapperService.isChildren(-1, user.getUserId())){
+				jsonObject.put("children", true);
+			}
 			jsonArray.add(jsonObject);
-			response.getWriter().write(jsonArray.toJSONString());
+			response.getWriter().write(jsonArray.toString());
 		}else{
 			rssType.setUserId(user.getUserId());
 			if("root".equals(id)){
@@ -57,13 +61,17 @@ public class RssController extends BaseAction{
 			List<RssType> rssTypeList = rssTypeMapperService.selectList(rssType);
 			if(rssTypeList != null && rssTypeList.size() > 0){
 				for(RssType rssTypeNew : rssTypeList){
-					jsonObject.put("id", rssTypeNew.getRssTypeId());
-					jsonObject.put("parent", rssTypeNew.getParentId());
+					jsonObject = new JSONObject();
+					jsonObject.put("id", rssTypeNew.getRssTypeId() + "");
+					jsonObject.put("parent", rssTypeNew.getParentId() + "");
 					jsonObject.put("text", rssTypeNew.getTypeName());
+					if(rssTypeMapperService.isChildren(rssTypeNew.getRssTypeId(), user.getUserId())){
+						jsonObject.put("children", true);
+					}
 					jsonArray.add(jsonObject);
 				}
 			}
-			response.getWriter().write(jsonArray.toJSONString());
+			response.getWriter().write(jsonArray.toString());
 		}
 	}
 	

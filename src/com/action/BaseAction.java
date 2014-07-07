@@ -5,7 +5,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONObject;
+
 import com.entity.User;
 import com.util.Constant;
 
@@ -22,7 +23,7 @@ public class BaseAction {
 	}
 	
 	public void writeResult(HttpServletResponse response,JSONObject jsonObject) throws IOException{
-		response.getWriter().write(jsonObject.toJSONString());
+		response.getWriter().write(jsonObject.toString());
 	}
 	
 }
