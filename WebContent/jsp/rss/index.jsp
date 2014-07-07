@@ -29,26 +29,15 @@
 			}
 		});
 
-		
-		$('#js-tree').on("select_node.jstree", function (e, data) {
-	        
-	    });
 		$(".rss-title").click(function(){
 			$(".main-content").load("./rss-list.html");
 		});
-		$("#renameTypeNameBtn").click(function(){
-			var ref = $('#js-tree').jstree(true),
-			sel = ref.get_selected();
-			if(!sel.length) { return false; }
-			sel = sel[0];
-			ref.edit(sel);
-		});
+		
 	});
 	function addRssType(){
 		var jsTree = $('#js-tree').jstree(true),
 		sel = jsTree.get_selected();
 		if(!sel.length) { return false; }
-		sel = sel[0];
 		jsTree.open_node(sel,function(){
 			var typeName = $("#typeName").val();
 			$.ajax({
@@ -61,6 +50,35 @@
 				}
 			});
 		});
+	}
+	function renameRssType(){
+		var jsTree = $('#js-tree').jstree(true),
+		sel = jsTree.get_selected();
+		if(!sel.length) { return false; }
+		var typeName = $("#typeName").val();
+		$.ajax({
+			url : '${base}/rss/myUpdateRssType',
+			data : 'rssTypeId='+sel[0]+"&typeName="+typeName,
+			dataType : 'json',
+			success : function(ajaxData){
+				jsTree.rename_node(sel, typeName);
+			}
+		});
+	}
+	function deleteType(){
+		var jsTree = $('#js-tree').jstree(true),
+		sel = jsTree.get_selected();
+		if(!sel.length) { return false; }
+		if(jsTree.is_leaf(sel)){
+			$.ajax({
+				url : '${base}/rss/myDleteRssType',
+				data : 'rssTypeId='+sel[0],
+				dataType : 'json',
+				success : function(ajaxData){
+					jsTree.delete_node(sel);
+				}
+			});
+		}
 	}
 </script>
 </head>
@@ -126,14 +144,22 @@
 
 		 <div class="btn-group">
 			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="新增类型" data-content='<form role="form" class="form-inline" style="width:230px;">
-      <div class="form-group" >
-        <label for="exampleInputEmail2" class="sr-only">类型</label>
-        <input type="text" placeholder="类型" id="typeName" class="form-control">
-      </div>
-      <button class="btn btn-default" onClick="addRssType();" type="button">新增</button>
-    </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="标题" >新增</button>
-			  <button type="button" class="btn btn-default" id="renameTypeNameBtn">修改</button>
-			  <button type="button" class="btn btn-default" id="deleteTypeNameBtn">删除</button>
+			        <div class="form-group" >
+			        <label for="exampleInputEmail2" class="sr-only">类型</label>
+			        <input type="text" placeholder="类型" id="typeName" class="form-control">
+			        </div>
+			        <button class="btn btn-default" onClick="addRssType();" type="button">新增</button>
+			        </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="标题" >新增
+			  </button>
+			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="改名" data-content='<form role="form" class="form-inline" style="width:230px;">
+			        <div class="form-group" >
+			        <label for="exampleInputEmail2" class="sr-only">类型</label>
+			        <input type="text" placeholder="类型" id="typeName" class="form-control">
+			        </div>
+			        <button class="btn btn-default" onClick="renameRssType();" type="button">修改</button>
+			        </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="标题" id="renameTypeNameBtn">修改
+			  </button>
+			  <button type="button" class="btn btn-default" onclick="deleteType();" id="deleteTypeNameBtn">删除</button>
 			</div>
 	  </div>
 
@@ -155,7 +181,6 @@
 				</ol>
 
 				<div class="main-content">
-
 					<div class="row">
 					  <div class="col-sm-6 col-md-4">
 						<div class="thumbnail">
