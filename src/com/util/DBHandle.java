@@ -50,7 +50,7 @@ public class DBHandle {
 	
 	public void openConnMysql(){
 		String strDirverPath = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://127.0.0.1:3306/javaplatform?characterEncoding=utf-8";
+		String url = "jdbc:mysql://127.0.0.1:3306/datac?characterEncoding=utf-8";
 		try {
 			Class.forName(strDirverPath);
 			conn = DriverManager.getConnection(url,"root","111111");
@@ -287,7 +287,7 @@ public class DBHandle {
 	 * */
 	public int getColumnType(String tablename,String columnname){
 		try{
-			rs = st.executeQuery("SELECT * FROM "+tablename+" WHERE 1=0");
+			rs = st.executeQuery("SELECT * FROM `"+tablename+"` WHERE 1=0");
 			rsm = rs.getMetaData();
 			for(int i = 1;i <= rsm.getColumnCount();i++){
 				if(rsm.getColumnName(i).equals(columnname)){
@@ -451,11 +451,9 @@ public class DBHandle {
 	}
 	
 	public static void main(String[] args){
-		String sql = "INSERT INTO info (name) VALUES ('aa')";
-		DBHandle db = new DBHandle();
-		db.openConnMysql();
-		db.executeUpdate(sql);
-		db.closeConn();
-		System.out.println("over");
+		DBHandle dbHandle = new DBHandle();
+		dbHandle.openConnMysql();
+		System.out.println(dbHandle.getColumnType("blog-type", "blogTypeId"));
+		dbHandle.closeConn();
 	}
 }

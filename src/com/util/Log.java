@@ -1,8 +1,5 @@
 package com.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -25,6 +22,15 @@ public class Log {
 		Log.getLogger().error(TimeHandle.currentTime() + " : " + errorinfo);
 	}
 	
+	public static void Error(String errorinfo,Throwable e){
+		Log.getLogger().error(TimeHandle.currentTime() + " : " + errorinfo,e);
+	}
+	
+	public static void Error(Throwable e){
+		Log.getLogger().error(TimeHandle.currentTime() ,e);
+	}
+	
+	
 	/** 记录debug日志 */
 	public static void Debug(String debuginfo){
 		Log.getLogger().debug(debuginfo);
@@ -35,15 +41,5 @@ public class Log {
 		Log.getLogger().info(info);
 	}
 	
-	 public static void main(String args[])  
-	  throws Exception{  
-	  
-	    String candidate =  
-	     "000";  
-	    String regex = "^((0{1})|([1-9]\\d*))$";  
-	    Pattern p = Pattern.compile(regex);  
-	    Matcher m = p.matcher(candidate);  
-	    System.out.println(m.find());
-	  }  
 
 }

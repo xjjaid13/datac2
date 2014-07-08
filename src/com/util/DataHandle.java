@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,18 +18,25 @@ import javax.servlet.http.HttpSession;
  * */
 public class DataHandle {
 	
-	/**
-	 * 判断字符串是否为空
-	 * true 为空;false 不为空;
-	 * @param object
-	 * @return
-	 */
-	public static boolean isEmpty(String object){
-		if(object == null || "".equals(object)){
+	public static boolean isNullOrEmpty(Object object){
+		if(object == null){
 			return true;
-		}else{
-			return false;
+		}else if(object instanceof Collection){
+			Collection<?> collection = (Collection<?>) object;
+			if(collection != null && collection.size() > 0){
+				return false;
+			}else{
+				return true;
+			}
+		}else if(object instanceof String){
+			String string = (String) object;
+			if("".equals(string) || string.length() == 0){
+				return true;
+			}else{
+				return false;
+			}
 		}
+		return true;
 	}
 	
 	/**
@@ -154,8 +162,8 @@ public class DataHandle {
 		if(value == null){
 			return "";
 		}else{
-			value = handleXSS(value);
-			value = handleSql(value);
+//			value = handleXSS(value);
+//			value = handleSql(value);
 			return value;
 		}
 	}
@@ -334,13 +342,6 @@ public class DataHandle {
 	public static int returnUserId(HttpSession session){
 		//String userid = (String) session.getAttribute("userid");
 		return 1;
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args){
-		
 	}
 	
 }

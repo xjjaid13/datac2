@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.springframework.stereotype.Component;
 
+@Component
 public final class Init {
 	
 	/** 项目路径 */

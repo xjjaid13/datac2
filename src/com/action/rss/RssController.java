@@ -16,8 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.action.BaseAction;
+import com.entity.Rss;
+import com.entity.RssSubscribe;
 import com.entity.RssType;
 import com.entity.User;
+import com.service.RssMapperService;
+import com.service.RssSubscribeMapperService;
 import com.service.RssTypeMapperService;
 import com.util.DataHandle;
 
@@ -28,14 +32,20 @@ public class RssController extends BaseAction{
 	@Autowired
 	RssTypeMapperService rssTypeMapperService;
 	
+	@Autowired
+	RssMapperService rssMapperService;
+	
+	@Autowired
+	RssSubscribeMapperService rssSubscribeMapperService;
+	
 	@RequestMapping("myIndex")
 	public String myIndex(HttpSession session, Model model,
 			HttpServletRequest request){
 		return "rss/index";
 	}
 	
-	@RequestMapping("returnRssTypeTree")
-	public void returnRssTypeTree(HttpServletRequest request,HttpServletResponse response,HttpSession session) throws IOException{
+	@RequestMapping("myReturnRssTypeTree")
+	public void myReturnRssTypeTree(HttpServletRequest request,HttpServletResponse response,HttpSession session) throws IOException{
 		String id = DataHandle.returnValue(request, "id");
 		User user = returnUser(session);
 		JSONObject jsonObject = createJosnObject();
@@ -94,6 +104,22 @@ public class RssController extends BaseAction{
 	@RequestMapping("myDleteRssType")
 	public void myDleteRssType(RssType rssType,HttpServletResponse response) throws IOException{
 		rssTypeMapperService.delete(rssType);
+		writeResult(response, createJosnObject());
+	}
+	
+	public void myRssList(){
+		
+	}
+	
+	@RequestMapping("myAddRssAdnSubscribe")
+	public void myAddRssAdnSubscribe(Rss rss,int parentId,HttpServletResponse response) throws IOException{
+		rssMapperService.insertRss(rss, parentId);
+		writeResult(response, createJosnObject());
+	}
+	
+	@RequestMapping("myCancelSubscribe")
+	public void myCancelSubscribe(RssSubscribe rssSubscribe,HttpServletResponse response) throws IOException{
+		rssSubscribeMapperService.delete(rssSubscribe);
 		writeResult(response, createJosnObject());
 	}
 	
