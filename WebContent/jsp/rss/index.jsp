@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,7 +20,7 @@
 				"check_callback" : true,
 				'data' :  {
 				    'url' :  function (node) {
-				    	return "${base}/rss/returnRssTypeTree";
+				    	return "${base}/rss/myReturnRssTypeTree";
 				    },
 				    'data' : function (node) {
 				        return { 'id' : node.id };
@@ -28,9 +29,8 @@
 			    
 			}
 		});
-
-		$(".rss-title").click(function(){
-			$(".main-content").load("./rss-list.html");
+		$('#js-tree').on("select_node.jstree", function (e, data) {
+			$(".rssList").load("${base}/rss/myRssList?rssTypeId="+data.selected[0]);
 		});
 		
 	});
@@ -162,7 +162,7 @@
 			  <button type="button" class="btn btn-default" onclick="deleteType();" id="deleteTypeNameBtn">删除</button>
 			</div>
 	  </div>
-
+		
 		<div class="well">
 			<div id="js-tree">
 				
@@ -170,48 +170,18 @@
 	    </div>
 	</div>
 
+
 	<div class="content-wrapper col-lg-12" style="padding-left:210px;min-width:500px;z-index:-1;">
 		<div class="panel panel-default">
 			<div class="panel-heading">Panel heading without title</div>
 			<div class="panel-body">
-				<ol class="breadcrumb">
-				  <li><a href="#">Home</a></li>
-				  <li><a href="#">Library</a></li>
-				  <li class="active">Data</li>
-				</ol>
-
 				<div class="main-content">
-					<div class="row">
-					  <div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-						  <img data-src="holder.js/300x300" alt="...">
-						  <div class="caption">
-							<h3 class="rss-title">Thumbnail label</h3>
-							<p>...</p>
-							<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-						  </div>
-						</div>
-					  </div>
-
-
-					  <div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-						  <img data-src="holder.js/300x300" alt="...">
-						  <div class="caption">
-							<h3>Thumbnail label</h3>
-							<p>...</p>
-							<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-						  </div>
-						</div>
-					  </div>
+					
+					<div class="row rssList">
+						
 					</div>
-
-					<ul class="pager">
-					  <li><a href="#">上一页</a></li>
-					  <li><a href="#">下一页</a></li>
-					</ul>
 				</div>
-			  </div>
+			</div>
 		</div>
 	</div>
 </div>

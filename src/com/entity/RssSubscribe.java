@@ -2,10 +2,16 @@ package com.entity;
 
 public class RssSubscribe extends BaseEntity{
 	
+	private Integer rssSubscribeId;
+	
 	private Integer rssId;
 	
 	private Integer rssTypeId;
 	
+	
+	public Integer getRssSubscribeId() {
+		return rssSubscribeId;
+	}
 	
 	public Integer getRssId() {
 		return rssId;
@@ -15,6 +21,10 @@ public class RssSubscribe extends BaseEntity{
 		return rssTypeId;
 	}
 	
+	
+	public void setRssSubscribeId(Integer rssSubscribeId) {
+		this.rssSubscribeId = rssSubscribeId;
+	}
 	
 	public void setRssId(Integer rssId) {
 		this.rssId = rssId;

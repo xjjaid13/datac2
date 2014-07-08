@@ -72,7 +72,7 @@ public class MainAction {
         if (sColumns != null) {
             cols = sColumns.split(",");
         }
-        if (!DataHandle.isEmpty(iSortCol)) {
+        if (!DataHandle.isNullOrEmpty(iSortCol)) {
         	/** 获取当前排序列 */
             sOrderCol = cols[Integer.valueOf(iSortCol)];
         }
@@ -80,9 +80,9 @@ public class MainAction {
         String orderType = "";
         String orderCol = "";
         /** 设置排序参数 */
-        if (!DataHandle.isEmpty(sOrderCol)) {
+        if (!DataHandle.isNullOrEmpty(sOrderCol)) {
             orderCol = " order by " + sOrderCol;
-            if (!DataHandle.isEmpty(sOrderType)) {
+            if (!DataHandle.isNullOrEmpty(sOrderType)) {
                 orderType = sOrderType;
             }
             orderCol += " " + orderType;

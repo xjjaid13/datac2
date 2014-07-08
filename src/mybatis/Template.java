@@ -28,7 +28,7 @@ public class Template {
 		String projectPath = System.getProperty("user.dir");
 		
 		/** 模版文件 */
-		String templateFile = "D:/workFile/workspace/datac2/WebContent/static/mybatis-template";
+		String templateFile = "C:/Users/OF-PC/git/datac2/WebContent/static/mybatis-template";
 		
 		/** 保存文件 */
 		String saveFile = projectPath + "/";
@@ -39,7 +39,7 @@ public class Template {
 		String dbPassword = "111111";
 		
 		/** 是否覆盖 */
-		boolean isCover = true;
+		boolean isCover = false;
 		
 		/** 数据库ip */
 		String url = "jdbc:mysql://127.0.0.1:3306/"+dbName+"?characterEncoding=utf-8";

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServlet;
 
 import org.springframework.stereotype.Repository;
 
-import com.spring.entity.WebLinktype;
+import com.entity.WebLinktype;
 
 @Repository
 public class InitServlet extends HttpServlet implements Servlet{

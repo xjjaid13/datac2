@@ -107,8 +107,11 @@ public class RssController extends BaseAction{
 		writeResult(response, createJosnObject());
 	}
 	
-	public void myRssList(){
-		
+	@RequestMapping("myRssList")
+	public String myRssList(RssSubscribe rssSubscribe,HttpServletResponse response,Model model) throws IOException{
+		List<Rss> rssList = rssSubscribeMapperService.selectTypeSubscribe(rssSubscribe);
+		model.addAttribute("rssList", rssList);
+		return "rss/rssList";
 	}
 	
 	@RequestMapping("myAddRssAdnSubscribe")

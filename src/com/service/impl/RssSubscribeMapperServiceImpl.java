@@ -1,9 +1,13 @@
 package com.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.service.impl.BaseServiceImpl;
 import com.dao.RssSubscribeMapperDao;
+import com.entity.Rss;
 import com.entity.RssSubscribe;
 import com.service.RssSubscribeMapperService;
 
@@ -12,5 +16,10 @@ public class RssSubscribeMapperServiceImpl extends BaseServiceImpl<RssSubscribe>
 
 	@Autowired
 	RssSubscribeMapperDao rssSubscribeMapperDao;
+
+	@Override
+	public List<Rss> selectTypeSubscribe(RssSubscribe rssSubscribe) {
+		return rssSubscribeMapperDao.selectTypeSubscribe(rssSubscribe);
+	}
 
 }
