@@ -23,7 +23,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	RssSubscribeMapperDao rssSubscribeMapperDao;
 
 	@Override
-	public void insertRss(Rss rss, int parentId) {
+	public Rss insertRss(Rss rss, int parentId) {
 		String rssUrl = rss.getRssUrl();
 		rss = rssMapperDao.select(rss);
 		RssSubscribe rssSubscribe = new RssSubscribe();
@@ -35,11 +35,13 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			Map<String, Object> rssMap = RssUtil.getRSSInfo(rssUrl);
 			rss.setRssIcon((String)rssMap.get("icon"));
 			rss.setRssTitle((String)rssMap.get("title"));
-			rss.setRssUrl(rss.getRssUrl());
+			rss.setRssUrl(rssUrl);
 			int rssId = rssMapperDao.insertAndReturnId(rss);
+			rss.setRssId(rssId);
 			rssSubscribe.setRssId(rssId);
 		}
 		rssSubscribeMapperDao.insert(rssSubscribe);
+		return rss;
 	}
 
 }

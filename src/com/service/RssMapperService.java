@@ -4,6 +4,6 @@ import com.entity.Rss;
 
 public interface RssMapperService extends BaseService<Rss>{
 	
-	public void insertRss(Rss rss,int parentId);
+	public Rss insertRss(Rss rss,int parentId);
 	
 }

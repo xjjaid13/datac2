@@ -116,14 +116,19 @@ public class RssController extends BaseAction{
 	
 	@RequestMapping("myAddRssAdnSubscribe")
 	public void myAddRssAdnSubscribe(Rss rss,int parentId,HttpServletResponse response) throws IOException{
-		rssMapperService.insertRss(rss, parentId);
-		writeResult(response, createJosnObject());
+		rss = rssMapperService.insertRss(rss, parentId);
+		writeResult(response, JSONObject.fromObject(rss));
 	}
 	
 	@RequestMapping("myCancelSubscribe")
 	public void myCancelSubscribe(RssSubscribe rssSubscribe,HttpServletResponse response) throws IOException{
 		rssSubscribeMapperService.delete(rssSubscribe);
 		writeResult(response, createJosnObject());
+	}
+	
+	@RequestMapping("myRssDetail")
+	public String myRssDetail(){
+		return "rss/rssDetail";
 	}
 	
 }

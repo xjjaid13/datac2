@@ -32,6 +32,26 @@
 		$('#js-tree').on("select_node.jstree", function (e, data) {
 			$(".rssList").load("${base}/rss/myRssList?rssTypeId="+data.selected[0]);
 		});
+		$(document).on("click","#book",function(){
+			var rssUrl = $("#rssUrl").val();
+			var jsTree = $('#js-tree').jstree(true),
+			sel = jsTree.get_selected();
+			if(!sel.length) { return false; }
+			$.ajax({
+				url : '${base}/rss/myAddRssAdnSubscribe',
+				data : 'rssUrl='+rssUrl+"&parentId="+sel[0],
+				dataType : 'json',
+				success : function(ajaxData){
+					var rssListTemplateDiv = $("#rssListTemplateDiv").html();
+					rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",ajaxData.rssId);
+					rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",ajaxData.rssTitle);
+					$("#rssContentDiv").before(rssListTemplateDiv);
+				}
+			});
+		}).on("click",".rssDetail",function(){
+			var rssId = $(this).closest(".thumbnail").attr("attr");
+			$(".rssList").load("${base}/rss/myRssDetail?rssId="+rssId);
+		});
 		
 	});
 	function addRssType(){
@@ -83,6 +103,17 @@
 </script>
 </head>
 <body>
+<div class="hide" id="rssListTemplateDiv">
+	<div class="col-sm-6 col-md-3">
+		<div class="thumbnail" attr="#rssId#">
+		  <div class="caption">
+			<h3 class="rss-title"><a class="pointer rssDetail">#rssTitle#</a></h3>
+			<p><a href="#" class="btn btn-primary" role="button">cancelBook</a> </p>
+		  </div>
+		</div>
+	</div>
+</div>
+
 <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->

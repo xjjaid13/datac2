@@ -2,16 +2,26 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">url</label>
+    <div class="col-sm-7">
+      <input type="email" class="form-control" id="rssUrl" placeholder="url">
+    </div>
+    <div class="col-sm-3">
+      <button type="button" id="book" class="btn btn-default">book</button>
+    </div>
+  </div>
+</form>
+<div id="rssContentDiv">
 	<c:forEach items="${rssList}" var="rss" >
-	  <div class="col-sm-6 col-md-4">
-		<div class="thumbnail">
-		  <img data-src="holder.js/300x300" alt="...">
+	  <div class="col-sm-6 col-md-3">
+		<div class="thumbnail" attr="${rss.rssId}">
 		  <div class="caption">
-			<h3 class="rss-title">${rss.rssTitle}</h3>
-			<p>...</p>
-			<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+			<h3 class="rss-title"><a class="pointer rssDetail">${rss.rssTitle}</a></h3>
+			<p><a href="#" class="btn btn-primary" role="button">cancelBook</a></p>
 		  </div>
 		</div>
 	  </div>
 	</c:forEach>
+</div>
