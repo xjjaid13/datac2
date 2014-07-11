@@ -2,6 +2,7 @@ package com.action.rss;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -127,7 +128,10 @@ public class RssController extends BaseAction{
 	}
 	
 	@RequestMapping("myRssDetail")
-	public String myRssDetail(){
+	public String myRssDetail(Rss rss,Model model){
+		rss = rssMapperService.select(rss);
+		List<Map<String,String>> rssDetailList = rssMapperService.returnRssDetailList(rss);
+		model.addAttribute("rssDetailList", rssDetailList);
 		return "rss/rssDetail";
 	}
 	

@@ -1,5 +1,6 @@
 package com.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,18 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 		}
 		rssSubscribeMapperDao.insert(rssSubscribe);
 		return rss;
+	}
+
+	@Override
+	public List<Map<String, String>> returnRssDetailList(Rss rss) {
+		try{
+			List<Map<String,String>> rssDetailList = (List<Map<String, String>>) RssUtil.getRSSInfo(rss.getRssUrl()).get("list");
+			return rssDetailList;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }
