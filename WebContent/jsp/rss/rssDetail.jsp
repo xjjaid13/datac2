@@ -5,7 +5,7 @@
 	<c:forEach items="${rssDetailList}" var="map" >
 		<div class="media">
 		  <div class="media-body">
-		    <h4 class="media-heading">${map.itemNo}<a target="_blank" href="${map.link}">${map.title}</a></h4>
+		    <h4 class="media-heading">${map.itemNo}. <a target="_blank" href="${map.link}">${map.title}</a></h4>
 		    ${map.description}${map.pubDate}
 		  </div>
 		</div>

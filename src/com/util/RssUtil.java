@@ -44,9 +44,9 @@ public class RssUtil {
 	        if(list != null && list.size() > 0){
 	        	resultMap.put("itemSize", list.size());
 	        	List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
-	        	int i = 0;
+	        	int i = 1;
 	        	for(SyndEntry feed1 : list){
-	        		int itemNo = i + 1;
+	        		int itemNo = i++;
 					Map<String, String> map = new HashMap<String, String>();
 					map.put("itemNo", itemNo + "");
 					String itemAuthor = feed1.getAuthor();
