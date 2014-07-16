@@ -7,13 +7,17 @@
     <result property="rssTitle" column="rssTitle"/>
     <result property="rssUrl" column="rssUrl"/>
     <result property="rssIcon" column="rssIcon"/>
+    <result property="fingePrint" column="fingePrint"/>
+    <result property="isSubscribe" column="isSubscribe"/>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="rss">select * from rss where 1 = 1 
     <if test="condition != null">and ${condition}</if>  
     <if test="rssId != null">and rssId = #{rssId}</if>  
     <if test="rssTitle != null">and rssTitle = #{rssTitle}</if>  
     <if test="rssUrl != null">and rssUrl = #{rssUrl}</if>  
-    <if test="rssIcon != null">and rssIcon = #{rssIcon}</if> 
+    <if test="rssIcon != null">and rssIcon = #{rssIcon}</if>  
+    <if test="fingePrint != null">and fingePrint = #{fingePrint}</if>  
+    <if test="isSubscribe != null">and isSubscribe = #{isSubscribe}</if> 
   </select>
   <select id="selectList" resultType="java.util.List" resultMap="rss">select * from rss where 1 = 1 
     <if test="condition != null">and ${condition}</if>  
@@ -21,6 +25,8 @@
     <if test="rssTitle != null">and rssTitle = #{rssTitle}</if>  
     <if test="rssUrl != null">and rssUrl = #{rssUrl}</if>  
     <if test="rssIcon != null">and rssIcon = #{rssIcon}</if>  
+    <if test="fingePrint != null">and fingePrint = #{fingePrint}</if>  
+    <if test="isSubscribe != null">and isSubscribe = #{isSubscribe}</if>  
     <if test="startPage != -1">limit #{startPage},#{page}</if> 
   </select>
   <select id="selectCount" resultType="java.lang.Integer">select count(rssId) from rss where 1 = 1 
@@ -28,15 +34,19 @@
     <if test="rssId != null">and rssId = #{rssId}</if>  
     <if test="rssTitle != null">and rssTitle = #{rssTitle}</if>  
     <if test="rssUrl != null">and rssUrl = #{rssUrl}</if>  
-    <if test="rssIcon != null">and rssIcon = #{rssIcon}</if> 
+    <if test="rssIcon != null">and rssIcon = #{rssIcon}</if>  
+    <if test="fingePrint != null">and fingePrint = #{fingePrint}</if>  
+    <if test="isSubscribe != null">and isSubscribe = #{isSubscribe}</if> 
   </select>
-  <insert id="insert" parameterType="Rss">insert into rss (rssId,rssTitle,rssUrl,rssIcon) values (#{rssId},#{rssTitle},#{rssUrl},#{rssIcon})</insert>
+  <insert id="insert" parameterType="Rss">insert into rss (rssId,rssTitle,rssUrl,rssIcon,fingePrint,isSubscribe) values (#{rssId},#{rssTitle},#{rssUrl},#{rssIcon},#{fingePrint},#{isSubscribe})</insert>
   <update id="update" parameterType="Rss">update rss 
     <set> 
       <if test="rssId != null">rssId = #{rssId},</if>
       <if test="rssTitle != null">rssTitle = #{rssTitle},</if>
       <if test="rssUrl != null">rssUrl = #{rssUrl},</if>
-      <if test="rssIcon != null">rssIcon = #{rssIcon},</if> 
+      <if test="rssIcon != null">rssIcon = #{rssIcon},</if>
+      <if test="fingePrint != null">fingePrint = #{fingePrint},</if>
+      <if test="isSubscribe != null">isSubscribe = #{isSubscribe},</if> 
     </set> where 1 = 1 
     <if test="condition != null">and ${condition}</if>  
     <if test="rssId != null">and rssId = #{rssId}</if> 
@@ -46,7 +56,9 @@
     <if test="rssId != null">and rssId = #{rssId}</if>  
     <if test="rssTitle != null">and rssTitle = #{rssTitle}</if>  
     <if test="rssUrl != null">and rssUrl = #{rssUrl}</if>  
-    <if test="rssIcon != null">and rssIcon = #{rssIcon}</if> 
+    <if test="rssIcon != null">and rssIcon = #{rssIcon}</if>  
+    <if test="fingePrint != null">and fingePrint = #{fingePrint}</if>  
+    <if test="isSubscribe != null">and isSubscribe = #{isSubscribe}</if> 
   </delete>
   <delete id="deleteByIds" parameterType="Rss">delete from rss where rssId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssId) from rss</select>

@@ -20,6 +20,7 @@ public class RssUtil {
 			URL feedUrl = new URL(xmlRemotePath);
 	        SyndFeedInput input = new SyndFeedInput();
 	        SyndFeed feed = input.build(new XmlReader(feedUrl));
+	        int fingerPrint = feed.hashCode();
 			String title = feed.getTitle();
 			String link = feed.getLink();
 			String description = feed.getDescription();
@@ -30,6 +31,7 @@ public class RssUtil {
 			resultMap.put("title", title);
 			// 频道相关Link信息
 			resultMap.put("link", link);
+			resultMap.put("fingerPrint", fingerPrint);
 			resultMap.put("description", description);
 			resultMap.put("language", language);
 			resultMap.put("copyright", copyright);

@@ -267,7 +267,4 @@ public class FileHandle {
 		return b;
 	}
 	
-	public static void main(String[] args) throws IOException{
-		FileHandle.write("D:/test.txt", "颠三倒四");
-	}
 }

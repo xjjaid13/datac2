@@ -10,6 +10,10 @@ public class Rss extends BaseEntity{
 	
 	private String rssIcon;
 	
+	private String fingePrint;
+	
+	private Integer isSubscribe;
+	
 	
 	public Integer getRssId() {
 		return rssId;
@@ -27,6 +31,14 @@ public class Rss extends BaseEntity{
 		return rssIcon;
 	}
 	
+	public String getFingePrint() {
+		return fingePrint;
+	}
+	
+	public Integer getIsSubscribe() {
+		return isSubscribe;
+	}
+	
 	
 	public void setRssId(Integer rssId) {
 		this.rssId = rssId;
@@ -42,6 +54,14 @@ public class Rss extends BaseEntity{
 	
 	public void setRssIcon(String rssIcon) {
 		this.rssIcon = rssIcon;
+	}
+	
+	public void setFingePrint(String fingePrint) {
+		this.fingePrint = fingePrint;
+	}
+	
+	public void setIsSubscribe(Integer isSubscribe) {
+		this.isSubscribe = isSubscribe;
 	}
 	
 	public String toString(){

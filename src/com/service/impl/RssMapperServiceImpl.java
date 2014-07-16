@@ -37,6 +37,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			rss.setRssIcon((String)rssMap.get("icon"));
 			rss.setRssTitle((String)rssMap.get("title"));
 			rss.setRssUrl(rssUrl);
+			rss.setFingePrint((String)rssMap.get("fingePrint"));
 			int rssId = rssMapperDao.insertAndReturnId(rss);
 			rss.setRssId(rssId);
 			rssSubscribe.setRssId(rssId);

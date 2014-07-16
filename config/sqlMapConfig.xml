@@ -18,6 +18,8 @@
 		
         <typeAlias alias="Rss" type="com.entity.Rss" /> 
 		
+        <typeAlias alias="RssCrawl" type="com.entity.RssCrawl" /> 
+		
         <typeAlias alias="RssSubscribe" type="com.entity.RssSubscribe" /> 
 		
         <typeAlias alias="RssType" type="com.entity.RssType" /> 

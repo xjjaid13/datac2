@@ -50,7 +50,5 @@
   </delete>
   <delete id="deleteByIds" parameterType="RssSubscribe">delete from rss_subscribe where rssSubscribeId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssSubscribeId) from rss_subscribe</select>
-  <select id="selectTypeSubscribe" parameterType="RssSubscribe" resultType="java.util.List" resultMap="rss">
-  	select b.* from rss_subscribe a left join rss b on a.rssId = b.rssId where a.rssTypeId = #{rssTypeId}
-  </select>
+  <select id="selectTypeSubscribe" parameterType="RssSubscribe" resultType="java.util.List" resultMap="rss">select b.* from rss_subscribe a left join rss b on a.rssId = b.rssId where a.rssTypeId = #{rssTypeId}</select>
 </mapper>

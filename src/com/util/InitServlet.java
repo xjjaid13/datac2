@@ -20,9 +20,11 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.entity.WebLinktype;
+import com.thread.FetchNewRssThread;
 
 @Repository
 public class InitServlet extends HttpServlet implements Servlet{
@@ -69,6 +71,9 @@ public class InitServlet extends HttpServlet implements Servlet{
 	            	 }
 	             }
 	         }, 1, 1, TimeUnit.MINUTES);  
+			
+			 
+			
 		} catch (FileNotFoundException e) {
 			Log.Error(e);
 		} catch (ClassNotFoundException e) {
