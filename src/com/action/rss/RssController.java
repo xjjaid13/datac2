@@ -79,7 +79,7 @@ public class RssController extends BaseAction{
 					if(rssTypeMapperService.isChildren(rssTypeNew.getRssTypeId(), user.getUserId())){
 						jsonObject.put("children", true);
 					}
-					jsonArray.add(jsonObject);
+					jsonArray.add(jsonObject); 
 				}
 			}
 			response.getWriter().write(jsonArray.toString());
