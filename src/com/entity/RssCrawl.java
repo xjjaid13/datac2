@@ -14,8 +14,6 @@ public class RssCrawl extends BaseEntity{
 	
 	private String resourceDesc;
 	
-	private String fingerPrint;
-	
 	
 	public Integer getRssCrawlId() {
 		return rssCrawlId;
@@ -41,10 +39,6 @@ public class RssCrawl extends BaseEntity{
 		return resourceDesc;
 	}
 	
-	public String getFingerPrint() {
-		return fingerPrint;
-	}
-	
 	
 	public void setRssCrawlId(Integer rssCrawlId) {
 		this.rssCrawlId = rssCrawlId;
@@ -68,10 +62,6 @@ public class RssCrawl extends BaseEntity{
 	
 	public void setResourceDesc(String resourceDesc) {
 		this.resourceDesc = resourceDesc;
-	}
-	
-	public void setFingerPrint(String fingerPrint) {
-		this.fingerPrint = fingerPrint;
 	}
 	
 	public String toString(){

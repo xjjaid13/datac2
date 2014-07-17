@@ -11,4 +11,6 @@ public interface RssMapperService extends BaseService<Rss>{
 	
 	public List<Map<String, String>> returnRssDetailList(Rss rss);
 	
+	public void fetchNewRss(Rss rss);
+	
 }

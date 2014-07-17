@@ -8,23 +8,23 @@
     <result property="userId" column="userId"/>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="webLinktype">select * from web_linktype where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if>  
-    <if test="name != null">and name = #{name}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
-  </select>
-  <select id="selectList" resultType="java.util.List" resultMap="webLinktype">select * from web_linktype where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if>  
     <if test="name != null">and name = #{name}</if>  
     <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>
+  </select>
+  <select id="selectList" resultType="java.util.List" resultMap="webLinktype">select * from web_linktype where 1 = 1 
+    <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if>  
+    <if test="name != null">and name = #{name}</if>  
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>  
     <if test="startPage != -1">limit #{startPage},#{page}</if> 
   </select>
   <select id="selectCount" resultType="java.lang.Integer">select count(webLinktypeId) from web_linktype where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if>  
     <if test="name != null">and name = #{name}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if> 
   </select>
   <insert id="insert" parameterType="WebLinktype">insert into web_linktype (webLinktypeId,name,userId) values (#{webLinktypeId},#{name},#{userId})</insert>
   <update id="update" parameterType="WebLinktype">update web_linktype 
@@ -33,14 +33,14 @@
       <if test="name != null">name = #{name},</if>
       <if test="userId != null">userId = #{userId},</if> 
     </set> where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if> 
+    <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if>
+    <if test="condition != null">${condition}</if>
   </update>
   <delete id="delete" parameterType="WebLinktype">delete from web_linktype where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="webLinktypeId != null">and webLinktypeId = #{webLinktypeId}</if>  
     <if test="name != null">and name = #{name}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>
   </delete>
   <delete id="deleteByIds" parameterType="WebLinktype">delete from web_linktype where webLinktypeId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(webLinktypeId) from web_linktype</select>

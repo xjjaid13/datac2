@@ -118,7 +118,9 @@ public class RssController extends BaseAction{
 	@RequestMapping("myAddRssAdnSubscribe")
 	public void myAddRssAdnSubscribe(Rss rss,int parentId,HttpServletResponse response) throws IOException{
 		rss = rssMapperService.insertRss(rss, parentId);
-		writeResult(response, JSONObject.fromObject(rss));
+		JSONObject jsonObject = createJosnObject();
+		jsonObject.put("rss", rss);
+		writeResult(response, jsonObject);
 	}
 	
 	@RequestMapping("myCancelSubscribe")

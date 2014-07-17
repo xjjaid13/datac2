@@ -19,7 +19,7 @@
 		<div class="thumbnail" attr="${rss.rssId}">
 		  <div class="caption">
 			<h3 class="rss-title"><a class="pointer rssDetail">${rss.rssTitle}</a></h3>
-			<p><a href="#" class="btn btn-primary" role="button">cancelBook</a></p>
+			<p><a class="btn btn-primary cancelBook cursor" role="button">cancelBook</a></p>
 		  </div>
 		</div>
 	  </div>

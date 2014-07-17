@@ -9,26 +9,26 @@
     <result property="userId" column="userId"/>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="blogType">select * from blog_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if>  
-    <if test="title != null">and title = #{title}</if>  
-    <if test="level != null">and level = #{level}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
-  </select>
-  <select id="selectList" resultType="java.util.List" resultMap="blogType">select * from blog_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if>  
     <if test="title != null">and title = #{title}</if>  
     <if test="level != null">and level = #{level}</if>  
     <if test="userId != null">and userId = #{userId}</if>  
-    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+    <if test="condition != null">${condition}</if>
   </select>
-  <select id="selectCount" resultType="java.lang.Integer">select count(blogTypeId) from blog_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
+  <select id="selectList" resultType="java.util.List" resultMap="blogType">select * from blog_type where 1 = 1 
     <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if>  
     <if test="title != null">and title = #{title}</if>  
     <if test="level != null">and level = #{level}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>  
+    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">select count(blogTypeId) from blog_type where 1 = 1 
+    <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if>  
+    <if test="title != null">and title = #{title}</if>  
+    <if test="level != null">and level = #{level}</if>  
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if> 
   </select>
   <insert id="insert" parameterType="BlogType">insert into blog_type (blogTypeId,title,level,userId) values (#{blogTypeId},#{title},#{level},#{userId})</insert>
   <update id="update" parameterType="BlogType">update blog_type 
@@ -38,15 +38,15 @@
       <if test="level != null">level = #{level},</if>
       <if test="userId != null">userId = #{userId},</if> 
     </set> where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if> 
+    <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if>
+    <if test="condition != null">${condition}</if>
   </update>
   <delete id="delete" parameterType="BlogType">delete from blog_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="blogTypeId != null">and blogTypeId = #{blogTypeId}</if>  
     <if test="title != null">and title = #{title}</if>  
     <if test="level != null">and level = #{level}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>
   </delete>
   <delete id="deleteByIds" parameterType="BlogType">delete from blog_type where blogTypeId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(blogTypeId) from blog_type</select>

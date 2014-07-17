@@ -9,26 +9,26 @@
     <result property="parentId" column="parentId"/>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="rssType">select * from rss_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>  
-    <if test="typeName != null">and typeName = #{typeName}</if>  
-    <if test="userId != null">and userId = #{userId}</if>  
-    <if test="parentId != null">and parentId = #{parentId}</if> 
-  </select>
-  <select id="selectList" resultType="java.util.List" resultMap="rssType">select * from rss_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
     <if test="userId != null">and userId = #{userId}</if>  
     <if test="parentId != null">and parentId = #{parentId}</if>  
-    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+    <if test="condition != null">${condition}</if>
   </select>
-  <select id="selectCount" resultType="java.lang.Integer">select count(rssTypeId) from rss_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
+  <select id="selectList" resultType="java.util.List" resultMap="rssType">select * from rss_type where 1 = 1 
     <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
     <if test="userId != null">and userId = #{userId}</if>  
-    <if test="parentId != null">and parentId = #{parentId}</if> 
+    <if test="parentId != null">and parentId = #{parentId}</if>  
+    <if test="condition != null">${condition}</if>  
+    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">select count(rssTypeId) from rss_type where 1 = 1 
+    <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>  
+    <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="parentId != null">and parentId = #{parentId}</if>  
+    <if test="condition != null">${condition}</if> 
   </select>
   <insert id="insert" parameterType="RssType">insert into rss_type (rssTypeId,typeName,userId,parentId) values (#{rssTypeId},#{typeName},#{userId},#{parentId})</insert>
   <update id="update" parameterType="RssType">update rss_type 
@@ -38,15 +38,15 @@
       <if test="userId != null">userId = #{userId},</if>
       <if test="parentId != null">parentId = #{parentId},</if> 
     </set> where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if> 
+    <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>
+    <if test="condition != null">${condition}</if>
   </update>
   <delete id="delete" parameterType="RssType">delete from rss_type where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
     <if test="userId != null">and userId = #{userId}</if>  
-    <if test="parentId != null">and parentId = #{parentId}</if> 
+    <if test="parentId != null">and parentId = #{parentId}</if>  
+    <if test="condition != null">${condition}</if>
   </delete>
   <delete id="deleteByIds" parameterType="RssType">delete from rss_type where rssTypeId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssTypeId) from rss_type</select>

@@ -42,17 +42,33 @@
 				data : 'rssUrl='+rssUrl+"&parentId="+sel[0],
 				dataType : 'json',
 				success : function(ajaxData){
-					var rssListTemplateDiv = $("#rssListTemplateDiv").html();
-					rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",ajaxData.rssId);
-					rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",ajaxData.rssTitle);
-					$("#rssContentDiv").before(rssListTemplateDiv);
+					if(ajaxData.result == 'success'){
+						var rss = ajaxData.rss;
+						var rssListTemplateDiv = $("#rssListTemplateDiv").html();
+						rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",rss.rssId);
+						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",rss.rssTitle);
+						$("#rssContentDiv").before(rssListTemplateDiv);
+					}
 				}
 			});
 		}).on("click",".rssDetail",function(){
-			var rssId = $(this).closest(".thumbnail").attr("attr");
+			var $thumbnail = $(this).closest(".thumbnail")
+			var rssId = $thumbnail.attr("attr");
 			$(".rssList").load("${base}/rss/myRssDetail?rssId="+rssId);
+		}).on("click",".cancelBook",function(){
+			var $thumbnail = $(this).closest(".thumbnail")
+			var rssId = $thumbnail.attr("attr");
+			$.ajax({
+				url : '${base}/rss/myCancelSubscribe',
+				data : 'rssId='+rssId,
+				dataType : 'json',
+				success : function(ajaxData){
+					if(ajaxData.result == 'success'){
+						$thumbnail.parent().fadeOut();
+					}
+				}
+			});
 		});
-		
 	});
 	function addRssType(){
 		var jsTree = $('#js-tree').jstree(true),

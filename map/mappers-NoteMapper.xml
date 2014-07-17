@@ -10,29 +10,29 @@
     <result property="userId" column="userId"/>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="note">select * from note where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="noteId != null">and noteId = #{noteId}</if>  
-    <if test="content != null">and content = #{content}</if>  
-    <if test="noteTypeId != null">and noteTypeId = #{noteTypeId}</if>  
-    <if test="createDate != null">and createDate = #{createDate}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
-  </select>
-  <select id="selectList" resultType="java.util.List" resultMap="note">select * from note where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="noteId != null">and noteId = #{noteId}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="noteTypeId != null">and noteTypeId = #{noteTypeId}</if>  
     <if test="createDate != null">and createDate = #{createDate}</if>  
     <if test="userId != null">and userId = #{userId}</if>  
-    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+    <if test="condition != null">${condition}</if>
   </select>
-  <select id="selectCount" resultType="java.lang.Integer">select count(noteId) from note where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
+  <select id="selectList" resultType="java.util.List" resultMap="note">select * from note where 1 = 1 
     <if test="noteId != null">and noteId = #{noteId}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="noteTypeId != null">and noteTypeId = #{noteTypeId}</if>  
     <if test="createDate != null">and createDate = #{createDate}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>  
+    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">select count(noteId) from note where 1 = 1 
+    <if test="noteId != null">and noteId = #{noteId}</if>  
+    <if test="content != null">and content = #{content}</if>  
+    <if test="noteTypeId != null">and noteTypeId = #{noteTypeId}</if>  
+    <if test="createDate != null">and createDate = #{createDate}</if>  
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if> 
   </select>
   <insert id="insert" parameterType="Note">insert into note (noteId,content,noteTypeId,createDate,userId) values (#{noteId},#{content},#{noteTypeId},#{createDate},#{userId})</insert>
   <update id="update" parameterType="Note">update note 
@@ -43,16 +43,16 @@
       <if test="createDate != null">createDate = #{createDate},</if>
       <if test="userId != null">userId = #{userId},</if> 
     </set> where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
-    <if test="noteId != null">and noteId = #{noteId}</if> 
+    <if test="noteId != null">and noteId = #{noteId}</if>
+    <if test="condition != null">${condition}</if>
   </update>
   <delete id="delete" parameterType="Note">delete from note where 1 = 1 
-    <if test="condition != null">and ${condition}</if>  
     <if test="noteId != null">and noteId = #{noteId}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="noteTypeId != null">and noteTypeId = #{noteTypeId}</if>  
     <if test="createDate != null">and createDate = #{createDate}</if>  
-    <if test="userId != null">and userId = #{userId}</if> 
+    <if test="userId != null">and userId = #{userId}</if>  
+    <if test="condition != null">${condition}</if>
   </delete>
   <delete id="deleteByIds" parameterType="Note">delete from note where noteId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(noteId) from note</select>

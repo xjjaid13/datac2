@@ -10,21 +10,21 @@
 
 	<select id="select" resultType="java.util.Map" resultMap="{tableName}">
 		select * from {tablename} where 1 = 1 
-			<if test="condition != null"> and ${condition}</if> 
 	   {for}<if test="{columnname} != null"> and {columnname} = {#columnname} </if> {endfor}
+			<if test="condition != null"> ${condition}</if> 
 	</select>
 	
 	<select id="selectList"  resultType="java.util.List" resultMap="{tableName}">
 		select * from {tablename} where 1 = 1 
-			<if test="condition != null"> and ${condition}</if> 
 	   {for}<if test="{columnname} != null"> and {columnname} = {#columnname} </if> {endfor}
+			<if test="condition != null"> ${condition}</if> 
 	        <if test="startPage != -1"> limit #{startPage},#{page}</if>
 	</select>
 	
 	<select id="selectCount"  resultType="java.lang.Integer" >
 		select count({tableName}Id) from {tablename} where 1 = 1 
-		<if test="condition != null"> and ${condition}</if> 
    {for}<if test="{columnname} != null"> and {columnname} = {#columnname}</if> {endfor} 
+		<if test="condition != null"> ${condition}</if> 
 	</select>
 	
 	<insert id="insert" parameterType="{TableName}">
@@ -40,14 +40,14 @@
 		<set>  
 		{for}<if test="{columnname} != null">{columnname} = #{{columnName}},</if>{endfor}
 		</set>
-		where 1 = 1 <if test="condition != null"> and ${condition}</if> 
-		<if test="{tableName}Id != null"> and {tableName}Id = #{{tableName}Id}</if> 
+		where 1 = 1 <if test="{tableName}Id != null"> and {tableName}Id = #{{tableName}Id}</if> 
+		<if test="condition != null"> ${condition}</if> 
 	</update>
 	
 	<delete id="delete" parameterType="{TableName}">
 		delete from {tablename} where 1 = 1 
-		<if test="condition != null"> and ${condition}</if> 
    {for}<if test="{columnname} != null"> and {columnname} = {#columnname} </if> {endfor}
+		<if test="condition != null"> ${condition}</if> 
 	</delete>
 	
 	<delete id="deleteByIds" parameterType="{TableName}">

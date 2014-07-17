@@ -163,19 +163,19 @@ public class Template {
 			String resultMapResult = returnContent(resultMapString,result,field,tableName,type);
 			result.delete(0, result.length());
 			String selectString = "select * from {tablename} where 1 = 1 "+
-					"<if test=\"condition != null\"> and ${condition}</if> "+
-					"{for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname}</if> {endfor}";
+					"{for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname}</if> {endfor}"
+					+"<if test=\"condition != null\"> ${condition}</if>";
 			String selectResult = returnContent(selectString,result,field,tableName,type);
 			result.delete(0, result.length());
 			String selectListString = "select * from {tablename} where 1 = 1 "+
-				"<if test=\"condition != null\"> and ${condition}</if> "+
 				"{for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname}</if> {endfor}"+
+				"<if test=\"condition != null\"> ${condition}</if> "+
 		        " <if test=\"startPage != -1\"> limit #{startPage},#{page}</if> ";
 			String selectListResult = returnContent(selectListString,result,field,tableName,type);
 			result.delete(0, result.length());
 			String selectCountString = "select count({tableName}Id) from {tablename} where 1 = 1 "+
-					"<if test=\"condition != null\"> and ${condition}</if> "+
-					"{for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname}</if> {endfor} ";
+					"{for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname}</if> {endfor} "+
+					"<if test=\"condition != null\"> ${condition}</if> ";
 			String selectCountResult = returnContent(selectCountString,result,field,tableName,type);
 			result.delete(0, result.length());
 			String insertString = "insert into {tablename} ("+
@@ -185,13 +185,13 @@ public class Template {
 					")";
 			String insertResult = returnContent(insertString,result,field,tableName,type);
 			result.delete(0, result.length());
-			String deleteString = "delete from {tablename} where 1 = 1 <if test=\"condition != null\"> and ${condition}</if> {for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname} </if> {endfor}";
+			String deleteString = "delete from {tablename} where 1 = 1 {for}<if test=\"{columnname} != null\"> and {columnname} = {#columnname} </if> {endfor} <if test=\"condition != null\"> ${condition}</if>";
 			String deleteResult = returnContent(deleteString,result,field,tableName,type);
 			   
 			result.delete(0, result.length());
-			String updateString = "update {tablename} <set>   "+
+			String updateString = "update {tablename} <set> "+
 				"{for}<if test=\"{columnname} != null\">{columnname} = #{{columnName}},</if>{endfor} </set>  "+
-				"where 1 = 1 <if test=\"condition != null\"> and ${condition}</if> <if test=\"{tableName}Id != null\"> and {tableName}Id = #{{tableName}Id}</if> ";
+				"where 1 = 1 <if test=\"{tableName}Id != null\"> and {tableName}Id = #{{tableName}Id}</if><if test=\"condition != null\"> ${condition}</if>";
 			String updateResult = returnContent(updateString,result,field,tableName,type);
 			result.delete(0, result.length());
 			String deleteByIdsString = "delete from {tablename} where {tableName}Id in (#{ids})";
