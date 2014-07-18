@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,11 +119,13 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssCrawl.setResourceDesc(map.get("description"));
 				rssCrawl.setResourceTitle(map.get("title"));
 				rssCrawl.setResourceUrl(map.get("link"));
-				rssCrawl.setUpdateTime(new Timestamp(System.currentTimeMillis()).toString());
+				rssCrawl.setUpdateTime(map.get("pubDate"));
 				rssCrawlMapperDao.insert(rssCrawl);
 			}
 			rss.setFingePrint(rssMap.get("fingerPrint") + "");
+			
 			rssMapperDao.update(rss);
 		}
 	}
+	
 }

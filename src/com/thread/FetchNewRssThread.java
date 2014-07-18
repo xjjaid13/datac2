@@ -11,6 +11,7 @@ import com.entity.Rss;
 import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
 import com.util.FileHandle;
+import com.util.Log;
 
 @Component("fetchNewRssThread")
 public class FetchNewRssThread {
@@ -33,7 +34,7 @@ public class FetchNewRssThread {
 	    				}
 	    			}
     			}catch(Exception e){
-    				e.printStackTrace();
+    				Log.Error(e);
     			}
             }  
     	},10, 100, TimeUnit.SECONDS);

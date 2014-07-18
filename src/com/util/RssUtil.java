@@ -1,6 +1,7 @@
 package com.util;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +20,8 @@ public class RssUtil {
 		try {
 			URL feedUrl = new URL(xmlRemotePath);
 	        SyndFeedInput input = new SyndFeedInput();
-	        SyndFeed feed = input.build(new XmlReader(feedUrl));
-	        int fingerPrint = feed.hashCode();
+	        XmlReader xmlReader = new XmlReader(feedUrl);
+	        SyndFeed feed = input.build(xmlReader);
 			String title = feed.getTitle();
 			//String link = feed.getLink();
 			String description = feed.getDescription();
@@ -31,10 +32,10 @@ public class RssUtil {
 			resultMap.put("title", title);
 			// 频道相关Link信息
 			resultMap.put("link", xmlRemotePath);
-			resultMap.put("fingerPrint", fingerPrint);
 			resultMap.put("description", description);
 			resultMap.put("language", language);
 			resultMap.put("copyright", copyright);
+			resultMap.put("fingerPrint", "");
 			SyndImage syndImage = feed.getImage();
 	        if(syndImage != null){
 	        	resultMap.put("icon", syndImage.getUrl());
@@ -54,20 +55,23 @@ public class RssUtil {
 					String itemAuthor = feed1.getAuthor();
 					map.put("author", itemAuthor);
 					String itemTitle = feed1.getTitle();
+					if(i == 2){
+						resultMap.put("fingerPrint", Md5Util.getMD5(itemTitle.getBytes()));
+					}
 					map.put("title", itemTitle);
 					String itemDescription = feed1.getDescription().getValue();
 					map.put("description", itemDescription);
 					String itemLink = feed1.getLink();
 					map.put("link", itemLink);
-					String itemPubDate = feed1.getPublishedDate().toString();
+					String itemPubDate = new Timestamp(feed1.getPublishedDate().getTime()) + "";
 					map.put("pubDate", itemPubDate);
 					resultList.add(map);
 	        	}
 	        	resultMap.put("list", resultList);
+	        	
 	        }else{
 	        	resultMap.put("list", null);
 	        }
-	        
 			return resultMap;
 		} catch (Exception e) {
 			Log.Error(e);
@@ -77,7 +81,7 @@ public class RssUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-
+		Map map = RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=1&class=internews&tn=rss");
 		System.out.println(RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=1&class=internews&tn=rss"));
 		
 	}
