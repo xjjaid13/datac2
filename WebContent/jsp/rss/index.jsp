@@ -30,7 +30,11 @@
 			}
 		});
 		$('#js-tree').on("select_node.jstree", function (e, data) {
-			$(".rssList").load("${base}/rss/myRssList?rssTypeId="+data.selected[0]);
+			if(data.selected[0] == 0){
+				$(".rssList").load("${base}/rss/myRssView");
+			}else{
+				$(".rssList").load("${base}/rss/myRssList?rssTypeId="+data.selected[0]);
+			}
 		});
 		$(document).on("click","#book",function(){
 			var rssUrl = $("#rssUrl").val();
@@ -39,14 +43,19 @@
 			if(!sel.length) { return false; }
 			$.ajax({
 				url : '${base}/rss/myAddRssAdnSubscribe',
-				data : 'rssUrl='+rssUrl+"&parentId="+sel[0],
+				data : {'rssUrl':encodeURIComponent(rssUrl),"parentId" : sel[0]},
+				type : 'post',
 				dataType : 'json',
 				success : function(ajaxData){
 					if(ajaxData.result == 'success'){
 						var rss = ajaxData.rss;
+						var rssTitle = rss.rssTitle;
+						if(rssTitle.length > 6){
+							rssTitle = rssTitle.substring(0,6) + "...";
+						}
 						var rssListTemplateDiv = $("#rssListTemplateDiv").html();
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",rss.rssId);
-						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",rss.rssTitle);
+						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",rssTitle);
 						$("#rssContentDiv").before(rssListTemplateDiv);
 					}
 				}

@@ -9,4 +9,6 @@ public interface RssSubscribeMapperService extends BaseService<RssSubscribe>{
 	
 	public List<Rss> selectTypeSubscribe(RssSubscribe rssSubscribe);
 	
+	public List<RssSubscribe> selectView(RssSubscribe rssSubscribe);
+	
 }

@@ -1,8 +1,10 @@
 package com.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.service.impl.BaseServiceImpl;
+
 import com.dao.RssCrawlMapperDao;
 import com.entity.RssCrawl;
 import com.service.RssCrawlMapperService;
@@ -13,4 +15,9 @@ public class RssCrawlMapperServiceImpl extends BaseServiceImpl<RssCrawl> impleme
 	@Autowired
 	RssCrawlMapperDao rssCrawlMapperDao;
 
+	@Override
+	public List<RssCrawl> selectView(RssCrawl rssCrawl) {
+		return rssCrawlMapperDao.selectView(rssCrawl);
+	}
+	
 }

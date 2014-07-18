@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,6 +69,19 @@ public class TimeHandle {
                         lastMonth = lastMonth - 1;
                 }
                 return "" + year + "-" + (lastMonth < 10 ? "0" + lastMonth : lastMonth) + "-" + day + " " + time;
+        }
+        
+        /**
+         * 增加减少日期
+         * @param date
+         * @param num
+         * @return
+         */
+        public static Date handleDate(Date date,int num){
+        	Calendar calendar=Calendar.getInstance();
+        	calendar.setTime(date);
+        	calendar.add(Calendar.DATE,-num);
+        	return calendar.getTime();
         }
         
         /**
@@ -195,8 +207,6 @@ public class TimeHandle {
          * 获得下月的今天
          * */
         public static String nextMonth(){
-                Date date = new Date();
-                SimpleDateFormat simpleDataFormat = new SimpleDateFormat();
                 int year = getYear();//取到年份值  
                 int month = getMonth();//取到月份值  
                 int day = getDay();//取到天值  

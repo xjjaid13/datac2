@@ -3,6 +3,7 @@ package com.util;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class RssUtil {
 	        	resultMap.put("itemSize", list.size());
 	        	List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
 	        	int i = 1;
+	        	Date compareDate = null;
 	        	for(SyndEntry feed1 : list){
 	        		int itemNo = i++;
 					Map<String, String> map = new HashMap<String, String>();
@@ -57,13 +59,19 @@ public class RssUtil {
 					String itemTitle = feed1.getTitle();
 					if(i == 2){
 						resultMap.put("fingerPrint", Md5Util.getMD5(itemTitle.getBytes()));
+						compareDate = feed1.getPublishedDate();
 					}
 					map.put("title", itemTitle);
 					String itemDescription = feed1.getDescription().getValue();
 					map.put("description", itemDescription);
 					String itemLink = feed1.getLink();
 					map.put("link", itemLink);
-					String itemPubDate = new Timestamp(feed1.getPublishedDate().getTime()) + "";
+					String itemPubDate = null;
+					if(i > 2 && compareDate.equals(feed1.getPublishedDate())){
+						itemPubDate = new Timestamp(TimeHandle.handleDate(compareDate, -i).getTime()) + "";
+					}else{
+						itemPubDate = new Timestamp(feed1.getPublishedDate().getTime()) + "";
+					}
 					map.put("pubDate", itemPubDate);
 					resultList.add(map);
 	        	}
@@ -81,7 +89,7 @@ public class RssUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Map map = RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=1&class=internews&tn=rss");
+		Map map = RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=4&class=sportnews&tn=rss");
 		System.out.println(RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=1&class=internews&tn=rss"));
 		
 	}
