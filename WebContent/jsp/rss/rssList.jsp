@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <form class="form-horizontal" role="form">
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">url</label>
@@ -19,7 +18,7 @@
 	  <div class="col-sm-6 col-md-3">
 		<div class="thumbnail" attr="${rss.rssId}">
 		  <div class="caption">
-			<h3 class="rss-title"><a class="pointer rssDetail">
+			<h3 class="rss-title"><a class="pointer rssDetail" title="${rss.rssTitle}">
 			<c:choose>
 			   <c:when test="${fn:length(rss.rssTitle) > 6}">
 			   	   <c:out value="${fn:substring(rss.rssTitle, 0, 6)}..." /> 

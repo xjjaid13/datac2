@@ -2,7 +2,6 @@ package com.action.rss;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -117,6 +116,7 @@ public class RssController extends BaseAction{
 	
 	@RequestMapping("myRssList")
 	public String myRssList(RssSubscribe rssSubscribe,HttpServletResponse response,Model model) throws IOException{
+		rssSubscribe.setCondition("order by rssSubscribeId desc");
 		List<Rss> rssList = rssSubscribeMapperService.selectTypeSubscribe(rssSubscribe);
 		model.addAttribute("rssList", rssList);
 		return "rss/rssList";

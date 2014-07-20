@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.po.Rss;
 import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
-import com.util.FileHandle;
 import com.util.Log;
 
 @Component("fetchNewRssThread")
@@ -39,11 +38,5 @@ public class FetchNewRssThread {
             }  
     	},10, 100, TimeUnit.SECONDS);
     }
-    
-    public static void main(String[] args) {
-    	//-801604547
-		String content = FileHandle.readFile("D:/test.txt");
-		System.out.println(content.hashCode());
-	}
     
 }

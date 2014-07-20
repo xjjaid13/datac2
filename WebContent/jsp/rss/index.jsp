@@ -54,6 +54,7 @@
 							rssTitle = rssTitle.substring(0,6) + "...";
 						}
 						var rssListTemplateDiv = $("#rssListTemplateDiv").html();
+						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitleTip#",rss.rssTitle);
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",rss.rssId);
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",rssTitle);
 						$("#rssContentDiv").before(rssListTemplateDiv);
@@ -132,7 +133,7 @@
 	<div class="col-sm-6 col-md-3">
 		<div class="thumbnail" attr="#rssId#">
 		  <div class="caption">
-			<h3 class="rss-title"><a class="pointer rssDetail">#rssTitle#</a></h3>
+			<h3 class="rss-title"><a class="pointer rssDetail" title="#rssTitleTip#">#rssTitle#</a></h3>
 			<p><a href="#" class="btn btn-primary" role="button">cancelBook</a> </p>
 		  </div>
 		</div>

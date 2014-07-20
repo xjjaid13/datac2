@@ -2,7 +2,6 @@ package com.service.impl;
 
 import java.net.URLDecoder;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +9,10 @@ import org.springframework.stereotype.Service;
 import com.dao.RssCrawlMapperDao;
 import com.dao.RssMapperDao;
 import com.dao.RssSubscribeMapperDao;
+import com.exception.ServiceException;
 import com.po.Rss;
 import com.po.RssCrawl;
 import com.po.RssSubscribe;
-import com.exception.ServiceException;
 import com.service.RssMapperService;
 import com.util.Log;
 import com.util.RssUtil;
@@ -75,7 +74,9 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	@Override
 	public void fetchNewRss(Rss rss) {
 		RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
+		Log.Info(rssVO.getLink() + "变动1，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
 		if(!rssVO.getFingerPrint().equals(rss.getFingePrint())){
+			Log.Info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
 			List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
 			if(rssDetailList == null){
 				return;
