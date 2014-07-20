@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class BlogType extends BaseEntity{
+public class BlogType extends BasePO{
 	
 	private Integer blogTypeId;
 	

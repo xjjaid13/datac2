@@ -17,11 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.action.BaseAction;
-import com.entity.Rss;
-import com.entity.RssCrawl;
-import com.entity.RssSubscribe;
-import com.entity.RssType;
-import com.entity.User;
+import com.po.Rss;
+import com.po.RssCrawl;
+import com.po.RssSubscribe;
+import com.po.RssType;
+import com.po.User;
 import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
 import com.service.RssSubscribeMapperService;

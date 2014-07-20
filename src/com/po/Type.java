@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class Type extends BaseEntity{
+public class Type extends BasePO{
 	
 	private Integer typeId;
 	

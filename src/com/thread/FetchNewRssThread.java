@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.entity.Rss;
+import com.po.Rss;
 import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
 import com.util.FileHandle;

@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class NoteType extends BaseEntity{
+public class NoteType extends BasePO{
 	
 	private Integer noteTypeId;
 	

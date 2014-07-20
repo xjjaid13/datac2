@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.service.impl.BaseServiceImpl;
 import com.dao.BlogMapperDao;
-import com.entity.Blog;
+import com.po.Blog;
 import com.service.BlogMapperService;
 
 @Service("blogMapperService")

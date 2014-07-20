@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class RssSubscribe extends BaseEntity{
+public class RssSubscribe extends BasePO{
 	
 	private Integer rssSubscribeId;
 	

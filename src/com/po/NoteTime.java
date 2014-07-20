@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class NoteTime extends BaseEntity{
+public class NoteTime extends BasePO{
 	
 	private Integer noteTimeId;
 	

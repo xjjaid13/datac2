@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.Note;
+import com.po.Note;
 
 public interface NoteMapperService extends BaseService<Note>{
 	

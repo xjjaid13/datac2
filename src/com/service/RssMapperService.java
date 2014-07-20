@@ -3,7 +3,7 @@ package com.service;
 import java.util.List;
 import java.util.Map;
 
-import com.entity.Rss;
+import com.po.Rss;
 
 public interface RssMapperService extends BaseService<Rss>{
 	

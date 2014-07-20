@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.{TableName};
+import com.po.{TableName};
 
 public interface {TableName}MapperService extends BaseService<{TableName}>{
 	

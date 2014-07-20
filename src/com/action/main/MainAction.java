@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
-import com.entity.Menu;
+import com.po.Menu;
 import com.service.MenuMapperService;
 import com.util.DataHandle;
 

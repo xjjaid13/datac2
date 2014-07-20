@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.Rss;
+import com.po.Rss;
 
 public interface RssMapperDao extends BaseDao<Rss>{
 	

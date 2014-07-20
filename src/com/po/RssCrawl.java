@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class RssCrawl extends BaseEntity{
+public class RssCrawl extends BasePO{
 	
 	private Integer rssCrawlId;
 	

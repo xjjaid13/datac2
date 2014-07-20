@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.Blog;
+import com.po.Blog;
 
 public interface BlogMapperService extends BaseService<Blog>{
 	

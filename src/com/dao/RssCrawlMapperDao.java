@@ -2,7 +2,7 @@ package com.dao;
 
 import java.util.List;
 
-import com.entity.RssCrawl;
+import com.po.RssCrawl;
 
 public interface RssCrawlMapperDao extends BaseDao<RssCrawl>{
 	

@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.Tag;
+import com.po.Tag;
 
 public interface TagMapperDao extends BaseDao<Tag>{
 	

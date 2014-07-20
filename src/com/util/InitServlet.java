@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.entity.WebLinktype;
+import com.po.WebLinktype;
 import com.thread.FetchNewRssThread;
 
 @Repository

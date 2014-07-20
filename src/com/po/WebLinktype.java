@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class WebLinktype extends BaseEntity{
+public class WebLinktype extends BasePO{
 	
 	private Integer webLinktypeId;
 	

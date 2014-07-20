@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class {TableName} extends BaseEntity{
+public class {TableName} extends BasePO{
 	{for}
 	private {type} {columnname};
 	{endfor}

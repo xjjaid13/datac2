@@ -6,7 +6,7 @@
 
     <typeAliases>
 		{for}
-        <typeAlias alias="{TableName}" type="com.entity.{TableName}" /> 
+        <typeAlias alias="{TableName}" type="com.po.{TableName}" /> 
 		{endfor}
     </typeAliases>    
     

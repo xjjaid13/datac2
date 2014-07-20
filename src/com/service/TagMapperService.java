@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.Tag;
+import com.po.Tag;
 
 public interface TagMapperService extends BaseService<Tag>{
 	

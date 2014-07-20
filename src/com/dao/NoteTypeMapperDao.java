@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.NoteType;
+import com.po.NoteType;
 
 public interface NoteTypeMapperDao extends BaseDao<NoteType>{
 	

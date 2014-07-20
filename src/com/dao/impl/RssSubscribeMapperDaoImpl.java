@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.dao.RssSubscribeMapperDao;
-import com.entity.Rss;
-import com.entity.RssSubscribe;
+import com.po.Rss;
+import com.po.RssSubscribe;
 
 @Repository
 public class RssSubscribeMapperDaoImpl extends BaseDaoImpl<RssSubscribe> implements RssSubscribeMapperDao {

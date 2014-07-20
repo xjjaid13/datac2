@@ -2,8 +2,8 @@ package com.dao;
 
 import java.util.List;
 
-import com.entity.Rss;
-import com.entity.RssSubscribe;
+import com.po.Rss;
+import com.po.RssSubscribe;
 
 public interface RssSubscribeMapperDao extends BaseDao<RssSubscribe>{
 	

@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.RssType;
+import com.po.RssType;
 
 public interface RssTypeMapperService extends BaseService<RssType>{
 	

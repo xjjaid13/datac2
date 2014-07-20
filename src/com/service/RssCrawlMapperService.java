@@ -2,7 +2,7 @@ package com.service;
 
 import java.util.List;
 
-import com.entity.RssCrawl;
+import com.po.RssCrawl;
 
 public interface RssCrawlMapperService extends BaseService<RssCrawl>{
 	

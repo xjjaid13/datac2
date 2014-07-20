@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.WebLink;
+import com.po.WebLink;
 
 public interface WebLinkMapperDao extends BaseDao<WebLink>{
 	

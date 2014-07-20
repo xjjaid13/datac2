@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class User extends BaseEntity{
+public class User extends BasePO{
 	
 	private Integer userId;
 	

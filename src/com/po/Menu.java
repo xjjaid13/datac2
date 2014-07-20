@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;;
 
-public class Menu extends BaseEntity{
+public class Menu extends BasePO{
 	
 	private Integer menuId;
 	

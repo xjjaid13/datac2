@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.BlogType;
+import com.po.BlogType;
 
 public interface BlogTypeMapperDao extends BaseDao<BlogType>{
 	

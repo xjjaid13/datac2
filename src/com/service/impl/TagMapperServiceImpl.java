@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.service.impl.BaseServiceImpl;
 import com.dao.TagMapperDao;
-import com.entity.Tag;
+import com.po.Tag;
 import com.service.TagMapperService;
 
 @Service("tagMapperService")

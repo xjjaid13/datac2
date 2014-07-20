@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.WebLinktype;
+import com.po.WebLinktype;
 
 public interface WebLinktypeMapperService extends BaseService<WebLinktype>{
 	

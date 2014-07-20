@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.User;
+import com.po.User;
 
 public interface UserMapperService extends BaseService<User>{
 	

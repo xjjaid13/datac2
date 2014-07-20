@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
-import com.entity.User;
+import com.po.User;
 import com.util.Constant;
 
 public class BaseAction {

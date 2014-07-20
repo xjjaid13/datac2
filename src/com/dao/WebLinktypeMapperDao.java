@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.WebLinktype;
+import com.po.WebLinktype;
 
 public interface WebLinktypeMapperDao extends BaseDao<WebLinktype>{
 	

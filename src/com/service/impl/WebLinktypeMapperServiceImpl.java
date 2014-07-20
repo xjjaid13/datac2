@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.service.impl.BaseServiceImpl;
 import com.dao.WebLinktypeMapperDao;
-import com.entity.WebLinktype;
+import com.po.WebLinktype;
 import com.service.WebLinktypeMapperService;
 
 @Service("webLinktypeMapperService")

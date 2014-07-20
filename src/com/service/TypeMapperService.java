@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.Type;
+import com.po.Type;
 
 public interface TypeMapperService extends BaseService<Type>{
 	

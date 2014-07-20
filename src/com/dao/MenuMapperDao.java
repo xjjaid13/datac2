@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.Menu;
+import com.po.Menu;
 
 public interface MenuMapperDao extends BaseDao<Menu>{
 	

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.service.impl.BaseServiceImpl;
 import com.dao.MenuMapperDao;
-import com.entity.Menu;
+import com.po.Menu;
 import com.service.MenuMapperService;
 
 @Service("menuMapperService")

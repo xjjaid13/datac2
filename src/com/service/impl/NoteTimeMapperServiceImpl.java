@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.service.impl.BaseServiceImpl;
 import com.dao.NoteTimeMapperDao;
-import com.entity.NoteTime;
+import com.po.NoteTime;
 import com.service.NoteTimeMapperService;
 
 @Service("noteTimeMapperService")

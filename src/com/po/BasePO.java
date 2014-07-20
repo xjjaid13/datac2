@@ -1,8 +1,8 @@
-package com.entity;
+package com.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class BaseEntity {
+public class BasePO {
 
 	/** 开始页数 */
 	private int startPage = -1;

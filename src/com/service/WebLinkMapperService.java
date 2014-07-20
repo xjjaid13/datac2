@@ -1,6 +1,6 @@
 package com.service;
 
-import com.entity.WebLink;
+import com.po.WebLink;
 
 public interface WebLinkMapperService extends BaseService<WebLink>{
 	

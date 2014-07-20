@@ -1,6 +1,6 @@
-package com.entity;
+package com.po;
 
-public class Tag extends BaseEntity{
+public class Tag extends BasePO{
 	
 	private Integer tagId;
 	

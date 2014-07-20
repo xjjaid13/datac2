@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.service.impl.BaseServiceImpl;
 import com.dao.TypeMapperDao;
-import com.entity.Type;
+import com.po.Type;
 import com.service.TypeMapperService;
 
 @Service("typeMapperService")

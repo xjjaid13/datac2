@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.entity.Type;
+import com.po.Type;
 
 public interface TypeMapperDao extends BaseDao<Type>{
 	

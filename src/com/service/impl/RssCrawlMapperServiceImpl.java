@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dao.RssCrawlMapperDao;
-import com.entity.RssCrawl;
+import com.po.RssCrawl;
 import com.service.RssCrawlMapperService;
 
 @Service("rssCrawlMapperService")

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.service.impl.BaseServiceImpl;
 import com.dao.RssSubscribeMapperDao;
-import com.entity.Rss;
-import com.entity.RssSubscribe;
+import com.po.Rss;
+import com.po.RssSubscribe;
 import com.service.RssSubscribeMapperService;
 
 @Service("rssSubscribeMapperService")
