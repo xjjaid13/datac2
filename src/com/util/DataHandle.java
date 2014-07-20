@@ -12,12 +12,17 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+
 /**
- * 数据处理集合类
- * @author cloud
- * */
+ * taylor 2014-7-20下午11:11:24
+ */
 public class DataHandle {
 	
+	/**
+	 * 判断一个对象是否为空
+	 * @param object 传入对象
+	 * @return
+	 */
 	public static boolean isNullOrEmpty(Object object){
 		if(object == null){
 			return true;

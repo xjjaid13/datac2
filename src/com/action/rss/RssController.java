@@ -28,6 +28,7 @@ import com.service.RssSubscribeMapperService;
 import com.service.RssTypeMapperService;
 import com.util.Constant;
 import com.util.DataHandle;
+import com.vo.RssDetailVO;
 
 @Controller
 @RequestMapping("rss")
@@ -138,7 +139,7 @@ public class RssController extends BaseAction{
 	@RequestMapping("myRssDetail")
 	public String myRssDetail(Rss rss,Model model){
 		rss = rssMapperService.select(rss);
-		List<Map<String,String>> rssDetailList = rssMapperService.returnRssDetailList(rss);
+		List<RssDetailVO> rssDetailList = rssMapperService.returnRssDetailList(rss);
 		model.addAttribute("rssDetailList", rssDetailList);
 		return "rss/rssDetail";
 	}

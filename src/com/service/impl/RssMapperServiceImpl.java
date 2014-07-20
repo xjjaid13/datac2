@@ -17,6 +17,8 @@ import com.exception.ServiceException;
 import com.service.RssMapperService;
 import com.util.Log;
 import com.util.RssUtil;
+import com.vo.RssDetailVO;
+import com.vo.RssVO;
 
 @Service("rssMapperService")
 public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMapperService{
@@ -42,11 +44,11 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssSubscribe.setRssId(rss.getRssId());
 			}else{
 				rss = new Rss();
-				Map<String, Object> rssMap = RssUtil.getRSSInfo(rssUrl);
-				rss.setRssIcon((String)rssMap.get("icon"));
-				rss.setRssTitle((String)rssMap.get("title"));
+				RssVO rssVO = RssUtil.getRSSInfo(rssUrl);
+				rss.setRssIcon(rssVO.getIcon());
+				rss.setRssTitle(rssVO.getTitle());
 				rss.setRssUrl(rssUrl);
-				rss.setFingePrint(rssMap.get("fingerPrint") + "");
+				rss.setFingePrint(rssVO.getFingerPrint());
 				int rssId = rssMapperDao.insertAndReturnId(rss);
 				rss.setRssId(rssId);
 				rssSubscribe.setRssId(rssId);
@@ -60,11 +62,10 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	}
 
 	@Override
-	public List<Map<String, String>> returnRssDetailList(Rss rss) {
+	public List<RssDetailVO> returnRssDetailList(Rss rss) {
 		try{
-			@SuppressWarnings("unchecked")
-			List<Map<String,String>> rssDetailList = (List<Map<String, String>>) RssUtil.getRSSInfo(rss.getRssUrl()).get("list");
-			return rssDetailList;
+			List<RssDetailVO> rssDetailVOList = RssUtil.getRSSInfo(rss.getRssUrl()).getRssDetailVOList();
+			return rssDetailVOList;
 		}catch(Exception e){
 			Log.Error(e);
 			throw new ServiceException(e);
@@ -73,10 +74,9 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 
 	@Override
 	public void fetchNewRss(Rss rss) {
-		Map<String, Object> rssMap = RssUtil.getRSSInfo(rss.getRssUrl());
-		if(!rssMap.get("fingerPrint").equals(rss.getFingePrint())){
-			@SuppressWarnings("unchecked")
-			List<Map<String,String>> rssDetailList = (List<Map<String,String>>)rssMap.get("list");
+		RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
+		if(!rssVO.getFingerPrint().equals(rss.getFingePrint())){
+			List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
 			if(rssDetailList == null){
 				return;
 			}
@@ -89,9 +89,9 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			List<RssCrawl> rssCrawlList = rssCrawlMapperDao.selectList(rssCrawl);
 			if(rssCrawlList != null && rssCrawlList.size() > 0){
 				RssCrawl rssCrawlSingle = rssCrawlList.get(0);
-				for(Map<String,String> map : rssDetailList){
-					if(map.get("link").equals(rssCrawlSingle.getResourceUrl())){
-						record = Integer.parseInt(map.get("itemNo"));
+				for(RssDetailVO rssDetailVO : rssDetailList){
+					if(rssDetailVO.getLink().equals(rssCrawlSingle.getResourceUrl())){
+						record = Integer.parseInt(rssDetailVO.getItemNo());
 					} 
 				}
 			}
@@ -104,11 +104,12 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssCrawlList = rssCrawlMapperDao.selectList(rssCrawl);
 				if(rssCrawlList != null && rssCrawlList.size() > 0){
 					for(RssCrawl rssCrawlNew : rssCrawlList){
-						for(Map<String,String> map : rssDetailList){
-							if(map.get("link").equals(rssCrawlNew.getResourceUrl())){
-								record = Integer.parseInt(map.get("itemNo"));
+						for(RssDetailVO rssDetailVO : rssDetailList){
+							if(rssDetailVO.getLink().equals(rssCrawlNew.getResourceUrl())){
+								record = Integer.parseInt(rssDetailVO.getItemNo());
 							} 
 						}
+						
 						if(record != 0){
 							break;
 						}
@@ -119,16 +120,16 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				record = size;
 			}
 			for(int i = 0; i < record; i++){
-				Map<String,String> map = rssDetailList.get(i);
+				RssDetailVO rssDetailVO = rssDetailList.get(i);
 				rssCrawl = new RssCrawl();
 				rssCrawl.setRssId(rss.getRssId());
-				rssCrawl.setResourceDesc(map.get("description"));
-				rssCrawl.setResourceTitle(map.get("title"));
-				rssCrawl.setResourceUrl(map.get("link"));
-				rssCrawl.setUpdateTime(map.get("pubDate"));
+				rssCrawl.setResourceDesc(rssDetailVO.getDescription());
+				rssCrawl.setResourceTitle(rssDetailVO.getTitle());
+				rssCrawl.setResourceUrl(rssDetailVO.getLink());
+				rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
 				rssCrawlMapperDao.insert(rssCrawl);
 			}
-			rss.setFingePrint(rssMap.get("fingerPrint") + "");
+			rss.setFingePrint(rssVO.getFingerPrint());
 			
 			rssMapperDao.update(rss);
 		}

@@ -4,94 +4,121 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndImage;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+import com.vo.RssDetailVO;
+import com.vo.RssVO;
 
+/**
+ * Rss工具类
+ * taylor 2014-7-20下午11:08:31
+ */
 public class RssUtil {
 
-	@SuppressWarnings("unchecked")
-	public static Map<String, Object> getRSSInfo(String xmlRemotePath) {
+	/**
+	 * 获得rss结果
+	 * @param xmlRemotePath rssurl
+	 * @return
+	 */
+	public static RssVO getRSSInfo(String xmlRemotePath) {
 		try {
+			
 			URL feedUrl = new URL(xmlRemotePath);
+			
 	        SyndFeedInput input = new SyndFeedInput();
 	        XmlReader xmlReader = new XmlReader(feedUrl);
 	        SyndFeed feed = input.build(xmlReader);
-			String title = feed.getTitle();
-			//String link = feed.getLink();
-			String description = feed.getDescription();
-			String language = feed.getLanguage();
-			String copyright = feed.getCopyright();
-			Map<String, Object> resultMap = new HashMap<String, Object>();
-			// 頻道標題
-			resultMap.put("title", title);
-			// 频道相关Link信息
-			resultMap.put("link", xmlRemotePath);
-			resultMap.put("description", description);
-			resultMap.put("language", language);
-			resultMap.put("copyright", copyright);
-			resultMap.put("fingerPrint", "");
+	        
+	        //新建一个rssVO对象
+	        RssVO rssVO = new RssVO();
+	        
+	        //rss标题
+			String title = DataHandle.handleValue(feed.getTitle());
+			rssVO.setTitle(title);
+			
+			//rss描述
+			String description = DataHandle.handleValue(feed.getDescription());
+			rssVO.setDescription(description);
+			
+			//rss语言
+			String language = DataHandle.handleValue(feed.getLanguage());
+			rssVO.setLanguage(language);
+			
+			//rss copyright
+			String copyright = DataHandle.handleValue(feed.getCopyright());
+			rssVO.setCopyright(copyright);
+			
+			rssVO.setLink(xmlRemotePath);
+			rssVO.setFingerPrint("");
+			
+			//rss icon
 			SyndImage syndImage = feed.getImage();
 	        if(syndImage != null){
-	        	resultMap.put("icon", syndImage.getUrl());
+	        	rssVO.setIcon(DataHandle.handleValue(syndImage.getUrl()));
 	        }else{
-	        	resultMap.put("icon", "");
+	        	rssVO.setIcon("");
 	        }
+			
 
-	        List<SyndEntry> list = feed.getEntries();
+	        List<RssDetailVO> rssDetailVOList = null;
+	        @SuppressWarnings("unchecked")
+			List<SyndEntry> list = feed.getEntries();
 	        if(list != null && list.size() > 0){
-	        	resultMap.put("itemSize", list.size());
-	        	List<Map<String, String>> resultList = new ArrayList<Map<String, String>>();
+	        	rssDetailVOList = new ArrayList<RssDetailVO>();
 	        	int i = 1;
 	        	Date compareDate = null;
-	        	for(SyndEntry feed1 : list){
+	        	for(SyndEntry feedDetail : list){
+	        		//新建rss detail对象
+	        		RssDetailVO rssDetailVO = new RssDetailVO();
+	        		
+	        		//编号
 	        		int itemNo = i++;
-					Map<String, String> map = new HashMap<String, String>();
-					map.put("itemNo", itemNo + "");
-					String itemAuthor = feed1.getAuthor();
-					map.put("author", itemAuthor);
-					String itemTitle = feed1.getTitle();
-					if(i == 2){
-						resultMap.put("fingerPrint", Md5Util.getMD5(itemTitle.getBytes()));
-						compareDate = feed1.getPublishedDate();
-					}
-					map.put("title", itemTitle);
-					String itemDescription = feed1.getDescription().getValue();
-					map.put("description", itemDescription);
-					String itemLink = feed1.getLink();
-					map.put("link", itemLink);
-					String itemPubDate = null;
-					if(i > 2 && compareDate.equals(feed1.getPublishedDate())){
-						itemPubDate = new Timestamp(TimeHandle.handleDate(compareDate, -i).getTime()) + "";
+	        		rssDetailVO.setItemNo(itemNo + "");
+	        		
+	        		//作者
+					String detailAuthor = DataHandle.handleValue(feedDetail.getAuthor());
+					rssDetailVO.setAuthor(detailAuthor);
+					
+					//标题
+					String detailTitle = DataHandle.handleValue(feedDetail.getTitle());
+					rssDetailVO.setTitle(detailTitle);
+					
+					//描述
+					String detailDescription = DataHandle.handleValue(feedDetail.getDescription().toString());
+					rssDetailVO.setDescription(detailDescription);
+					
+					//连接
+					String detailLink = DataHandle.handleValue(feedDetail.getLink());
+					rssDetailVO.setLink(detailLink);
+					
+					//解决默认时间的问题
+					String detailPubDate = "";
+					if(i > 2 && compareDate.equals(feedDetail.getPublishedDate())){
+						detailPubDate = new Timestamp(TimeHandle.handleDate(compareDate, -i).getTime()) + "";
 					}else{
-						itemPubDate = new Timestamp(feed1.getPublishedDate().getTime()) + "";
+						detailPubDate = new Timestamp(feedDetail.getPublishedDate().getTime()) + "";
 					}
-					map.put("pubDate", itemPubDate);
-					resultList.add(map);
+					rssDetailVO.setPubDate(detailPubDate);
+					
+					//获得最新的文章标题，用来判断是否与上次最新的文章相同
+					if(i == 2){
+						rssVO.setFingerPrint(Md5Util.getMD5(detailTitle.getBytes()));
+						compareDate = feedDetail.getPublishedDate();
+					}
+					rssDetailVOList.add(rssDetailVO);
 	        	}
-	        	resultMap.put("list", resultList);
-	        	
-	        }else{
-	        	resultMap.put("list", null);
+	        	rssVO.setRssDetailVOList(rssDetailVOList);
 	        }
-			return resultMap;
+			return rssVO;
 		} catch (Exception e) {
 			Log.Error(e);
 		}
 		return null;
-
-	}
-
-	public static void main(String[] args) throws Exception {
-		Map map = RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=4&class=sportnews&tn=rss");
-		System.out.println(RssUtil.getRSSInfo("http://news.baidu.com/n?cmd=1&class=internews&tn=rss"));
-		
 	}
 
 }
