@@ -1,5 +1,7 @@
 package com.po;
 
+import java.util.List;
+
 public class Rss extends BasePO{
 	
 	private Integer rssId;
@@ -14,6 +16,9 @@ public class Rss extends BasePO{
 	
 	private Integer isSubscribe;
 	
+	private String updateTime;
+	
+	private List<RssCrawl> rssCrawlList;
 	
 	public Integer getRssId() {
 		return rssId;
@@ -66,5 +71,21 @@ public class Rss extends BasePO{
 	
 	public String toString(){
 		return "Rss";
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public List<RssCrawl> getRssCrawlList() {
+		return rssCrawlList;
+	}
+
+	public void setRssCrawlList(List<RssCrawl> rssCrawlList) {
+		this.rssCrawlList = rssCrawlList;
 	}
 }

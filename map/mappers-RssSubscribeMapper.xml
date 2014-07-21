@@ -12,6 +12,17 @@
     <result property="rssTitle" column="rssTitle"/>
     <result property="rssUrl" column="rssUrl"/>
     <result property="rssIcon" column="rssIcon"/>
+    <result property="fingePrint" column="fingePrint"/>
+    <result property="isSubscribe" column="isSubscribe"/>
+    <result property="updateTime" column="updateTime"/>
+    <collection property="rssCrawlList" ofType="RssCrawl">
+    	<result property="rssCrawlId" column="rssCrawlId"/>
+	    <result property="rssId" column="rssId"/>
+	    <result property="resourceTitle" column="resourceTitle"/>
+	    <result property="resourceUrl" column="resourceUrl"/>
+	    <result property="updateTime" column="updateTime"/>
+	    <result property="resourceDesc" column="resourceDesc"/>
+    </collection>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="rssSubscribe">select * from rss_subscribe where 1 = 1 
     <if test="rssSubscribeId != null">and rssSubscribeId = #{rssSubscribeId}</if>  
@@ -51,4 +62,7 @@
   <delete id="deleteByIds" parameterType="RssSubscribe">delete from rss_subscribe where rssSubscribeId in (#{ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssSubscribeId) from rss_subscribe</select>
   <select id="selectTypeSubscribe" parameterType="RssSubscribe" resultType="java.util.List" resultMap="rss">select b.* from rss_subscribe a left join rss b on a.rssId = b.rssId where a.rssTypeId = #{rssTypeId} order by rssSubscribeId desc</select>
+  <select id="returnTopRssList" resultType="java.util.List" resultMap="rss" parameterType="RssSubscribe">
+  	select c.*,temp.* from (select a.* from rss_crawl a left join rss_subscribe d on a.rssId = d.rssId where (select count(*) from rss_crawl b where a.rssId = b.rssId and b.rssCrawlId > a.rssCrawlId)  &lt; 3 <if test="rssTypeId != null">and d.rssTypeId = #{rssTypeId}</if>   ORDER BY a.rssCrawlId desc limit 0,40) temp LEFT JOIN rss c on temp.rssId = c.rssId
+  </select>
 </mapper>

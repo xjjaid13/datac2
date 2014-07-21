@@ -22,4 +22,9 @@ public class RssSubscribeMapperServiceImpl extends BaseServiceImpl<RssSubscribe>
 		return rssSubscribeMapperDao.selectTypeSubscribe(rssSubscribe);
 	}
 
+	@Override
+	public List<Rss> returnTopRssList(RssSubscribe rssSubscribe) {
+		return rssSubscribeMapperDao.returnTopRssList(rssSubscribe);
+	}
+
 }

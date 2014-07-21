@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import java.net.URLDecoder;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +108,8 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssCrawlMapperDao.insert(rssCrawl);
 			}
 			
+			//更新rss的更新时间和指纹为最新
+			rss.setUpdateTime(new Timestamp(System.currentTimeMillis()) + "");
 			rss.setFingePrint(rssVO.getFingerPrint());
 			rssMapperDao.update(rss);
 		}

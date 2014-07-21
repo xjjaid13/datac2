@@ -9,7 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.po.Rss;
+import com.po.RssSubscribe;
 import com.service.RssMapperService;
+import com.service.RssSubscribeMapperService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring.xml")
@@ -19,7 +21,9 @@ public class RssTest {
 	@Autowired
 	RssMapperService rssMapperService;
 	
-	@Test
+	@Autowired
+	RssSubscribeMapperService rssSubscribeMapperService;
+	
 	public void addRss(){
 		Rss rss = new Rss();
 		rss.setRssIcon("sss");
@@ -28,15 +32,13 @@ public class RssTest {
 		rssMapperService.insert(rss);
 	}
 	
-	@Test
 	public void updateRss(){
 		Rss rss = createRss();
-		rss.setCondition(" rssTitle = '11'");
+		rss.setCondition(" and rssTitle = '11'");
 		rss.setRssIcon("update2");
 		rssMapperService.update(rss);
 	}
 	
-	@Test
 	public void deleteRss(){
 		Rss rss = createRss();
 		Rss obj = new Rss();
@@ -44,7 +46,6 @@ public class RssTest {
 		rssMapperService.delete(obj);
 	}
 	
-	@Test
 	public void selectRssList(){
 		Rss rss = new Rss();
 		rss.setRssTitle("11");
@@ -59,6 +60,14 @@ public class RssTest {
 		rss.setRssTitle("test");
 		rss.setRssId(rssMapperService.insertAndReturnId(rss));
 		return rss;
+	}
+	
+	@Test
+	public void returnTopRss(){
+		RssSubscribe rssSubscribe = new RssSubscribe();
+		rssSubscribe.setRssTypeId(10);
+		List<Rss> rssList = rssSubscribeMapperService.returnTopRssList(rssSubscribe);
+		System.out.println(rssList.size());
 	}
 	
 }

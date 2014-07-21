@@ -145,14 +145,9 @@ public class RssController extends BaseAction{
 	}
 	
 	@RequestMapping("myRssView")
-	public String myRssView(HttpSession session,Model model){
-		User user = returnUser(session);
-		RssCrawl rssCrawl = new RssCrawl();
-		rssCrawl.setCondition(" and c.userId = " + user.getUserId() + " order by a.updateTime desc");
-		rssCrawl.setStartPage(0);
-		rssCrawl.setPage(Constant.RSSPAGE);
-		List<RssCrawl> rssCrawlList = rssCrawlMapperService.selectView(rssCrawl);
-		model.addAttribute("rssCrawlList",rssCrawlList);
+	public String myRssView(RssSubscribe rssSubscribe,Model model){
+		List<Rss> rssList = rssSubscribeMapperService.returnTopRssList(rssSubscribe);
+		model.addAttribute("rssList",rssList);
 		return "rss/rssView";
 	}
 	

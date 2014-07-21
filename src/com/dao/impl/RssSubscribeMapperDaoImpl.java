@@ -16,4 +16,9 @@ public class RssSubscribeMapperDaoImpl extends BaseDaoImpl<RssSubscribe> impleme
 		return sqlSessionTemplate.selectList("com.dao."+rssSubscribe.toString()+"MapperDao.selectTypeSubscribe", rssSubscribe);
 	}
 
+	@Override
+	public List<Rss> returnTopRssList(RssSubscribe rssSubscribe) {
+		return sqlSessionTemplate.selectList("com.dao."+rssSubscribe.toString()+"MapperDao.returnTopRssList", rssSubscribe);
+	}
+
 }

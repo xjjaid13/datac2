@@ -108,7 +108,7 @@ public class RssUtil {
 	        }
 			return rssVO;
 		} catch (Exception e) {
-			Log.Error(e);
+			Log.Error(xmlRemotePath + "异常",e);
 		}
 		return null;
 	}

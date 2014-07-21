@@ -12,6 +12,10 @@ import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
 import com.util.Log;
 
+/**  
+ * 初始化更新rss线程
+ * <p>2014年7月21日上午10:45:58 xijiajia</p>
+ */
 @Component("fetchNewRssThread")
 public class FetchNewRssThread {
 	
@@ -21,6 +25,9 @@ public class FetchNewRssThread {
 	@Autowired
 	RssCrawlMapperService rssCrawlMapperService;
 	
+    /**
+     * rss 更新线程初始化
+     */
     public void init() {      
     	Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable(){
     		public void run() {

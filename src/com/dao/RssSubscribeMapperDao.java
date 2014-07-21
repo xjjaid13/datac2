@@ -9,4 +9,6 @@ public interface RssSubscribeMapperDao extends BaseDao<RssSubscribe>{
 	
 	public List<Rss> selectTypeSubscribe(RssSubscribe rssSubscribe);
 	
+	public List<Rss> returnTopRssList(RssSubscribe rssSubscribe);
+	
 }
