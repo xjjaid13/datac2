@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>rss</title>
 <%@include file="../css-file.jsp" %>
 <link rel="stylesheet" href="${base}/static/js/jstree/dist/themes/default/style.min.css" />
 <%@include file="../js-file.jsp" %>
@@ -33,11 +33,11 @@
 			if(data.selected[0] == 0){
 				$(".rssList").load("${base}/rss/myRssView");
 			}else{
-				$(".rssList").load("${base}/rss/myRssList?rssTypeId="+data.selected[0]);
+				$(".rssList").load("${base}/rss/myRssView?rssTypeId="+data.selected[0]);
 			}
 		});
 		$(document).on("click","#book",function(){
-			var rssUrl = $("#rssUrl").val();
+			var rssUrl = $("#rssLink").val();
 			var jsTree = $('#js-tree').jstree(true),
 			sel = jsTree.get_selected();
 			if(!sel.length) { return false; }
@@ -57,7 +57,18 @@
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitleTip#",rss.rssTitle);
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",rss.rssId);
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",rssTitle);
-						$("#rssContentDiv").before(rssListTemplateDiv);
+						
+						var rssContent = "";
+						var rssCrawlList = rss.rssCrawlList;
+						for(var i = 0; i < rssCrawlList.length; i++){
+							var rssCrawl = rssCrawlList[i];
+							rssContent += '<div class="topic-feed-item">';
+							rssContent += '<a href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';
+							rssContent += '<span class="zg-gray time">'+rssCrawl.updateTime+'</span></div>';
+						}
+						rssListTemplateDiv = rssListTemplateDiv.replace("#rssContent#",rssContent);
+						
+						$("#rssDetailContent").prepend(rssListTemplateDiv);
 					}
 				}
 			});
@@ -65,16 +76,16 @@
 			var $thumbnail = $(this).closest(".thumbnail")
 			var rssId = $thumbnail.attr("attr");
 			$(".rssList").load("${base}/rss/myRssDetail?rssId="+rssId);
-		}).on("click",".cancelBook",function(){
-			var $thumbnail = $(this).closest(".thumbnail")
-			var rssId = $thumbnail.attr("attr");
+		}).on("click",".cancelSubscribe",function(){
+			var $this = $(this);
+			var rssId = $this.attr("attr");
 			$.ajax({
 				url : '${base}/rss/myCancelSubscribe',
 				data : 'rssId='+rssId,
 				dataType : 'json',
 				success : function(ajaxData){
 					if(ajaxData.result == 'success'){
-						$thumbnail.parent().fadeOut();
+						$this.closest(".topic-item").fadeOut();
 					}
 				}
 			});
@@ -93,7 +104,7 @@
 				success : function(ajaxData){
 					jsTree.create_node(sel, {"type":"file","id":ajaxData.rssTypeId,"text":typeName});
 					jsTree.open_node(sel);
-					$(".btn-default").popover('hide');
+					closeDialog();
 				}
 			});
 		});
@@ -109,9 +120,12 @@
 			dataType : 'json',
 			success : function(ajaxData){
 				jsTree.rename_node(sel, typeName);
-				$(".btn-default").popover('hide');
+				closeDialog();
 			}
 		});
+	}
+	function closeDialog(){
+		$(".btn-default").popover('hide');
 	}
 	function deleteType(){
 		var jsTree = $('#js-tree').jstree(true),
@@ -132,17 +146,23 @@
 </head>
 <body>
 <div class="hide" id="rssListTemplateDiv">
-	<div class="col-sm-6 col-md-3">
-		<div class="thumbnail" attr="#rssId#">
-		  <div class="caption">
-			<h3 class="rss-title"><a class="pointer rssDetail" title="#rssTitleTip#">#rssTitle#</a></h3>
-			<p><a href="#" class="btn btn-primary" role="button">cancelBook</a> </p>
-		  </div>
+	<div class="js-topic-item topic-item zg-clear">
+		<div class="topic-item-content">
+			<div>
+				<h3 class="topic-item-title">
+					<a href="/topic/19609455" class="topic-item-title-link">#rssTitle#</a>
+					<a attr="#rssId#" class="cancelSubscribe pointer">取消rss</a>
+				</h3>
+			</div>
+			<div class="topic-item-feed-digest">
+				#rssContent#
+				<a class="zg-link-litblue cursor" >more&nbsp;»</a>
+			</div>
 		</div>
 	</div>
 </div>
 
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -182,26 +202,26 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-<div style="margin-left:auto;margin-right:auto;width:80%">
+<div style="margin-left:auto;margin-right:auto;width:80%;margin-top:60px;">
 	<div class="panel panel-default " style="width:200px;position:fixed;z-index:0;">
 	  <div class="panel-heading">title</div>
 	  <div class="panel-body">
 
 		 <div class="btn-group">
-			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="新增类型" data-content='<form role="form" class="form-inline" style="width:230px;">
+			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="新增类型" data-content='<form role="form" class="form-inline" style="width:300px;">
 			        <div class="form-group" >
 			        <label for="exampleInputEmail2" class="sr-only">类型</label>
 			        <input type="text" placeholder="类型" id="typeName" class="form-control">
 			        </div>
-			        <button class="btn btn-default" onClick="addRssType();" type="button">新增</button><button class="btn btn-default" onClick="closeDialog();" type="button">关闭</button>
+			        <button class="btn btn-default" onClick="addRssType();" type="button">新增</button><button class="btn btn-default" style="margin-left:5px;" onClick="closeDialog();" type="button">关闭</button>
 			        </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="标题" >新增
 			  </button>
-			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="改名" data-content='<form role="form" class="form-inline" style="width:230px;">
+			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="改名" data-content='<form role="form" class="form-inline" style="width:300px;">
 			        <div class="form-group" >
 			        <label for="exampleInputEmail2" class="sr-only">类型</label>
 			        <input type="text" placeholder="类型" id="typeName" class="form-control">
 			        </div>
-			        <button class="btn btn-default" onClick="renameRssType();" type="button">修改</button>
+			        <button class="btn btn-default" onClick="renameRssType();" type="button">修改</button><button class="btn btn-default" style="margin-left:5px;" onClick="closeDialog();" type="button">关闭</button>
 			        </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="标题" id="renameTypeNameBtn">修改
 			  </button>
 			  <button type="button" class="btn btn-default" onclick="deleteType();" id="deleteTypeNameBtn">删除</button>
@@ -218,7 +238,17 @@
 
 	<div class="content-wrapper col-lg-12" style="padding-left:210px;min-width:500px;z-index:-1;">
 		<div class="panel panel-default">
-			<div class="panel-heading">Panel heading without title</div>
+			<div class="panel-heading">
+			    <button class="btn btn-default">返回</button>
+				<button type="button" class="btn btn-default" style="float:right;" data-placement="bottom" data-html="true" title="新增RSS" data-content='<form role="form" class="form-inline" style="width:300px;">
+			        <div class="form-group" >
+			        <label for="exampleInputEmail2" class="sr-only">新增RSS</label>
+			        <input type="text" placeholder="rss" id="rssLink" class="form-control">
+			        </div>
+			        <button class="btn btn-default" id="book" type="button">新增</button><button class="btn btn-default" style="margin-left:5px;" onClick="closeDialog();" type="button">关闭</button>
+			        </form>' title="" data-toggle="popover" class="btn btn-large btn-danger" href="#" data-original-title="rss地址" id="renameTypeNameBtn">新增RSS
+			    </button>
+			</div>
 			<div class="panel-body">
 				<div class="main-content">
 					

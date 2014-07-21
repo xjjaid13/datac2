@@ -3,6 +3,7 @@ package com.util;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -94,9 +95,13 @@ public class RssUtil {
 					String detailLink = DataHandle.handleValue(feedDetail.getLink());
 					rssDetailVO.setLink(detailLink);
 					
-					//解决默认时间的问题
-					String detailPubDate =  new Timestamp(feedDetail.getPublishedDate().getTime()) + "";
-					rssDetailVO.setPubDate(detailPubDate);
+					//日期
+					Date date = feedDetail.getPublishedDate();
+					if(date == null){
+						rssDetailVO.setPubDate(new Timestamp(System.currentTimeMillis()) + "");
+					}else{
+						rssDetailVO.setPubDate(new Timestamp(feedDetail.getPublishedDate().getTime()) + "");
+					}
 					
 					//获得最新的文章标题，用来判断是否与上次最新的文章相同
 					if(i == 1){
@@ -111,6 +116,11 @@ public class RssUtil {
 			Log.Error(xmlRemotePath + "异常",e);
 		}
 		return null;
+	}
+	
+	public static void main(String[] args) {
+		RssVO rssVO = RssUtil.getRSSInfo("http://www.xinhuanet.com/overseas/news_overseas.xml");
+		System.out.println(rssVO);
 	}
 
 }

@@ -8,11 +8,11 @@
 	    height: 50px;
 	    margin-top: 4px;
 	    position: relative;
-	    width: 100px;
+	    width: 50px;
 	}
 	
 	.topic-item-content {
-	    margin: -3px 0 0 114px;
+	    margin: -3px 0 0 64px;
 	}
 	.topic-item-title {
 	    margin-bottom: 6px;
@@ -39,17 +39,19 @@
 	    font-size: 12px;
 	    font-weight: 400;
 	}
+	.cancelSubscribe{
+		color : grey;
+		font-size : 12px;
+	}
 </style>
 <div id="rssDetailContent" style="margin:10px;">
 	<c:forEach items="${rssList}" var="rss">
-			
-		<div data-id="19800" id="tf-19800" class="js-topic-item topic-item zg-clear">
-			<div class="topic-avatar">
-				<a href="/topic/19609455"><img alt="" src="${rss.rssIcon}" style="max-width:100px;" class="topic-avatar-img"></a></div>
+		<div class="js-topic-item topic-item zg-clear">
 			<div class="topic-item-content">
 				<div>
-					<h3 class="topic-item-title"><a href="/topic/19609455" class="topic-item-title-link">${rss.rssTitle}</a>
-					
+					<h3 class="topic-item-title">
+						<a href="/topic/19609455" class="topic-item-title-link">${rss.rssTitle}</a>
+						<a attr="${rss.rssId}" class="cancelSubscribe pointer">取消rss</a>
 					<!-- <a style="" class="js-pin zg-gray pin topic-hover-content" data-action="pin-topic" href="javascript:;"><i class="z-icon-pin"></i>固定话题</a>
 					
 					<a class="zg-right zg-gray unfollow topic-hover-content" data-action="unfollow" id="ft-19800" href="javascript:;">取消关注</a>

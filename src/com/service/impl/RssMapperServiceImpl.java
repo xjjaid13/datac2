@@ -2,6 +2,7 @@ package com.service.impl;
 
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			}else{
 				rss = new Rss();
 				RssVO rssVO = RssUtil.getRSSInfo(rssUrl);
+				if(rssVO == null){
+					Log.Error(rssUrl + "获取rss失败");
+					return null;
+				}
 				rss.setRssIcon(rssVO.getIcon());
 				rss.setRssTitle(rssVO.getTitle());
 				rss.setRssUrl(rssUrl);
@@ -53,6 +58,23 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				int rssId = rssMapperDao.insertAndReturnId(rss);
 				rss.setRssId(rssId);
 				rssSubscribe.setRssId(rssId);
+				List<RssCrawl> rssCrawlList = new ArrayList<RssCrawl>();
+				if(rssVO.getRssDetailVOList() != null && rssVO.getRssDetailVOList().size() > 0){
+					int i = 0;
+					for(RssDetailVO rssDetailVO : rssVO.getRssDetailVOList()){
+						i++;
+						RssCrawl rssCrawl = new RssCrawl();
+						rssCrawl.setResourceDesc(rssDetailVO.getDescription());
+						rssCrawl.setResourceTitle(rssDetailVO.getTitle());
+						rssCrawl.setResourceUrl(rssDetailVO.getLink());
+						rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
+						rssCrawlList.add(rssCrawl);
+						if(i == 4){
+							break;
+						}
+					}
+					rss.setRssCrawlList(rssCrawlList);
+				}
 			}
 			rssSubscribeMapperDao.insert(rssSubscribe);
 			return rss;
