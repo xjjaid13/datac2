@@ -15,6 +15,7 @@ import com.po.RssCrawl;
 import com.po.RssSubscribe;
 import com.service.RssMapperService;
 import com.util.Log;
+import com.util.Md5Util;
 import com.util.RssUtil;
 import com.vo.RssDetailVO;
 import com.vo.RssVO;
@@ -76,53 +77,28 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 		RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
 		Log.Info(rssVO.getLink() + "变动1，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
 		if(!rssVO.getFingerPrint().equals(rss.getFingePrint())){
-			Log.Info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
+			Log.Info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rss.getFingePrint() + ",变动后fingerPrint=" + rssVO.getFingerPrint());
 			List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
 			if(rssDetailList == null){
 				return;
 			}
 			int record = 0;
-			RssCrawl rssCrawl = new RssCrawl();
-			rssCrawl.setRssId(rss.getRssId());
-			rssCrawl.setStartPage(0);
-			rssCrawl.setPage(1);
-			rssCrawl.setCondition("order by rssCrawlId desc");
-			List<RssCrawl> rssCrawlList = rssCrawlMapperDao.selectList(rssCrawl);
-			if(rssCrawlList != null && rssCrawlList.size() > 0){
-				RssCrawl rssCrawlSingle = rssCrawlList.get(0);
-				for(RssDetailVO rssDetailVO : rssDetailList){
-					if(rssDetailVO.getLink().equals(rssCrawlSingle.getResourceUrl())){
-						record = Integer.parseInt(rssDetailVO.getItemNo());
-					} 
-				}
-			}
 			int size = rssDetailList.size();
-			if(record == 0){
-				rssCrawl.setRssId(rss.getRssId());
-				rssCrawl.setStartPage(0);
-				rssCrawl.setPage(size);
-				rssCrawl.setCondition("order by rssCrawlId desc");
-				rssCrawlList = rssCrawlMapperDao.selectList(rssCrawl);
-				if(rssCrawlList != null && rssCrawlList.size() > 0){
-					for(RssCrawl rssCrawlNew : rssCrawlList){
-						for(RssDetailVO rssDetailVO : rssDetailList){
-							if(rssDetailVO.getLink().equals(rssCrawlNew.getResourceUrl())){
-								record = Integer.parseInt(rssDetailVO.getItemNo());
-							} 
-						}
-						
-						if(record != 0){
-							break;
-						}
-					}
+			
+			//先判断之前的第一个rss文章在新的rss文章中的位置
+			for(RssDetailVO rssDetailVO : rssDetailList){
+				if(rss.getFingePrint().equals(Md5Util.getMD5(rssDetailVO.getLink().getBytes()))){
+					record = Integer.parseInt(rssDetailVO.getItemNo());
 				}
 			}
+			
+			//若都未匹配，则全部放入数据库
 			if(record == 0){
 				record = size;
 			}
-			for(int i = 0; i < record; i++){
+			for(int i = record; i < 1; i--){
 				RssDetailVO rssDetailVO = rssDetailList.get(i);
-				rssCrawl = new RssCrawl();
+				RssCrawl rssCrawl = new RssCrawl();
 				rssCrawl.setRssId(rss.getRssId());
 				rssCrawl.setResourceDesc(rssDetailVO.getDescription());
 				rssCrawl.setResourceTitle(rssDetailVO.getTitle());
@@ -130,8 +106,8 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
 				rssCrawlMapperDao.insert(rssCrawl);
 			}
-			rss.setFingePrint(rssVO.getFingerPrint());
 			
+			rss.setFingePrint(rssVO.getFingerPrint());
 			rssMapperDao.update(rss);
 		}
 	}

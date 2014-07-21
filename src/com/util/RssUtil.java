@@ -3,7 +3,6 @@ package com.util;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -70,8 +69,7 @@ public class RssUtil {
 			List<SyndEntry> list = feed.getEntries();
 	        if(list != null && list.size() > 0){
 	        	rssDetailVOList = new ArrayList<RssDetailVO>();
-	        	int i = 1;
-	        	Date compareDate = null;
+	        	int i = 0;
 	        	for(SyndEntry feedDetail : list){
 	        		//新建rss detail对象
 	        		RssDetailVO rssDetailVO = new RssDetailVO();
@@ -97,18 +95,12 @@ public class RssUtil {
 					rssDetailVO.setLink(detailLink);
 					
 					//解决默认时间的问题
-					String detailPubDate = "";
-					if(i > 2 && compareDate.equals(feedDetail.getPublishedDate())){
-						detailPubDate = new Timestamp(TimeHandle.handleDate(compareDate, -i).getTime()) + "";
-					}else{
-						detailPubDate = new Timestamp(feedDetail.getPublishedDate().getTime()) + "";
-					}
+					String detailPubDate =  new Timestamp(feedDetail.getPublishedDate().getTime()) + "";
 					rssDetailVO.setPubDate(detailPubDate);
 					
 					//获得最新的文章标题，用来判断是否与上次最新的文章相同
-					if(i == 2){
-						rssVO.setFingerPrint(Md5Util.getMD5(detailTitle.getBytes()));
-						compareDate = feedDetail.getPublishedDate();
+					if(i == 1){
+						rssVO.setFingerPrint(Md5Util.getMD5(detailLink.getBytes()));
 					}
 					rssDetailVOList.add(rssDetailVO);
 	        	}
