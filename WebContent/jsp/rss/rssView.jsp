@@ -61,7 +61,7 @@
 				<div class="topic-item-feed-digest">
 					<c:forEach items="${rss.rssCrawlList}" var="rssCrawl">
 						<div class="topic-feed-item">
-							<a href="${rssCrawl.resourceUrl}">${rssCrawl.resourceTitle}</a>
+							<a target="_blank" href="${rssCrawl.resourceUrl}">${rssCrawl.resourceTitle}</a>
 							<span class="zg-gray time"><c:out value="${fn:substring(rssCrawl.updateTime, 0, 19)}" /></span>
 						</div>
 					</c:forEach>

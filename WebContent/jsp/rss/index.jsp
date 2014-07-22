@@ -70,7 +70,7 @@
 						for(var i = 0; i < rssCrawlList.length; i++){
 							var rssCrawl = rssCrawlList[i];
 							rssContent += '<div class="topic-feed-item">';
-							rssContent += '<a href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';
+							rssContent += '<a target="_blank" href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';
 							rssContent += '<span class="zg-gray time">'+rssCrawl.updateTime+'</span></div>';
 						}
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssContent#",rssContent);
@@ -112,7 +112,7 @@
 						for(var i = 0; i < rssCrawlList.length; i++){
 							var rssCrawl = rssCrawlList[i];
 							rssContent += '<div class="topic-feed-item">';
-							rssContent += '<a href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';
+							rssContent += '<a target="_blank" href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';
 							rssContent += '<span class="zg-gray time">'+rssCrawl.updateTime+'</span></div>';
 						}
 						if(rssContent != ""){
