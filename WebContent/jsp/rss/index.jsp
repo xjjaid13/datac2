@@ -136,6 +136,7 @@
 			var typeName = $("#typeName").val();
 			$.ajax({
 				url : '${base}/rss/myAddRssType',
+				type : 'post',
 				data : 'parentId='+sel[0]+"&typeName="+typeName,
 				dataType : 'json',
 				success : function(ajaxData){
@@ -154,6 +155,7 @@
 		$.ajax({
 			url : '${base}/rss/myUpdateRssType',
 			data : 'rssTypeId='+sel[0]+"&typeName="+typeName,
+			type : 'post',
 			dataType : 'json',
 			success : function(ajaxData){
 				jsTree.rename_node(sel, typeName);
@@ -172,6 +174,7 @@
 			$.ajax({
 				url : '${base}/rss/myDleteRssType',
 				data : 'rssTypeId='+sel[0],
+				type : 'post',
 				dataType : 'json',
 				success : function(ajaxData){
 					jsTree.delete_node(sel);
