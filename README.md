@@ -1,4 +1,4 @@
 datac2
 ======
 
-rss
+rss 订阅器
