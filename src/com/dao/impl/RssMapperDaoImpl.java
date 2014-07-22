@@ -6,5 +6,9 @@ import com.po.Rss;
 
 @Repository
 public class RssMapperDaoImpl extends BaseDaoImpl<Rss> implements RssMapperDao {
-
+	
+	public Rss selectRssTopCrawl(Rss rss){
+		return sqlSessionTemplate.selectOne("com.dao."+rss.toString()+"MapperDao.selectRssTopCrawl", rss);
+	}
+	
 }

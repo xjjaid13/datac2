@@ -29,11 +29,18 @@
 			    
 			}
 		});
+		$("#js-tree").on("loaded.jstree",function(e, data){
+			$('#js-tree').jstree(true).select_node('0');
+		})
 		$('#js-tree').on("select_node.jstree", function (e, data) {
 			if(data.selected[0] == 0){
 				$(".rssList").load("${base}/rss/myRssView");
+				$("#renameTypeNameBtn").attr("disabled","true");
+				$("#deleteTypeNameBtn").attr("disabled","true");
 			}else{
 				$(".rssList").load("${base}/rss/myRssView?rssTypeId="+data.selected[0]);
+				$("#renameTypeNameBtn").removeAttr("disabled");
+				$("#deleteTypeNameBtn").removeAttr("disabled");
 			}
 		});
 		$(document).on("click","#book",function(){
@@ -67,8 +74,8 @@
 							rssContent += '<span class="zg-gray time">'+rssCrawl.updateTime+'</span></div>';
 						}
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssContent#",rssContent);
-						
 						$("#rssDetailContent").prepend(rssListTemplateDiv);
+						closeDialog();
 					}
 				}
 			});
@@ -122,7 +129,7 @@
 		});
 	});
 	function addRssType(){
-		var jsTree = $('#js-tree').jstree(true),
+		var jsTree = $('#js-tree').jstree(true);
 		sel = jsTree.get_selected();
 		if(!sel.length) { return false; }
 		jsTree.open_node(sel,function(){
@@ -238,7 +245,7 @@
 	  <div class="panel-body">
 
 		 <div class="btn-group">
-			  <button type="button" class="btn btn-default" data-placement="right" data-html="true" title="新增类型" data-content='<form role="form" class="form-inline" style="width:300px;">
+			  <button type="button" id="addTypeNameBtn" class="btn btn-default" data-placement="right" data-html="true" title="新增类型" data-content='<form role="form" class="form-inline" style="width:300px;">
 			        <div class="form-group" >
 			        <label for="exampleInputEmail2" class="sr-only">类型</label>
 			        <input type="text" placeholder="类型" id="typeName" class="form-control">

@@ -39,11 +39,16 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 		try{
 			String rssUrl = rss.getRssUrl();
 			rssUrl = URLDecoder.decode(rss.getRssUrl(), "utf-8");
-			rss = rssMapperDao.select(rss);
+			rss = rssMapperDao.selectRssTopCrawl(rss);
 			RssSubscribe rssSubscribe = new RssSubscribe();
 			rssSubscribe.setRssTypeId(parentId);
 			if(rss != null){
 				rssSubscribe.setRssId(rss.getRssId());
+				//判断是不是已经存在
+				RssSubscribe rssSubscribeNew = rssSubscribeMapperDao.select(rssSubscribe);
+				if(rssSubscribeNew != null){
+					throw new Exception("该列别下存在此订阅");
+				}
 			}else{
 				rss = new Rss();
 				RssVO rssVO = RssUtil.getRSSInfo(rssUrl);
@@ -68,6 +73,8 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 						rssCrawl.setResourceTitle(rssDetailVO.getTitle());
 						rssCrawl.setResourceUrl(rssDetailVO.getLink());
 						rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
+						rssCrawl.setRssId(rssId);
+						rssCrawlMapperDao.insert(rssCrawl);
 						rssCrawlList.add(rssCrawl);
 						if(i == 4){
 							break;
