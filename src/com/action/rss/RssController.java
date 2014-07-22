@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.action.BaseAction;
 import com.po.Rss;
+import com.po.RssCrawl;
 import com.po.RssSubscribe;
 import com.po.RssType;
 import com.po.User;
@@ -24,6 +25,7 @@ import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
 import com.service.RssSubscribeMapperService;
 import com.service.RssTypeMapperService;
+import com.util.Constant;
 import com.util.DataHandle;
 import com.vo.RssDetailVO;
 
@@ -143,10 +145,30 @@ public class RssController extends BaseAction{
 	}
 	
 	@RequestMapping("myRssView")
-	public String myRssView(RssSubscribe rssSubscribe,Model model){
-		List<Rss> rssList = rssSubscribeMapperService.returnTopRssList(rssSubscribe);
+	public String myRssView(RssType rssType,Model model,HttpSession session){
+		if(rssType.getRssTypeId() == null){
+			rssType = new RssType();
+			User user = returnUser(session);
+			rssType.setUserId(user.getUserId());
+		}
+		rssType.setStartPage(0);
+		rssType.setPage(Constant.RSSVIEWPAGE);
+		List<Rss> rssList = rssSubscribeMapperService.selectRssCrawlList(rssType);
 		model.addAttribute("rssList",rssList);
 		return "rss/rssView";
+	}
+	
+	@RequestMapping("myLoadMoreRss")
+	public void myLoadMoreRss(Rss rss,HttpServletResponse response) throws IOException{
+		RssCrawl rssCrawl = new RssCrawl();
+		rssCrawl.setPage(3);
+		rssCrawl.setRssId(rss.getRssId());
+		rssCrawl.setCondition("order by rssCrawlId desc");
+		rssCrawl.setStartPage(3 * rss.getPage());
+		List<RssCrawl> rssCrawlList = rssCrawlMapperService.selectList(rssCrawl);
+		JSONObject jsonObject = createJosnObject();
+		jsonObject.put("rssCrawlList", rssCrawlList);
+		writeResult(response, jsonObject);
 	}
 	
 }

@@ -51,7 +51,7 @@
 	</delete>
 	
 	<delete id="deleteByIds" parameterType="{TableName}">
-		delete from {tablename} where {tableName}Id in (#{ids})
+		delete from {tablename} where {tableName}Id in (${ids})
 	</delete>
 
 	<select id="maxId" resultType="java.lang.Integer">

@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.po.Rss;
 import com.po.RssSubscribe;
+import com.po.RssType;
 import com.service.RssMapperService;
 import com.service.RssSubscribeMapperService;
 
@@ -64,10 +65,7 @@ public class RssTest {
 	
 	@Test
 	public void returnTopRss(){
-		RssSubscribe rssSubscribe = new RssSubscribe();
-		rssSubscribe.setRssTypeId(10);
-		List<Rss> rssList = rssSubscribeMapperService.returnTopRssList(rssSubscribe);
-		System.out.println(rssList.size());
+		
 	}
 	
 }

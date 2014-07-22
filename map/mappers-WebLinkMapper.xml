@@ -78,6 +78,6 @@
     <if test="icon != null">and icon = #{icon}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
-  <delete id="deleteByIds" parameterType="WebLink">delete from web_link where webLinkId in (#{ids})</delete>
+  <delete id="deleteByIds" parameterType="WebLink">delete from web_link where webLinkId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(webLinkId) from web_link</select>
 </mapper>

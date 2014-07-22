@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.dao.RssSubscribeMapperDao;
 import com.po.Rss;
 import com.po.RssSubscribe;
+import com.po.RssType;
 
 @Repository
 public class RssSubscribeMapperDaoImpl extends BaseDaoImpl<RssSubscribe> implements RssSubscribeMapperDao {
@@ -17,8 +18,13 @@ public class RssSubscribeMapperDaoImpl extends BaseDaoImpl<RssSubscribe> impleme
 	}
 
 	@Override
-	public List<Rss> returnTopRssList(RssSubscribe rssSubscribe) {
-		return sqlSessionTemplate.selectList("com.dao."+rssSubscribe.toString()+"MapperDao.returnTopRssList", rssSubscribe);
+	public List<Rss> selectListByIds(RssSubscribe rssSubscribe) {
+		return sqlSessionTemplate.selectList("com.dao."+rssSubscribe.toString()+"MapperDao.selectListByIds", rssSubscribe);
+	}
+
+	@Override
+	public List<RssSubscribe> selectListJoin(RssType rssType) {
+		return sqlSessionTemplate.selectList("com.dao.RssSubscribeMapperDao.selectListJoin", rssType);
 	}
 
 }

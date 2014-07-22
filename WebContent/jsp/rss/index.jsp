@@ -89,6 +89,36 @@
 					}
 				}
 			});
+		}).on("click",".more-link",function(){
+			var $this = $(this);
+			var rssId = $this.attr("attr1");
+			var page = parseInt($this.attr("attr2"));
+			$.ajax({
+				url : '${base}/rss/myLoadMoreRss',
+				data : 'rssId='+rssId+'&page='+page,
+				dataType : 'json',
+				type : 'post',
+				success : function(ajaxData){
+					if(ajaxData.result == 'success'){
+						var rssCrawlList = ajaxData.rssCrawlList;
+						var rssContent = "";
+						for(var i = 0; i < rssCrawlList.length; i++){
+							var rssCrawl = rssCrawlList[i];
+							rssContent += '<div class="topic-feed-item">';
+							rssContent += '<a href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';
+							rssContent += '<span class="zg-gray time">'+rssCrawl.updateTime+'</span></div>';
+						}
+						if(rssContent != ""){
+							$this.before(rssContent);
+							page++;
+							$this.attr("attr2",page);
+						}else{
+							$this.html("done").off("click");
+						}
+						
+					}
+				}
+			});
 		});
 	});
 	function addRssType(){
@@ -150,13 +180,13 @@
 		<div class="topic-item-content">
 			<div>
 				<h3 class="topic-item-title">
-					<a href="/topic/19609455" class="topic-item-title-link">#rssTitle#</a>
+					<a class="topic-item-title-link">#rssTitle#</a>
 					<a attr="#rssId#" class="cancelSubscribe pointer">取消rss</a>
 				</h3>
 			</div>
 			<div class="topic-item-feed-digest">
 				#rssContent#
-				<a class="zg-link-litblue cursor" >more&nbsp;»</a>
+				<a class="more-link cursor" attr1="#rssId#" attr2="1" >more&nbsp;»</a>
 			</div>
 		</div>
 	</div>

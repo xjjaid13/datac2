@@ -50,7 +50,7 @@
 			<div class="topic-item-content">
 				<div>
 					<h3 class="topic-item-title">
-						<a href="/topic/19609455" class="topic-item-title-link">${rss.rssTitle}</a>
+						<a class="topic-item-title-link">${rss.rssTitle}</a>
 						<a attr="${rss.rssId}" class="cancelSubscribe pointer">取消rss</a>
 					<!-- <a style="" class="js-pin zg-gray pin topic-hover-content" data-action="pin-topic" href="javascript:;"><i class="z-icon-pin"></i>固定话题</a>
 					
@@ -66,7 +66,7 @@
 						</div>
 					</c:forEach>
 					
-					<a class="zg-link-litblue" href="/topic/19609455">more&nbsp;»</a>
+					<a class="more-link pointer" attr1="${rss.rssId}" attr2="1" >more&nbsp;»</a>
 				
 				</div>
 			</div>

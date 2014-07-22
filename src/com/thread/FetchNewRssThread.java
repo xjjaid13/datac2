@@ -43,7 +43,7 @@ public class FetchNewRssThread {
     				Log.Error(e);
     			}
             }  
-    	},10, 100, TimeUnit.SECONDS);
+    	},100, 500, TimeUnit.SECONDS);
     }
     
 }

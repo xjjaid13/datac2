@@ -194,7 +194,7 @@ public class Template {
 				"where 1 = 1 <if test=\"{tableName}Id != null\"> and {tableName}Id = #{{tableName}Id}</if><if test=\"condition != null\"> ${condition}</if>";
 			String updateResult = returnContent(updateString,result,field,tableName,type);
 			result.delete(0, result.length());
-			String deleteByIdsString = "delete from {tablename} where {tableName}Id in (#{ids})";
+			String deleteByIdsString = "delete from {tablename} where {tableName}Id in (${ids})";
 			String deleteByIdsResult = returnContent(deleteByIdsString,result,field,tableName,type);
 			result.delete(0, result.length());
 			String maxIdString = "select max({tableName}Id) from {tablename}";

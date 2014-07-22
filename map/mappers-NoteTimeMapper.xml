@@ -60,6 +60,6 @@
     <if test="displayValue != null">and displayValue = #{displayValue}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
-  <delete id="deleteByIds" parameterType="NoteTime">delete from note_time where noteTimeId in (#{ids})</delete>
+  <delete id="deleteByIds" parameterType="NoteTime">delete from note_time where noteTimeId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(noteTimeId) from note_time</select>
 </mapper>

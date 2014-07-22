@@ -74,6 +74,6 @@
     <if test="updateTime != null">and updateTime = #{updateTime}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
-  <delete id="deleteByIds" parameterType="Rss">delete from rss where rssId in (#{ids})</delete>
+  <delete id="deleteByIds" parameterType="Rss">delete from rss where rssId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssId) from rss</select>
 </mapper>

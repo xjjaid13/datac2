@@ -60,7 +60,7 @@
     <if test="resourceDesc != null">and resourceDesc = #{resourceDesc}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
-  <delete id="deleteByIds" parameterType="RssCrawl">delete from rss_crawl where rssCrawlId in (#{ids})</delete>
+  <delete id="deleteByIds" parameterType="RssCrawl">delete from rss_crawl where rssCrawlId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssCrawlId) from rss_crawl</select>
   <select id="selectView" parameterType="RssCrawl" resultType="java.util.List" resultMap="rssCrawl">select a.* from rss_crawl a LEFT JOIN rss_subscribe b on a.rssId = b.rssId left JOIN rss_type c on b.rssTypeId = c.rssTypeId where 1 = 1 ${condition} 
     <if test="startPage != -1">limit #{startPage},#{page}</if> 

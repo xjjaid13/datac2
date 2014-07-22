@@ -59,10 +59,13 @@
     <if test="rssTypeId != null">and rssTypeId = #{rssTypeId}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
-  <delete id="deleteByIds" parameterType="RssSubscribe">delete from rss_subscribe where rssSubscribeId in (#{ids})</delete>
+  <delete id="deleteByIds" parameterType="RssSubscribe">delete from rss_subscribe where rssSubscribeId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssSubscribeId) from rss_subscribe</select>
   <select id="selectTypeSubscribe" parameterType="RssSubscribe" resultType="java.util.List" resultMap="rss">select b.* from rss_subscribe a left join rss b on a.rssId = b.rssId where a.rssTypeId = #{rssTypeId} order by rssSubscribeId desc</select>
-  <select id="returnTopRssList" resultType="java.util.List" resultMap="rss" parameterType="RssSubscribe">
-  	select c.*,temp.* from (select a.* from rss_crawl a left join rss_subscribe d on a.rssId = d.rssId where (select count(*) from rss_crawl b where a.rssId = b.rssId and b.rssCrawlId > a.rssCrawlId)  &lt; 3 <if test="rssTypeId != null">and d.rssTypeId = #{rssTypeId}</if>   ORDER BY a.rssCrawlId desc limit 0,40) temp LEFT JOIN rss c on temp.rssId = c.rssId
+  <select id="selectListJoin" parameterType="RssType" resultType="java.util.List" resultMap="rssSubscribe" >
+  	select a.* from rss_subscribe a left join rss_type b on a.rssTypeId = b.rssTypeId left join rss c on a.rssId = c.rssId where <if test="userId != null"> b.userId = #{userId} </if> <if test="rssTypeId != null"> b.rssTypeId = #{rssTypeId} </if>  order by c.updateTime desc <if test="startPage != -1">limit #{startPage},#{page}</if> 
+  </select>
+  <select id="selectListByIds" resultType="java.util.List" resultMap="rss" parameterType="RssSubscribe">
+  	select c.*,temp.* from (select a.* from rss_crawl a where (select count(*) from rss_crawl b where a.rssId = b.rssId and b.rssCrawlId > a.rssCrawlId)  &lt; 3 and a.rssId in (${ids})  ORDER BY a.rssId asc,a.rssCrawlId desc) temp LEFT JOIN rss c on temp.rssId = c.rssId
   </select>
 </mapper>

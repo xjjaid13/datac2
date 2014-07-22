@@ -42,6 +42,6 @@
     <if test="password != null">and password = #{password}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
-  <delete id="deleteByIds" parameterType="User">delete from user where userId in (#{ids})</delete>
+  <delete id="deleteByIds" parameterType="User">delete from user where userId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(userId) from user</select>
 </mapper>
