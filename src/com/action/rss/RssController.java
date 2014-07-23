@@ -27,7 +27,6 @@ import com.service.RssSubscribeMapperService;
 import com.service.RssTypeMapperService;
 import com.util.Constant;
 import com.util.DataHandle;
-import com.vo.RssDetailVO;
 
 @Controller
 @RequestMapping("rss")

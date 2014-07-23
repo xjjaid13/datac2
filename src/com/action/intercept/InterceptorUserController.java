@@ -7,6 +7,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 //import com.po.User;
 
+import com.po.User;
+import com.util.Constant;
+
 public class InterceptorUserController implements HandlerInterceptor{
 	
 	public void afterCompletion(HttpServletRequest arg0,
@@ -23,13 +26,11 @@ public class InterceptorUserController implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object obj) throws Exception {
 
-//		User user = (User)request.getSession().getAttribute(Constant.USER);
-//		if(user == null){
-//			response.sendRedirect(request.getContextPath()+"/login/index");
-//			return false;
-//		}else{
-//			request.setAttribute(Constant.USER, user);
-//		}
+		User user = (User)request.getSession().getAttribute(Constant.USER);
+		if(user == null){
+			response.sendRedirect(request.getContextPath()+"/login");
+			return false;
+		}
 		return true;
 	}
 	

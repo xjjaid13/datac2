@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.action.BaseAction;
 import com.alibaba.fastjson.JSONObject;
 import com.po.Menu;
 import com.service.MenuMapperService;
@@ -18,7 +19,7 @@ import com.util.DataHandle;
 
 @Controller
 @RequestMapping("main")
-public class MainAction {
+public class MainAction extends BaseAction{
 
 	@Autowired
 	MenuMapperService menuMapperService;
