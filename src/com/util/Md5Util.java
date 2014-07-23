@@ -1,7 +1,11 @@
 package com.util;
 
+import org.apache.log4j.Logger;
+
 public class Md5Util {
 
+	private static Logger log = Logger.getLogger(Md5Util.class);
+	
 	public static String getMD5(byte[] source) {
 		String s = null;
 		char hexDigits[] = {
@@ -21,7 +25,7 @@ public class Md5Util {
 			}
 			s = new String(str);
 		} catch (Exception e) {
-			Log.Error(e);
+			log.error(e);
 		}
 		return s;
 	}

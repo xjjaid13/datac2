@@ -12,11 +12,16 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * taylor 2014-7-20下午11:11:24
  */
 public class DataHandle {
+	
+	//log
+	private static Logger log = Logger.getLogger(DataHandle.class);
 	
 	/**
 	 * 判断一个对象是否为空
@@ -78,7 +83,7 @@ public class DataHandle {
 		try{
 			returnValue = Integer.parseInt(value);
 		}catch(Exception e){
-			Log.Debug(e.getMessage());
+			log.debug(e.getMessage());
 			return 0;
 		}
 		return returnValue;
@@ -90,7 +95,7 @@ public class DataHandle {
 		try{
 			returnValue = Float.parseFloat(value);
 		}catch(Exception e){
-			Log.Debug(e.getMessage());
+			log.debug(e.getMessage());
 		}
 		return returnValue;
 	}

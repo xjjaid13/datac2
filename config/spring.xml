@@ -87,6 +87,8 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         <property name="queueCapacity" value="25" />  
     </bean>  
     
+    <bean id="exceptionHandler" class="com.action.intercept.MyExceptionHandler"/>
+    
     <bean class="com.servlet.SpringInit"/>
     
 </beans>

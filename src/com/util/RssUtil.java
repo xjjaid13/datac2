@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndImage;
@@ -20,6 +22,8 @@ import com.vo.RssVO;
  */
 public class RssUtil {
 
+	private static Logger log = Logger.getLogger(RssUtil.class);
+	
 	/**
 	 * 获得rss结果
 	 * @param xmlRemotePath rssurl
@@ -113,14 +117,9 @@ public class RssUtil {
 	        }
 			return rssVO;
 		} catch (Exception e) {
-			Log.Error(xmlRemotePath + "异常",e);
+			log.error(xmlRemotePath + "异常",e);
 		}
 		return null;
 	}
 	
-	public static void main(String[] args) {
-		RssVO rssVO = RssUtil.getRSSInfo("http://www.xinhuanet.com/overseas/news_overseas.xml");
-		System.out.println(rssVO);
-	}
-
 }

@@ -9,8 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.po.Rss;
-import com.po.RssSubscribe;
-import com.po.RssType;
 import com.service.RssMapperService;
 import com.service.RssSubscribeMapperService;
 
@@ -41,7 +39,7 @@ public class RssTest {
 	}
 	
 	public void deleteRss(){
-		Rss rss = createRss();
+		//Rss rss = createRss();
 		Rss obj = new Rss();
 		obj.setRssId(17);
 		rssMapperService.delete(obj);

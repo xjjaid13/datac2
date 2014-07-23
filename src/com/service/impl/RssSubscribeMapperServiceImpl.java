@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.service.impl.BaseServiceImpl;
 import com.dao.RssMapperDao;
 import com.dao.RssSubscribeMapperDao;
 import com.po.Rss;
