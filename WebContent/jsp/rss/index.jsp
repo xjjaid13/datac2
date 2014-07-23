@@ -12,6 +12,7 @@
 <%@include file="../js-file.jsp" %>
 <script src="${base}/static/js/jstree/dist/jstree.min.js"></script>
 <script>
+	var jsTree;
 	$(function(){
 		$('.btn-default').popover({
 		    'trigger' : 'click'
@@ -31,7 +32,8 @@
 			}
 		});
 		$("#js-tree").on("loaded.jstree",function(e, data){
-			$('#js-tree').jstree(true).select_node('0');
+			jsTree = $('#js-tree').jstree(true);
+			jsTree.select_node('0');
 		})
 		$('#js-tree').on("select_node.jstree", function (e, data) {
 			if(data.selected[0] == 0){
@@ -47,7 +49,6 @@
 		});
 		$(document).on("click","#book",function(){
 			var rssUrl = $("#rssLink").val();
-			var jsTree = $('#js-tree').jstree(true),
 			sel = jsTree.get_selected();
 			if(!sel.length) { return false; }
 			$.ajax({
@@ -154,7 +155,6 @@
 		});
 	});
 	function addRssType(){
-		var jsTree = $('#js-tree').jstree(true);
 		sel = jsTree.get_selected();
 		if(!sel.length) { return false; }
 		jsTree.open_node(sel,function(){
@@ -173,7 +173,6 @@
 		});
 	}
 	function renameRssType(){
-		var jsTree = $('#js-tree').jstree(true),
 		sel = jsTree.get_selected();
 		if(!sel.length) { return false; }
 		var typeName = $("#typeName").val();
@@ -192,7 +191,6 @@
 		$(".btn-default").popover('hide');
 	}
 	function deleteType(){
-		var jsTree = $('#js-tree').jstree(true),
 		sel = jsTree.get_selected();
 		if(!sel.length) { return false; }
 		if(jsTree.is_leaf(sel)){
