@@ -20,16 +20,17 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.po.WebLinktype;
-import com.thread.FetchNewRssThread;
 
 @Repository
 public class InitServlet extends HttpServlet implements Servlet{
 
 	private static final long serialVersionUID = 1L;
+	
+	private static Logger log = Logger.getLogger(Init.class);
 	
 	public static Map<Integer,LinkedList<WebLinktype>> webLinkTypeMap = new HashMap<Integer, LinkedList<WebLinktype>>();
 	
@@ -65,7 +66,7 @@ public class InitServlet extends HttpServlet implements Servlet{
 									e.printStackTrace();
 								}
 							}
-	            			Log.Info("用户" + id + "导航有改动，变更完毕。");
+	            			log.info("用户" + id + "导航有改动，变更完毕。");
 	            			changeList.remove(id);
 	            		 }
 	            	 }
@@ -75,9 +76,9 @@ public class InitServlet extends HttpServlet implements Servlet{
 			 
 			
 		} catch (FileNotFoundException e) {
-			Log.Error(e);
+			log.error(e);
 		} catch (ClassNotFoundException e) {
-			Log.Error(e);
+			log.error(e);
 		}
 	}
 	
@@ -95,19 +96,19 @@ public class InitServlet extends HttpServlet implements Servlet{
 						LinkedList<WebLinktype> linkedListType = (LinkedList<WebLinktype>) oi.readObject();
 						webLinkTypeMap.put(Integer.parseInt(file.getName()), linkedListType);
 					} catch (IOException e) {
-						Log.Error(e);
+						log.error(e);
 					} finally{
 						try {
 							oi.close();
 						} catch (IOException e) {
-							Log.Error(e);
+							log.error(e);
 						}
 					}
 					
 				}
 			}
 		}
-		Log.Info("初始化导航完成。");
+		log.info("初始化导航完成。");
 	}
 	
 }

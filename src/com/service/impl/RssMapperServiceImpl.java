@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,6 @@ import com.po.Rss;
 import com.po.RssCrawl;
 import com.po.RssSubscribe;
 import com.service.RssMapperService;
-import com.util.Log;
 import com.util.Md5Util;
 import com.util.RssUtil;
 import com.vo.RssDetailVO;
@@ -25,6 +25,9 @@ import com.vo.RssVO;
 @Service("rssMapperService")
 public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMapperService{
 
+	//log
+	private static Logger log = Logger.getLogger(RssMapperServiceImpl.class);
+	
 	@Autowired
 	RssMapperDao rssMapperDao;
 	
@@ -53,7 +56,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rss = new Rss();
 				RssVO rssVO = RssUtil.getRSSInfo(rssUrl);
 				if(rssVO == null){
-					Log.Error(rssUrl + "获取rss失败");
+					log.error(rssUrl + "获取rss失败");
 					return null;
 				}
 				rss.setRssIcon(rssVO.getIcon());
@@ -86,7 +89,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			rssSubscribeMapperDao.insert(rssSubscribe);
 			return rss;
 		}catch(Exception e){
-			Log.Error(e);
+			log.error(e);
 			throw new ServiceException(e);
 		}
 	}
@@ -97,7 +100,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			List<RssDetailVO> rssDetailVOList = RssUtil.getRSSInfo(rss.getRssUrl()).getRssDetailVOList();
 			return rssDetailVOList;
 		}catch(Exception e){
-			Log.Error(e);
+			log.error(e);
 			throw new ServiceException(e);
 		}
 	}
@@ -105,9 +108,9 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	@Override
 	public void fetchNewRss(Rss rss) {
 		RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
-		Log.Info(rssVO.getLink() + "变动1，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
+		log.info(rssVO.getLink() + "变动1，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
 		if(!rssVO.getFingerPrint().equals(rss.getFingePrint())){
-			Log.Info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rss.getFingePrint() + ",变动后fingerPrint=" + rssVO.getFingerPrint());
+			log.info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rss.getFingePrint() + ",变动后fingerPrint=" + rssVO.getFingerPrint());
 			List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
 			if(rssDetailList == null){
 				return;

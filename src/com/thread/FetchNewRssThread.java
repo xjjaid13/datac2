@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.po.Rss;
 import com.service.RssCrawlMapperService;
 import com.service.RssMapperService;
-import com.util.Log;
 
 /**  
  * 初始化更新rss线程
@@ -18,6 +18,9 @@ import com.util.Log;
  */
 @Component("fetchNewRssThread")
 public class FetchNewRssThread {
+	
+	//log
+	private static Logger log = Logger.getLogger(FetchNewRssThread.class);
 	
 	@Autowired
 	RssMapperService rssMapperService;
@@ -40,7 +43,7 @@ public class FetchNewRssThread {
 	    				}
 	    			}
     			}catch(Exception e){
-    				Log.Error(e);
+    				log.error(e);
     			}
             }  
     	},100, 500, TimeUnit.SECONDS);
