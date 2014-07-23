@@ -263,5 +263,5 @@ public class TimeHandle {
 		Timer timer = new Timer();
 		timer.schedule(new TimeTest(), 0, 1000);
 	}
-	
+
 }

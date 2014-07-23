@@ -89,7 +89,6 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			rssSubscribeMapperDao.insert(rssSubscribe);
 			return rss;
 		}catch(Exception e){
-			log.error(e);
 			throw new ServiceException(e);
 		}
 	}
@@ -100,7 +99,6 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			List<RssDetailVO> rssDetailVOList = RssUtil.getRSSInfo(rss.getRssUrl()).getRssDetailVOList();
 			return rssDetailVOList;
 		}catch(Exception e){
-			log.error(e);
 			throw new ServiceException(e);
 		}
 	}
@@ -108,8 +106,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	@Override
 	public void fetchNewRss(Rss rss) {
 		RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
-		log.info(rssVO.getLink() + "变动1，变动前fingerPrint=" + rssVO.getFingerPrint() + ",变动后fingerPrint="+rss.getFingePrint());
-		if(!rssVO.getFingerPrint().equals(rss.getFingePrint())){
+		if(rssVO != null && !rssVO.getFingerPrint().equals(rss.getFingePrint())){
 			log.info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rss.getFingePrint() + ",变动后fingerPrint=" + rssVO.getFingerPrint());
 			List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
 			if(rssDetailList == null){

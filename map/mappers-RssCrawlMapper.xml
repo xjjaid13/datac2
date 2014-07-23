@@ -27,6 +27,7 @@
     <if test="updateTime != null">and updateTime = #{updateTime}</if>  
     <if test="resourceDesc != null">and resourceDesc = #{resourceDesc}</if>  
     <if test="condition != null">${condition}</if>  
+     order by rssCrawlId desc 
     <if test="startPage != -1">limit #{startPage},#{page}</if> 
   </select>
   <select id="selectCount" resultType="java.lang.Integer">select count(rssCrawlId) from rss_crawl where 1 = 1 

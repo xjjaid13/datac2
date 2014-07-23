@@ -116,7 +116,6 @@ public class RssController extends BaseAction{
 	
 	@RequestMapping("myRssList")
 	public String myRssList(RssSubscribe rssSubscribe,HttpServletResponse response,Model model) throws IOException{
-		rssSubscribe.setCondition("order by rssSubscribeId desc");
 		List<Rss> rssList = rssSubscribeMapperService.selectTypeSubscribe(rssSubscribe);
 		model.addAttribute("rssList", rssList);
 		return "rss/rssList";
@@ -147,11 +146,10 @@ public class RssController extends BaseAction{
 	@RequestMapping("myRssView")
 	public String myRssView(RssType rssType,Model model,HttpSession session){
 		if(rssType.getRssTypeId() == null){
-			rssType = new RssType();
 			User user = returnUser(session);
 			rssType.setUserId(user.getUserId());
 		}
-		rssType.setStartPage(0);
+		rssType.setStartPage(rssType.getStartPage() * Constant.RSSVIEWPAGE);
 		rssType.setPage(Constant.RSSVIEWPAGE);
 		List<Rss> rssList = rssSubscribeMapperService.selectRssCrawlList(rssType);
 		model.addAttribute("rssList",rssList);
@@ -163,7 +161,6 @@ public class RssController extends BaseAction{
 		RssCrawl rssCrawl = new RssCrawl();
 		rssCrawl.setPage(3);
 		rssCrawl.setRssId(rss.getRssId());
-		rssCrawl.setCondition("order by rssCrawlId desc");
 		rssCrawl.setStartPage(3 * rss.getPage());
 		List<RssCrawl> rssCrawlList = rssCrawlMapperService.selectList(rssCrawl);
 		JSONObject jsonObject = createJosnObject();

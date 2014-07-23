@@ -8,6 +8,7 @@
 <title>rss</title>
 <%@include file="../css-file.jsp" %>
 <link rel="stylesheet" href="${base}/static/js/jstree/dist/themes/default/style.min.css" />
+<link rel="stylesheet" href="${base}/static/css/rss.css" />
 <%@include file="../js-file.jsp" %>
 <script src="${base}/static/js/jstree/dist/jstree.min.js"></script>
 <script>
@@ -34,14 +35,15 @@
 		})
 		$('#js-tree').on("select_node.jstree", function (e, data) {
 			if(data.selected[0] == 0){
-				$(".rssList").load("${base}/rss/myRssView");
+				$("#rssDetailContent").load("${base}/rss/myRssView?startPage=0");
 				$("#renameTypeNameBtn").attr("disabled","true");
 				$("#deleteTypeNameBtn").attr("disabled","true");
 			}else{
-				$(".rssList").load("${base}/rss/myRssView?rssTypeId="+data.selected[0]);
+				$("#rssDetailContent").load("${base}/rss/myRssView?rssTypeId="+data.selected[0]+"&startPage=0");
 				$("#renameTypeNameBtn").removeAttr("disabled");
 				$("#deleteTypeNameBtn").removeAttr("disabled");
 			}
+			$(".loadMore").on("click").html("load more").attr("attr","1");
 		});
 		$(document).on("click","#book",function(){
 			var rssUrl = $("#rssLink").val();
@@ -82,7 +84,7 @@
 		}).on("click",".rssDetail",function(){
 			var $thumbnail = $(this).closest(".thumbnail")
 			var rssId = $thumbnail.attr("attr");
-			$(".rssList").load("${base}/rss/myRssDetail?rssId="+rssId);
+			$("#rssDetailContent").load("${base}/rss/myRssDetail?rssId="+rssId);
 		}).on("click",".cancelSubscribe",function(){
 			var $this = $(this);
 			var rssId = $this.attr("attr");
@@ -123,6 +125,29 @@
 							$this.html("done").off("click");
 						}
 						
+					}
+				}
+			});
+		}).on("click",".loadMore",function(){
+			var $this = $(this);
+			var page = parseInt($this.attr("attr"));
+			var jsTree = $('#js-tree').jstree(true);
+			sel = jsTree.get_selected();
+			var param = "";
+			if(sel[0] != 0){
+				param += "&rssTypeId="+sel[0];
+			}
+			$.ajax({
+				url : '${base}/rss/myRssView',
+				data : 'startPage=' + page + param,
+				dataType : 'html',
+				success : function(ajaxData){
+					if($.trim(ajaxData) == ""){
+						$(".loadMore").off("click").html("done");
+					}else{
+						$("#rssDetailContent").append(ajaxData);
+						page++;
+						$this.attr("attr",page);
 					}
 				}
 			});
@@ -293,8 +318,11 @@
 				<div class="main-content">
 					
 					<div class="row rssList">
-						
+						<div id="rssDetailContent" style="margin:10px;">
+						</div>
 					</div>
+					
+					<p style="text-align:center;"><a attr="1" class="pointer loadMore">load more</a></p>
 				</div>
 			</div>
 		</div>
