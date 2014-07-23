@@ -455,10 +455,4 @@ public class DBHandle {
 		return count;
 	}
 	
-	public static void main(String[] args){
-		DBHandle dbHandle = new DBHandle();
-		dbHandle.openConnMysql();
-		System.out.println(dbHandle.getColumnType("blog-type", "blogTypeId"));
-		dbHandle.closeConn();
-	}
 }

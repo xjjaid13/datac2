@@ -89,16 +89,6 @@ public class IniHandle {
 			log.error("IniHandle.saveIni() throw a exception:" + ex.getMessage());
 		}
 	}
-	
-	public static void main(String[] args) throws FileNotFoundException, IOException{
-		Properties p = new Properties();
-		p.load(new FileInputStream("D:/test.ini"));
-		Set s = p.keySet();
-		Iterator<String> it = s.iterator();
-		while(it.hasNext()){
-			System.out.println(it.next());
-		}
-	}
 
 	public void setIniPath(String iniPath) {
 		this.iniPath = iniPath;
