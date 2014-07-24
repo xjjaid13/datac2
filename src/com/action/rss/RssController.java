@@ -98,12 +98,12 @@ public class RssController extends BaseAction{
 		
 		int parentId = rssType.getParentId();
 		if(parentId == 0){
-			rssType.setParentString(",0,");
+			rssType.setParentString(";0;");
 		}else{
 			RssType rssTypeParent = new RssType();
 			rssTypeParent.setRssTypeId(parentId);
 			rssTypeParent = rssTypeMapperService.select(rssType);
-			rssType.setParentString(rssTypeParent.getParentString() + rssTypeParent.getRssTypeId() + ",");
+			rssType.setParentString(rssTypeParent.getParentString() + rssTypeParent.getRssTypeId() + ";");
 		}
 		
 		int rssTypeId = rssTypeMapperService.insertAndReturnId(rssType);
@@ -161,6 +161,11 @@ public class RssController extends BaseAction{
 		JSONObject jsonObject = createJosnObject();
 		jsonObject.put("rssCrawlList", rssCrawlList);
 		writeResult(response, jsonObject);
+	}
+	
+	@RequestMapping("myBlogView")
+	public String myBlogView(){
+		return "blog/subject";
 	}
 	
 }
