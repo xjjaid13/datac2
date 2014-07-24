@@ -66,6 +66,6 @@
   	select a.* from rss_subscribe a left join rss_type b on a.rssTypeId = b.rssTypeId left join rss c on a.rssId = c.rssId where <if test="userId != null"> b.userId = #{userId} </if> <if test="rssTypeId != null"> b.parentString like '%;${rssTypeId};%' or b.rssTypeId = #{rssTypeId} </if>  order by c.updateTime desc <if test="startPage != -1">limit #{startPage},#{page}</if> 
   </select>
   <select id="selectListByIds" resultType="java.util.List" resultMap="rss" parameterType="RssSubscribe">
-  	select c.*,temp.*,temp.updateTime as crawlUpdateTime from (select a.* from rss_crawl a where (select count(*) from rss_crawl b where a.rssId = b.rssId and b.rssCrawlId > a.rssCrawlId)  &lt; 3 and a.rssId in (${ids})  order by a.updateTime desc) temp LEFT JOIN rss c on temp.rssId = c.rssId order by c.updateTime desc
+  	select c.*,temp.*,temp.updateTime as crawlUpdateTime from (select a.* from rss_crawl a where (select count(*) from rss_crawl b where a.rssId = b.rssId and b.rssCrawlId &lt; a.rssCrawlId)  &lt; 3 and a.rssId in (${ids})  order by a.updateTime desc) temp LEFT JOIN rss c on temp.rssId = c.rssId order by c.updateTime desc,crawlUpdateTime desc 
   </select>
 </mapper>

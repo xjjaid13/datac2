@@ -47,7 +47,7 @@ public class FetchNewRssThread {
     				e.printStackTrace();
     			}
             }  
-    	},10, 500, TimeUnit.SECONDS);
+    	},100, 500, TimeUnit.SECONDS);
     }
     
 }
