@@ -6,6 +6,7 @@
 	<title>Sign in</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/x-icon" href="${base}/static/image/favicon.ico" media="screen" />
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="${base}/static/css/login.css" />
     <link rel="stylesheet" type="text/css" href="${base}/static/js/sticky-info/sticky.css" />

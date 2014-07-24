@@ -95,6 +95,17 @@ public class RssController extends BaseAction{
 	public void myAddRssType(RssType rssType,HttpServletResponse response,HttpSession session) throws IOException{
 		User user = returnUser(session);
 		rssType.setUserId(user.getUserId());
+		
+		int parentId = rssType.getParentId();
+		if(parentId == 0){
+			rssType.setParentString(",0,");
+		}else{
+			RssType rssTypeParent = new RssType();
+			rssTypeParent.setRssTypeId(parentId);
+			rssTypeParent = rssTypeMapperService.select(rssType);
+			rssType.setParentString(rssTypeParent.getParentString() + rssTypeParent.getRssTypeId() + ",");
+		}
+		
 		int rssTypeId = rssTypeMapperService.insertAndReturnId(rssType);
 		JSONObject jsonObject = createJosnObject();
 		jsonObject.put("rssTypeId", rssTypeId);

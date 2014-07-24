@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>rss</title>
+<link rel="shortcut icon" type="image/x-icon" href="${base}/static/image/favicon.ico" media="screen" />
 <%@include file="../css-file.jsp" %>
 <link rel="stylesheet" href="${base}/static/js/jstree/dist/themes/default/style.min.css" />
 <link rel="stylesheet" href="${base}/static/css/rss.css" />
@@ -17,8 +18,7 @@
 		$('.btn-default').popover({
 		    'trigger' : 'click'
 		});
-		$('#js-tree').jstree({ 'core' : 
-			{
+		$('#js-tree').jstree({ 'core' : {
 				"check_callback" : true,
 				'data' :  {
 				    'url' :  function (node) {
@@ -28,13 +28,12 @@
 				        return { 'id' : node.id };
 			        }
 			    }
-			    
 			}
 		});
 		$("#js-tree").on("loaded.jstree",function(e, data){
 			jsTree = $('#js-tree').jstree(true);
 			jsTree.select_node('0');
-		})
+		});
 		$('#js-tree').on("select_node.jstree", function (e, data) {
 			if(data.selected[0] == 0){
 				$("#rssDetailContent").load("${base}/rss/myRssView?startPage=0");
@@ -252,7 +251,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      <a class="navbar-brand" href="#">angrycat</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -260,12 +259,6 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Rss</a></li>
       </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">${user.username} <span class="caret"></span></a>
@@ -278,6 +271,12 @@
           </ul>
         </li>
       </ul>
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

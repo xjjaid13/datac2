@@ -10,6 +10,7 @@ public class RssType extends BasePO{
 	
 	private Integer parentId;
 	
+	private String parentString;
 	
 	public Integer getRssTypeId() {
 		return rssTypeId;
@@ -46,5 +47,13 @@ public class RssType extends BasePO{
 	
 	public String toString(){
 		return "RssType";
+	}
+
+	public String getParentString() {
+		return parentString;
+	}
+
+	public void setParentString(String parentString) {
+		this.parentString = parentString;
 	}
 }
