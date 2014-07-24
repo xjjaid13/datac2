@@ -22,6 +22,12 @@ public class BaseAction {
 		return jsonObject;
 	}
 	
+	public JSONObject errorJsonObject(JSONObject jsonObject,String message){
+		jsonObject.put("result", "error");
+		jsonObject.put("message", message);
+		return jsonObject;
+	}
+	
 	public void writeResult(HttpServletResponse response,JSONObject jsonObject) throws IOException{
 		response.getWriter().write(jsonObject.toString());
 	}

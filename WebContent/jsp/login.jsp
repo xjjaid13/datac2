@@ -8,9 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="${base}/static/css/login.css" />
-    <style>
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="${base}/static/js/sticky-info/sticky.css" />
 </head>
 <body>
 	<div style="height:500px;background-image:linear-gradient(to bottom, #f5f5f5 0px, #e8e8e8 100%);margin-top:100px;">
@@ -37,6 +35,7 @@
 	</div>
 </body>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="${base}/static/js/sticky-info/sticky.js"></script>
 <script>
 	$(function(){
 		$("#login").click(function(){
@@ -46,13 +45,16 @@
 				dataType : 'json',
 				success : function(ajaxData){
 					if(ajaxData.result == 'success'){
-						if(ajaxData.valid == true){
-							location.href="${base}/rss/myIndex";
-						}
+						location.href="${base}/rss/myIndex";
+					}else{
+						tipMessage(ajaxData.message);
 					}
 				}
 			});
 		});
 	});
+	function tipMessage(message){
+		$.stickyInfo(message);
+	}
 </script>
 </html>

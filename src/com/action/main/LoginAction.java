@@ -41,7 +41,9 @@ public class LoginAction extends BaseAction{
 			session.setAttribute(Constant.USER, user);
 		}
 		JSONObject jsonObject = createJosnObject();
-		jsonObject.put("valid", result);
+		if(!result){
+			errorJsonObject(jsonObject, "账号或密码错误");
+		}
 		writeResult(response, jsonObject);
 	}
 	

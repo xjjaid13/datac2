@@ -57,7 +57,7 @@
 				type : 'post',
 				dataType : 'json',
 				success : function(ajaxData){
-					if(ajaxData.result == 'success'){
+					ajaxHandle(ajaxData,function(){
 						var rss = ajaxData.rss;
 						var rssTitle = rss.rssTitle;
 						if(rssTitle.length > 6){
@@ -79,7 +79,7 @@
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssContent#",rssContent);
 						$("#rssDetailContent").prepend(rssListTemplateDiv);
 						closeDialog();
-					}
+					});
 				}
 			});
 		}).on("click",".rssDetail",function(){
@@ -94,9 +94,9 @@
 				data : 'rssId='+rssId,
 				dataType : 'json',
 				success : function(ajaxData){
-					if(ajaxData.result == 'success'){
+					ajaxHandle(ajaxData,function(){
 						$this.closest(".topic-item").fadeOut();
-					}
+					});
 				}
 			});
 		}).on("click",".more-link",function(){
@@ -109,7 +109,7 @@
 				dataType : 'json',
 				type : 'post',
 				success : function(ajaxData){
-					if(ajaxData.result == 'success'){
+					ajaxHandle(ajaxData,function(){
 						var rssCrawlList = ajaxData.rssCrawlList;
 						var rssContent = "";
 						for(var i = 0; i < rssCrawlList.length; i++){
@@ -125,8 +125,7 @@
 						}else{
 							$this.html("done").off("click");
 						}
-						
-					}
+					});
 				}
 			});
 		}).on("click",".loadMore",function(){
@@ -143,13 +142,15 @@
 				data : 'startPage=' + page + param,
 				dataType : 'html',
 				success : function(ajaxData){
-					if($.trim(ajaxData) == ""){
-						$(".loadMore").off("click").html("done");
-					}else{
-						$("#rssDetailContent").append(ajaxData);
-						page++;
-						$this.attr("attr",page);
-					}
+					ajaxHandle(ajaxData,function(){
+						if($.trim(ajaxData) == ""){
+							$(".loadMore").off("click").html("done");
+						}else{
+							$("#rssDetailContent").append(ajaxData);
+							page++;
+							$this.attr("attr",page);
+						}
+					});
 				}
 			});
 		});
@@ -165,9 +166,11 @@
 				data : 'parentId='+sel[0]+"&typeName="+typeName,
 				dataType : 'json',
 				success : function(ajaxData){
-					jsTree.create_node(sel, {"type":"file","id":ajaxData.rssTypeId,"text":typeName});
-					jsTree.open_node(sel);
-					closeDialog();
+					ajaxHandle(ajaxData,function(){
+						jsTree.create_node(sel, {"type":"file","id":ajaxData.rssTypeId,"text":typeName});
+						jsTree.open_node(sel);
+						closeDialog();
+					});
 				}
 			});
 		});
@@ -182,8 +185,10 @@
 			type : 'post',
 			dataType : 'json',
 			success : function(ajaxData){
-				jsTree.rename_node(sel, typeName);
-				closeDialog();
+				ajaxHandle(ajaxData,function(){
+					jsTree.rename_node(sel, typeName);
+					closeDialog();
+				});
 			}
 		});
 	}
@@ -200,9 +205,21 @@
 				type : 'post',
 				dataType : 'json',
 				success : function(ajaxData){
-					jsTree.delete_node(sel);
+					ajaxHandle(ajaxData,function(){
+						jsTree.delete_node(sel);
+					});
 				}
 			});
+		}
+	}
+	function tipMessage(message){
+		$.stickyInfo(message);
+	}
+	function ajaxHandle(ajaxData,callback){
+		if(ajaxData.result == 'success'){
+			callback();
+		}else{
+			tipMessage(ajaxData.message);
 		}
 	}
 </script>

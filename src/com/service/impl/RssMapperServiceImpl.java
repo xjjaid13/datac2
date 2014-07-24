@@ -115,10 +115,14 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			int record = 0;
 			int size = rssDetailList.size();
 			
-			//先判断之前的第一个rss文章在新的rss文章中的位置
-			for(RssDetailVO rssDetailVO : rssDetailList){
-				if(rss.getFingePrint().equals(Md5Util.getMD5(rssDetailVO.getLink().getBytes()))){
-					record = Integer.parseInt(rssDetailVO.getItemNo());
+			if(rss.getFingePrint() == null){
+				record = size;
+			}else{
+				//先判断之前的第一个rss文章在新的rss文章中的位置
+				for(RssDetailVO rssDetailVO : rssDetailList){
+					if(rss.getFingePrint().equals(Md5Util.getMD5(rssDetailVO.getLink().getBytes()))){
+						record = Integer.parseInt(rssDetailVO.getItemNo());
+					}
 				}
 			}
 			
@@ -126,7 +130,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			if(record == 0){
 				record = size;
 			}
-			for(int i = record; i < 1; i--){
+			for(int i = record - 1; i >= 0; i--){
 				RssDetailVO rssDetailVO = rssDetailList.get(i);
 				RssCrawl rssCrawl = new RssCrawl();
 				rssCrawl.setRssId(rss.getRssId());

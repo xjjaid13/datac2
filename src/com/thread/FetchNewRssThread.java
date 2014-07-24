@@ -44,9 +44,10 @@ public class FetchNewRssThread {
 	    			}
     			}catch(Exception e){
     				log.error(e);
+    				e.printStackTrace();
     			}
             }  
-    	},100, 500, TimeUnit.SECONDS);
+    	},10, 500, TimeUnit.SECONDS);
     }
     
 }

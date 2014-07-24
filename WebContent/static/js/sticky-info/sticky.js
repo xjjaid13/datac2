@@ -3,11 +3,11 @@
 		return $.fn.stickyInfo(note, options, callback)
 	};
 	$.fn.stickyInfo = function(note, options, callback) {
-		var position = "top-right";
+		var position = "top-center";
 		var settings = {
 			speed: "fast",
 			duplicates: true,
-			autoclose: 5000
+			autoclose: 10000
 		};
 		if (!note) {
 			note = this.html()
@@ -34,10 +34,10 @@
 		}
 		if (display) {
 			$(".sticky-queue").prepend('<div class="sticky border-' + position + '" id="' + uniqID + '"></div>');
-			$("#" + uniqID).append('<img src="../js/sticky-info/close.png" class="sticky-close" rel="' + uniqID + '" title="Close" />');
+			$("#" + uniqID).append('<img src="./static/js/sticky-info/close.png" class="sticky-close" rel="' + uniqID + '" title="Close" />');
 			$("#" + uniqID).append('<div class="sticky-note" rel="' + uniqID + '">' + note + "</div>");
-			var height = $("#" + uniqID).height();
-			$("#" + uniqID).css("height", height);
+			//var height = $("#" + uniqID).height();
+			//$("#" + uniqID).css("height", height);
 			$("#" + uniqID).slideDown(settings.speed);
 			display = true
 		}
