@@ -16,7 +16,7 @@ import com.service.RssMapperService;
  * 初始化更新rss线程
  * <p>2014年7月21日上午10:45:58 xijiajia</p>
  */
-@Component("fetchNewRss")
+@Component("fetchNewRssThread")
 public class FetchNewRssThread {
 	
 	//log
@@ -47,7 +47,7 @@ public class FetchNewRssThread {
     				e.printStackTrace();
     			}
             }  
-    	},10, 500, TimeUnit.SECONDS);
+    	},100, 500, TimeUnit.SECONDS);
     }
     
 }
