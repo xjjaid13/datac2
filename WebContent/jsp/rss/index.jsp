@@ -141,15 +141,13 @@
 				data : 'startPage=' + page + param,
 				dataType : 'html',
 				success : function(ajaxData){
-					ajaxHandle(ajaxData,function(){
-						if($.trim(ajaxData) == ""){
-							$(".loadMore").off("click").html("done");
-						}else{
-							$("#rssDetailContent").append(ajaxData);
-							page++;
-							$this.attr("attr",page);
-						}
-					});
+					if($.trim(ajaxData) == ""){
+						$(".loadMore").off("click").html("done");
+					}else{
+						$("#rssDetailContent").append(ajaxData);
+						page++;
+						$this.attr("attr",page);
+					}
 				}
 			});
 		});
