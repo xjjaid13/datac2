@@ -1,8 +1,15 @@
 package com.po;
 
+import java.io.Serializable;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class BasePO {
+public class BasePO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** 开始页数 */
 	private int startPage = -1;

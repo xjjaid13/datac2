@@ -77,6 +77,9 @@
   <delete id="deleteByIds" parameterType="Rss">delete from rss where rssId in (${ids})</delete>
   <select id="maxId" resultType="java.lang.Integer">select max(rssId) from rss</select>
   <select id="selectRssTopCrawl" resultMap="rss" parameterType="Rss">
-  	select * from rss a LEFT JOIN rss_crawl b on a.rssId = b.rssId where a.rssId = #{rssId} ORDER BY b.updateTime desc limit 0,3
+  	select * from rss a left join rss_crawl b on a.rssId = b.rssId where a.rssId = #{rssId} order by b.updateTime desc limit 0,3
+  </select>
+  <select id="selectRssByUser"  resultType="java.util.List" resultMap="rss" parameterType="RssType">
+  	select a.* from rss a left join rss_subscribe b on a.rssId = b.rssId LEFT JOIN rss_type c on b.rssTypeId = c.rssTypeId where c.userId = #{userId} order by a.updateTime desc <if test="startPage != -1">limit #{startPage},#{page}</if> 
   </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.service;
 import java.util.List;
 
 import com.po.Rss;
+import com.po.RssType;
 import com.vo.RssDetailVO;
 
 public interface RssMapperService extends BaseService<Rss>{
@@ -21,5 +22,12 @@ public interface RssMapperService extends BaseService<Rss>{
 	 * @param rss
 	 */
 	public void fetchNewRss(Rss rss);
+	
+	/**
+	 * 获得最新的rss
+	 * @param rssType
+	 * @return
+	 */
+	public List<Rss> returnNewRss(RssType rssType);
 	
 }

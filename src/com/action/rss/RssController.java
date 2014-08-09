@@ -146,7 +146,8 @@ public class RssController extends BaseAction{
 		}
 		rssType.setStartPage(rssType.getStartPage() * Constant.RSSVIEWPAGE);
 		rssType.setPage(Constant.RSSVIEWPAGE);
-		List<Rss> rssList = rssSubscribeMapperService.selectRssCrawlList(rssType);
+		
+		List<Rss> rssList = rssMapperService.returnNewRss(rssType);
 		model.addAttribute("rssList",rssList);
 		return "rss/rssView";
 	}

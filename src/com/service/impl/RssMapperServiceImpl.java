@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.dao.RssCrawlMapperDao;
@@ -16,7 +18,10 @@ import com.exception.ServiceException;
 import com.po.Rss;
 import com.po.RssCrawl;
 import com.po.RssSubscribe;
+import com.po.RssType;
 import com.service.RssMapperService;
+import com.util.Constant;
+import com.util.FixQueue;
 import com.util.Md5Util;
 import com.util.RssUtil;
 import com.vo.RssDetailVO;
@@ -36,6 +41,9 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	
 	@Autowired
 	RssCrawlMapperDao rssCrawlMapperDao;
+	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 
 	@Override
 	public Rss insertRss(Rss rss, int parentId) {
@@ -130,6 +138,8 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			if(record == 0){
 				record = size;
 			}
+			BoundHashOperations<String, String, FixQueue<RssCrawl>> hashMap = redisTemplate.boundHashOps(Constant.RSSCRAWL);
+			FixQueue<RssCrawl> queue = hashMap.get(Constant.RSSCRAWL + "-" + rss.getRssId());
 			for(int i = record - 1; i >= 0; i--){
 				RssDetailVO rssDetailVO = rssDetailList.get(i);
 				RssCrawl rssCrawl = new RssCrawl();
@@ -138,14 +148,29 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssCrawl.setResourceTitle(rssDetailVO.getTitle());
 				rssCrawl.setResourceUrl(rssDetailVO.getLink());
 				rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
-				rssCrawlMapperDao.insert(rssCrawl);
+				rssCrawl.setRssCrawlId(rssCrawlMapperDao.insertAndReturnId(rssCrawl));
+				queue.add(rssCrawl);
 			}
+			hashMap.put(Constant.RSSCRAWL + "-" + rss.getRssId(), queue);
 			
 			//更新rss的更新时间和指纹为最新
 			rss.setUpdateTime(new Timestamp(System.currentTimeMillis()) + "");
 			rss.setFingePrint(rssVO.getFingerPrint());
 			rssMapperDao.update(rss);
 		}
+	}
+
+	@Override
+	public List<Rss> returnNewRss(RssType rssType) {
+		List<Rss> rssList = rssMapperDao.selectRssByUser(rssType);
+		if(rssList != null && rssList.size() > 0){
+			BoundHashOperations<String, String, FixQueue<RssCrawl>> list = redisTemplate.boundHashOps(Constant.RSSCRAWL);
+			for(Rss rss : rssList){
+				FixQueue<RssCrawl> queue = (FixQueue<RssCrawl>) list.get(Constant.RSSCRAWL + "-" + rss.getRssId());
+				rss.setRssCrawlList(queue);
+			}
+		}
+		return rssList;
 	}
 	
 }
