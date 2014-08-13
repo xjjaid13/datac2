@@ -1,6 +1,9 @@
 package com.action.rss;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -167,6 +170,12 @@ public class RssController extends BaseAction{
 	@RequestMapping("myBlogView")
 	public String myBlogView(){
 		return "blog/subject";
+	}
+	
+	public static void main(String[] args) {
+		String s = "http://www.baidu.com/aaa?aa=啊啊";
+		String s1= URLEncoder.encode(s);
+		System.out.println(URLDecoder.decode(s1));
 	}
 	
 }
