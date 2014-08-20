@@ -22,4 +22,6 @@ public class Constant {
 	
 	public static String REALPATH = "";
 	
+	public final static String RSSCRAWL = "rssCrawl";
+	
 }
