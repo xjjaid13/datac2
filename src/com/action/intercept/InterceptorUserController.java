@@ -7,7 +7,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 //import com.po.User;
 
-import com.po.User;
+import com.po.user.User;
 import com.util.Constant;
 
 public class InterceptorUserController implements HandlerInterceptor{

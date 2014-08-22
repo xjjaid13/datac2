@@ -8,10 +8,10 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import com.po.Rss;
-import com.po.RssCrawl;
-import com.service.RssCrawlMapperService;
-import com.service.RssMapperService;
+import com.po.rss.Rss;
+import com.po.rss.RssCrawl;
+import com.service.rss.RssCrawlMapperService;
+import com.service.rss.RssMapperService;
 import com.util.Constant;
 import com.util.FixQueue;
 

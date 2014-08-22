@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.po.Rss;
-import com.service.RssMapperService;
-import com.service.RssSubscribeMapperService;
+import com.po.rss.Rss;
+import com.service.rss.RssMapperService;
+import com.service.rss.RssSubscribeMapperService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring.xml")

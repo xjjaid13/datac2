@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter;
 
 import org.apache.log4j.Logger;
 
-import com.exception.FunctionException;
+import com.exception.common.FunctionException;
 
 /**  
  * 文件处理类

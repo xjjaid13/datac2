@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.po.Rss;
-import com.service.RssCrawlMapperService;
-import com.service.RssMapperService;
+import com.po.rss.Rss;
+import com.service.rss.RssCrawlMapperService;
+import com.service.rss.RssMapperService;
 
 /**  
  * 初始化更新rss线程
