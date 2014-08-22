@@ -24,112 +24,114 @@ import com.util.FileHandle;
 public class Template {
 
 	public static void main(String[] args) throws DocumentException, IOException{
-		
-		String projectPath = System.getProperty("user.dir");
-		
-		/** 模版文件 */
-		String templateFile = "C:/Users/OF-PC/git/datac2/WebContent/static/mybatis-template";
-		
-		/** 保存文件 */
-		String saveFile = projectPath + "/";
-		
-		/** 数据库名 */
-		String dbName = "datac";
-		String dbUser = "root";
-		String dbPassword = "111111";
-		
-		/** 是否覆盖 */
-		boolean isCover = false;
-		
-		/** 数据库ip */
-		String url = "jdbc:mysql://127.0.0.1:3306/"+dbName+"?characterEncoding=utf-8";
-		
-		/** 数据库用户名 */
-		
-		/** 数据库驱动 */
-		String driver = "com.mysql.jdbc.Driver";
-		
-		/** 数据库密码 */
-		
-		DBHandle db = new DBHandle();
-		db.openConnMysqlParam(driver, url, dbUser, dbPassword);
-		System.out.println(templateFile);
-		File parentFile = new File(templateFile); 
-		File[] packageFile = parentFile.listFiles();
-		
-		/** 查询表 */
-		String selectAllTable = "select table_name from information_schema.tables where table_schema='"+dbName+"'";
-		String[][] schSelectAllTable = db.executeQuery(selectAllTable);
-		
-		/** 表名称数组 */
-		ArrayList<String> tableArr = new ArrayList<String>();
-		for(int i = 0; schSelectAllTable!= null && i < schSelectAllTable.length; i++){
-			tableArr.add(schSelectAllTable[i][0]);
-		}
-		/** 如果是config文件，只处理一份 */
-		boolean first = false;
-		
-		for(int t = 0; schSelectAllTable != null && t < schSelectAllTable.length; t++){
-			/** 查询栏目 */
-			String schSelectAllcolumn = "SELECT column_name from information_schema.columns WHERE table_schema = '"+dbName+"' AND table_name = '"+schSelectAllTable[t][0]+"';";
-			String[][] schSelectAllColumn = db.executeQuery(schSelectAllcolumn);
-			/** 栏目名称数组 */
-			ArrayList<String> columnArr = new ArrayList<String>();
-			/** 栏目类型数组 */
-			ArrayList<String> columnType = new ArrayList<String>();
-			for(int c = 0; schSelectAllColumn != null && c < schSelectAllColumn.length; c++){
-				columnArr.add(schSelectAllColumn[c][0]);
-				int fieldType = db.getColumnType(schSelectAllTable[t][0],schSelectAllColumn[c][0] );
-				if(!db.isString(fieldType)){
-					columnType.add("Integer");
-				}else{
-					columnType.add("String");
-				}
+		try{
+			String projectPath = System.getProperty("user.dir");
+			
+			/** 模版文件 */
+			String templateFile = "C:/Users/OF-PC/git/datac2/WebContent/static/mybatis-template";
+			
+			/** 保存文件 */
+			String saveFile = projectPath + "/";
+			
+			/** 数据库名 */
+			String dbName = "datac";
+			String dbUser = "root";
+			String dbPassword = "111111";
+			
+			/** 是否覆盖 */
+			boolean isCover = false;
+			
+			/** 数据库ip */
+			String url = "jdbc:mysql://127.0.0.1:3306/"+dbName+"?characterEncoding=utf-8";
+			
+			/** 数据库用户名 */
+			
+			/** 数据库驱动 */
+			String driver = "com.mysql.jdbc.Driver";
+			
+			/** 数据库密码 */
+			
+			DBHandle db = new DBHandle();
+			db.openConnMysqlParam(driver, url, dbUser, dbPassword);
+			System.out.println(templateFile);
+			File parentFile = new File(templateFile); 
+			File[] packageFile = parentFile.listFiles();
+			
+			/** 查询表 */
+			String selectAllTable = "select table_name from information_schema.tables where table_schema='"+dbName+"'";
+			String[][] schSelectAllTable = db.executeQuery(selectAllTable);
+			
+			/** 表名称数组 */
+			ArrayList<String> tableArr = new ArrayList<String>();
+			for(int i = 0; schSelectAllTable!= null && i < schSelectAllTable.length; i++){
+				tableArr.add(schSelectAllTable[i][0]);
 			}
-			for(int i = 0; packageFile != null && i < packageFile.length; i++){
-				File file = packageFile[i];
-				String packageName = file.getName();
-				packageName = packageName.replaceAll("\\.", "/");
-				
-				String savePath = saveFile + packageName;
-				FileHandle.createPath(savePath);
-				File[] fileTemplateList = file.listFiles();
-				for(int j = 0; fileTemplateList != null && j < fileTemplateList.length; j++){
-					File fileTemplate = fileTemplateList[j];
-					String fileName = fileTemplate.getName();
-					String templateContent = FileHandle.readFile(fileTemplate.getAbsolutePath());
-					StringBuffer content = new StringBuffer();
-					//处理config
-					if(packageName.indexOf("config")!= -1){
-						if(!first){
-							String result = returnTableContent(templateContent,content,tableArr);
-							FileHandle.write(savePath + "/" + fileName,result,true);
-							first = true;
-							continue;
-						}else{
-							continue;
-						}
+			/** 如果是config文件，只处理一份 */
+			boolean first = false;
+			
+			for(int t = 0; schSelectAllTable != null && t < schSelectAllTable.length; t++){
+				/** 查询栏目 */
+				String schSelectAllcolumn = "SELECT column_name from information_schema.columns WHERE table_schema = '"+dbName+"' AND table_name = '"+schSelectAllTable[t][0]+"';";
+				String[][] schSelectAllColumn = db.executeQuery(schSelectAllcolumn);
+				/** 栏目名称数组 */
+				ArrayList<String> columnArr = new ArrayList<String>();
+				/** 栏目类型数组 */
+				ArrayList<String> columnType = new ArrayList<String>();
+				for(int c = 0; schSelectAllColumn != null && c < schSelectAllColumn.length; c++){
+					columnArr.add(schSelectAllColumn[c][0]);
+					int fieldType = db.getColumnType(schSelectAllTable[t][0],schSelectAllColumn[c][0] );
+					if(!db.isString(fieldType)){
+						columnType.add("Integer");
+					}else{
+						columnType.add("String");
 					}
-					String result = returnContent(templateContent,content,columnArr,schSelectAllTable[t][0],columnType);
-					String saveFilePath = savePath + "/" + fileName.replaceAll("\\{name\\}", firstUppercase(transfer(schSelectAllTable[t][0])));
-					if(packageName.indexOf("entity")!= -1){
-						FileHandle.write(saveFilePath,result,true);
-					}else if(packageName.indexOf("map")!= -1){
-						File saveFileFile = new File(saveFilePath);
-						if(saveFileFile.exists()){
-							updateXml(saveFilePath,columnArr,schSelectAllTable[t][0],columnType);
+				}
+				for(int i = 0; packageFile != null && i < packageFile.length; i++){
+					File file = packageFile[i];
+					String packageName = file.getName();
+					packageName = packageName.replaceAll("\\.", "/");
+					
+					String savePath = saveFile + packageName;
+					FileHandle.createPath(savePath);
+					File[] fileTemplateList = file.listFiles();
+					for(int j = 0; fileTemplateList != null && j < fileTemplateList.length; j++){
+						File fileTemplate = fileTemplateList[j];
+						String fileName = fileTemplate.getName();
+						String templateContent = FileHandle.readFile(fileTemplate.getAbsolutePath());
+						StringBuffer content = new StringBuffer();
+						//处理config
+						if(packageName.indexOf("config")!= -1){
+							if(!first){
+								String result = returnTableContent(templateContent,content,tableArr);
+								FileHandle.write(savePath + "/" + fileName,result,true);
+								first = true;
+								continue;
+							}else{
+								continue;
+							}
+						}
+						String result = returnContent(templateContent,content,columnArr,schSelectAllTable[t][0],columnType);
+						String saveFilePath = savePath + "/" + fileName.replaceAll("\\{name\\}", firstUppercase(transfer(schSelectAllTable[t][0])));
+						if(packageName.indexOf("entity")!= -1){
+							FileHandle.write(saveFilePath,result,true);
+						}else if(packageName.indexOf("map")!= -1){
+							File saveFileFile = new File(saveFilePath);
+							if(saveFileFile.exists()){
+								updateXml(saveFilePath,columnArr,schSelectAllTable[t][0],columnType);
+							}else{
+								FileHandle.write(saveFilePath,result,isCover);
+								formatXMLFile(saveFilePath);
+							}
 						}else{
 							FileHandle.write(saveFilePath,result,isCover);
-							formatXMLFile(saveFilePath);
 						}
-					}else{
-						FileHandle.write(saveFilePath,result,isCover);
 					}
 				}
 			}
+			db.closeConn();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		db.closeConn();
-		
 	}
 	
 	/** 解析栏目模板文件 */

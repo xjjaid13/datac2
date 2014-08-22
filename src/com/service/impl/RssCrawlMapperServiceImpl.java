@@ -10,7 +10,7 @@ import com.po.RssCrawl;
 import com.service.RssCrawlMapperService;
 
 @Service("rssCrawlMapperService")
-public class RssCrawlMapperServiceImpl extends BaseServiceImpl<RssCrawl> implements RssCrawlMapperService{
+public class RssCrawlMapperServiceImpl implements RssCrawlMapperService{
 
 	@Autowired
 	RssCrawlMapperDao rssCrawlMapperDao;
@@ -18,6 +18,11 @@ public class RssCrawlMapperServiceImpl extends BaseServiceImpl<RssCrawl> impleme
 	@Override
 	public List<RssCrawl> selectView(RssCrawl rssCrawl) {
 		return rssCrawlMapperDao.selectView(rssCrawl);
+	}
+
+	@Override
+	public List<RssCrawl> selectList(RssCrawl rssCrawl) {
+		return rssCrawlMapperDao.selectList(rssCrawl);
 	}
 	
 }

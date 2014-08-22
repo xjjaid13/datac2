@@ -13,7 +13,7 @@ import com.po.RssType;
 import com.service.RssSubscribeMapperService;
 
 @Service("rssSubscribeMapperService")
-public class RssSubscribeMapperServiceImpl extends BaseServiceImpl<RssSubscribe> implements RssSubscribeMapperService{
+public class RssSubscribeMapperServiceImpl implements RssSubscribeMapperService{
 
 	@Autowired
 	RssSubscribeMapperDao rssSubscribeMapperDao;
@@ -23,7 +23,7 @@ public class RssSubscribeMapperServiceImpl extends BaseServiceImpl<RssSubscribe>
 
 	@Override
 	public List<Rss> selectTypeSubscribe(RssSubscribe rssSubscribe) {
-		return rssSubscribeMapperDao.selectTypeSubscribe(rssSubscribe);
+		return rssMapperDao.selectTypeSubscribe(rssSubscribe);
 	}
 
 	@Override
@@ -37,9 +37,14 @@ public class RssSubscribeMapperServiceImpl extends BaseServiceImpl<RssSubscribe>
 			ids = ids.substring(0 , ids.length() -1 );
 			RssSubscribe rssSubscribe = new RssSubscribe();
 			rssSubscribe.setIds(ids);
-			return rssSubscribeMapperDao.selectListByIds(rssSubscribe);
+			return rssMapperDao.selectListByIds(rssSubscribe);
 		}
 		return null;
+	}
+
+	@Override
+	public void delete(RssSubscribe rssSubscribe) {
+		rssSubscribeMapperDao.delete(rssSubscribe);
 	}
 
 }

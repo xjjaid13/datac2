@@ -168,6 +168,12 @@ public class FileHandle {
 		}
 	}
 	
+	public static void main(String[] args) {
+		String path = "D:/test.txt";
+		String content = "aaa";
+		FileHandle.write(path, content,false);
+	}
+	
 	/**
 	 * 写内容到文件，是否覆盖
 	 * @param path 路径
@@ -185,13 +191,11 @@ public class FileHandle {
 				if(!isCover){
 					return true;
 				}
-			} else {
-				if (f.createNewFile()) {
-					return true;
-				}
+			}else{
+				f.createNewFile();
 			}
-			fos  =   new  FileOutputStream(path);
-            osw  =   new  OutputStreamWriter(fos, "UTF-8");
+			fos = new FileOutputStream(path);
+            osw = new OutputStreamWriter(fos, "UTF-8");
             osw.write(content);
             osw.flush();
             return result;

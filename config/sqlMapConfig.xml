@@ -8,6 +8,8 @@
 		
         <typeAlias alias="Blog" type="com.po.Blog" /> 
 		
+        <typeAlias alias="BlogSubject" type="com.po.BlogSubject" /> 
+		
         <typeAlias alias="BlogType" type="com.po.BlogType" /> 
 		
         <typeAlias alias="Note" type="com.po.Note" /> 

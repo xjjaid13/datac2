@@ -12,7 +12,7 @@ public interface BaseDao<T> {
 	
 	T select(T t);
 	
-	int count(T t);
+	int selectCount(T t);
 	
 	List<T> selectList(T t);
 	
@@ -22,5 +22,4 @@ public interface BaseDao<T> {
 	
 	List<T> selectList(String sql,Object param);
 	
-	int insertAndReturnId(T t);
 }

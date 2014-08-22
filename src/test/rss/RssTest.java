@@ -28,21 +28,21 @@ public class RssTest {
 		rss.setRssIcon("sss");
 		rss.setRssUrl("111");
 		rss.setRssTitle("title");
-		rssMapperService.insert(rss);
+		//rssMapperService.insert(rss);
 	}
 	
 	public void updateRss(){
 		Rss rss = createRss();
 		rss.setCondition(" and rssTitle = '11'");
 		rss.setRssIcon("update2");
-		rssMapperService.update(rss);
+		//rssMapperService.update(rss);
 	}
 	
 	public void deleteRss(){
 		//Rss rss = createRss();
 		Rss obj = new Rss();
 		obj.setRssId(17);
-		rssMapperService.delete(obj);
+		//rssMapperService.delete(obj);
 	}
 	
 	public void selectRssList(){
@@ -57,7 +57,7 @@ public class RssTest {
 		rss.setRssIcon("test");
 		rss.setRssUrl("test");
 		rss.setRssTitle("test");
-		rss.setRssId(rssMapperService.insertAndReturnId(rss));
+		//rss.setRssId(rssMapperService.insertAndReturnId(rss));
 		return rss;
 	}
 	

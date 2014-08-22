@@ -6,7 +6,7 @@ import com.po.Rss;
 import com.po.RssSubscribe;
 import com.po.RssType;
 
-public interface RssSubscribeMapperService extends BaseService<RssSubscribe>{
+public interface RssSubscribeMapperService{
 	
 	public List<Rss> selectTypeSubscribe(RssSubscribe rssSubscribe);
 	
@@ -16,5 +16,7 @@ public interface RssSubscribeMapperService extends BaseService<RssSubscribe>{
 	 * @return
 	 */
 	public List<Rss> selectRssCrawlList(RssType rssType);
+	
+	public void delete(RssSubscribe rssSubscribe);
 	
 }

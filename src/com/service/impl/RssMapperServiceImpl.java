@@ -28,7 +28,7 @@ import com.vo.RssDetailVO;
 import com.vo.RssVO;
 
 @Service("rssMapperService")
-public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMapperService{
+public class RssMapperServiceImpl implements RssMapperService{
 
 	//log
 	private static Logger log = Logger.getLogger(RssMapperServiceImpl.class);
@@ -44,7 +44,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
-
+	
 	@Override
 	public Rss insertRss(Rss rss, int parentId) {
 		try{
@@ -71,9 +71,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rss.setRssTitle(rssVO.getTitle());
 				rss.setRssUrl(rssUrl);
 				rss.setFingePrint(rssVO.getFingerPrint());
-				int rssId = rssMapperDao.insertAndReturnId(rss);
-				rss.setRssId(rssId);
-				rssSubscribe.setRssId(rssId);
+				rssMapperDao.insert(rss);
 				List<RssCrawl> rssCrawlList = new ArrayList<RssCrawl>();
 				if(rssVO.getRssDetailVOList() != null && rssVO.getRssDetailVOList().size() > 0){
 					int i = 0;
@@ -84,7 +82,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 						rssCrawl.setResourceTitle(rssDetailVO.getTitle());
 						rssCrawl.setResourceUrl(rssDetailVO.getLink());
 						rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
-						rssCrawl.setRssId(rssId);
+						rssCrawl.setRssId(rss.getRssId());
 						rssCrawlMapperDao.insert(rssCrawl);
 						rssCrawlList.add(rssCrawl);
 						if(i == 4){
@@ -148,7 +146,7 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 				rssCrawl.setResourceTitle(rssDetailVO.getTitle());
 				rssCrawl.setResourceUrl(rssDetailVO.getLink());
 				rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
-				rssCrawl.setRssCrawlId(rssCrawlMapperDao.insertAndReturnId(rssCrawl));
+				rssCrawlMapperDao.insert(rssCrawl);
 				queue.add(rssCrawl);
 			}
 			hashMap.put(Constant.RSSCRAWL + "-" + rss.getRssId(), queue);
@@ -171,6 +169,11 @@ public class RssMapperServiceImpl extends BaseServiceImpl<Rss> implements RssMap
 			}
 		}
 		return rssList;
+	}
+
+	@Override
+	public List<Rss> selectList(Rss rss) {
+		return rssMapperDao.selectList(rss);
 	}
 	
 }

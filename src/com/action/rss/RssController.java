@@ -108,10 +108,9 @@ public class RssController extends BaseAction{
 			rssTypeParent = rssTypeMapperService.select(rssType);
 			rssType.setParentString(rssTypeParent.getParentString() + rssTypeParent.getRssTypeId() + ";");
 		}
-		
-		int rssTypeId = rssTypeMapperService.insertAndReturnId(rssType);
+		rssTypeMapperService.insert(rssType);
 		JSONObject jsonObject = createJosnObject();
-		jsonObject.put("rssTypeId", rssTypeId);
+		jsonObject.put("rssTypeId", rssType.getRssTypeId());
 		writeResult(response, jsonObject);
 	}
 	

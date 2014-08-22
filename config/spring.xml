@@ -47,7 +47,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:sqlMapConfig.xml" />
-		<property name="mapperLocations" value="classpath:mappers-*.xml"></property>
 	</bean>
 
 	<bean id="viewResolver"
@@ -65,6 +64,10 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <property name="basePackage" value="com.dao" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager"

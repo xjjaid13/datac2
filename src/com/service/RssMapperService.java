@@ -6,7 +6,7 @@ import com.po.Rss;
 import com.po.RssType;
 import com.vo.RssDetailVO;
 
-public interface RssMapperService extends BaseService<Rss>{
+public interface RssMapperService{
 	
 	public Rss insertRss(Rss rss,int parentId);
 	
@@ -29,5 +29,7 @@ public interface RssMapperService extends BaseService<Rss>{
 	 * @return
 	 */
 	public List<Rss> returnNewRss(RssType rssType);
+	
+	public List<Rss> selectList(Rss rss);
 	
 }
