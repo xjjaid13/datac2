@@ -4,17 +4,20 @@ import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.rss.RssCrawlMapperDao;
 import com.dao.rss.RssMapperDao;
 import com.dao.rss.RssSubscribeMapperDao;
 import com.exception.common.ServiceException;
+import com.exception.common.TipException;
 import com.po.rss.Rss;
 import com.po.rss.RssCrawl;
 import com.po.rss.RssSubscribe;
@@ -27,6 +30,7 @@ import com.util.RssUtil;
 import com.vo.RssDetailVO;
 import com.vo.RssVO;
 
+@Transactional
 @Service("rssMapperService")
 public class RssMapperServiceImpl implements RssMapperService{
 
@@ -58,13 +62,14 @@ public class RssMapperServiceImpl implements RssMapperService{
 				//判断是不是已经存在
 				RssSubscribe rssSubscribeNew = rssSubscribeMapperDao.select(rssSubscribe);
 				if(rssSubscribeNew != null){
-					throw new Exception("该列别下存在此订阅");
+					log.info("重复订阅,已经存在url:" + rssUrl);
+					throw new TipException("该类别下存在此订阅");
 				}
 			}else{
 				rss = new Rss();
 				RssVO rssVO = RssUtil.getRSSInfo(rssUrl);
 				if(rssVO == null){
-					log.error(rssUrl + "获取rss失败");
+					log.error("获取rss失败,url:" + rssUrl);
 					return null;
 				}
 				rss.setRssIcon(rssVO.getIcon());
@@ -92,6 +97,7 @@ public class RssMapperServiceImpl implements RssMapperService{
 					rss.setRssCrawlList(rssCrawlList);
 				}
 			}
+			log.info("insert rss 成功,插入rss为 :" + rss.getRssTitle());
 			rssSubscribeMapperDao.insert(rssSubscribe);
 			return rss;
 		} catch(Exception e) {
@@ -102,60 +108,67 @@ public class RssMapperServiceImpl implements RssMapperService{
 	@Override
 	public List<RssDetailVO> returnRssDetailList(Rss rss) {
 		try{
-			List<RssDetailVO> rssDetailVOList = RssUtil.getRSSInfo(rss.getRssUrl()).getRssDetailVOList();
-			return rssDetailVOList;
+			return RssUtil.getRSSInfo(rss.getRssUrl()).getRssDetailVOList();
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void fetchNewRss(Rss rss) {
+	public void fetchNewRss(final Rss rss) {
 		try{
-			RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
+			log.info("更新rss:" + rss.getRssUrl());
+			final RssVO rssVO = RssUtil.getRSSInfo(rss.getRssUrl());
 			if(rssVO != null && !rssVO.getFingerPrint().equals(rss.getFingePrint())){
-				log.info(rssVO.getLink() + "变动2，变动前fingerPrint=" + rss.getFingePrint() + ",变动后fingerPrint=" + rssVO.getFingerPrint());
-				List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
-				if(rssDetailList == null){
-					return;
-				}
-				int record = 0;
-				int size = rssDetailList.size();
-				
-				if(rss.getFingePrint() == null){
-					record = size;
-				}else{
-					//先判断之前的第一个rss文章在新的rss文章中的位置
-					for(RssDetailVO rssDetailVO : rssDetailList){
-						if(rss.getFingePrint().equals(Md5Util.getMD5(rssDetailVO.getLink().getBytes()))){
-							record = Integer.parseInt(rssDetailVO.getItemNo());
+				Executors.newCachedThreadPool().execute(new Runnable(){
+					@Override
+					public void run() {
+						log.info(rssVO.getLink() + "变动，变动前fingerPrint=" + rss.getFingePrint() + ",变动后fingerPrint=" + rssVO.getFingerPrint());
+						List<RssDetailVO> rssDetailList = rssVO.getRssDetailVOList();
+						if(rssDetailList == null){
+							return;
 						}
+						int record = 0;
+						int size = rssDetailList.size();
+						
+						if(rss.getFingePrint() == null){
+							record = size;
+						}else{
+							//先判断之前的第一个rss文章在新的rss文章中的位置
+							for(RssDetailVO rssDetailVO : rssDetailList){
+								if(rss.getFingePrint().equals(Md5Util.getMD5(rssDetailVO.getLink().getBytes()))){
+									record = Integer.parseInt(rssDetailVO.getItemNo());
+								}
+							}
+						}
+						
+						//若都未匹配，则全部放入数据库
+						if(record == 0){
+							record = size;
+						}
+						BoundHashOperations<String, String, FixQueue<RssCrawl>> hashMap = redisTemplate.boundHashOps(Constant.RSSCRAWL);
+						FixQueue<RssCrawl> queue = hashMap.get(Constant.RSSCRAWL + "-" + rss.getRssId());
+						for(int i = record - 1; i >= 0; i--){
+							RssDetailVO rssDetailVO = rssDetailList.get(i);
+							RssCrawl rssCrawl = new RssCrawl();
+							rssCrawl.setRssId(rss.getRssId());
+							rssCrawl.setResourceDesc(rssDetailVO.getDescription());
+							rssCrawl.setResourceTitle(rssDetailVO.getTitle());
+							rssCrawl.setResourceUrl(rssDetailVO.getLink());
+							rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
+							rssCrawlMapperDao.insert(rssCrawl);
+							queue.add(rssCrawl);
+						}
+						queue.reverse();
+						hashMap.put(Constant.RSSCRAWL + "-" + rss.getRssId(), queue);
+						
+						//更新rss的更新时间和指纹为最新
+						rss.setUpdateTime(new Timestamp(System.currentTimeMillis()) + "");
+						rss.setFingePrint(rssVO.getFingerPrint());
+						rssMapperDao.update(rss);
+						log.info("更新成功,更新了" + record + "条记录，url:" + rss.getRssUrl());
 					}
-				}
-				
-				//若都未匹配，则全部放入数据库
-				if(record == 0){
-					record = size;
-				}
-				BoundHashOperations<String, String, FixQueue<RssCrawl>> hashMap = redisTemplate.boundHashOps(Constant.RSSCRAWL);
-				FixQueue<RssCrawl> queue = hashMap.get(Constant.RSSCRAWL + "-" + rss.getRssId());
-				for(int i = record - 1; i >= 0; i--){
-					RssDetailVO rssDetailVO = rssDetailList.get(i);
-					RssCrawl rssCrawl = new RssCrawl();
-					rssCrawl.setRssId(rss.getRssId());
-					rssCrawl.setResourceDesc(rssDetailVO.getDescription());
-					rssCrawl.setResourceTitle(rssDetailVO.getTitle());
-					rssCrawl.setResourceUrl(rssDetailVO.getLink());
-					rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
-					rssCrawlMapperDao.insert(rssCrawl);
-					queue.add(rssCrawl);
-				}
-				hashMap.put(Constant.RSSCRAWL + "-" + rss.getRssId(), queue);
-				
-				//更新rss的更新时间和指纹为最新
-				rss.setUpdateTime(new Timestamp(System.currentTimeMillis()) + "");
-				rss.setFingePrint(rssVO.getFingerPrint());
-				rssMapperDao.update(rss);
+				});
 			}
 		} catch(Exception e) {
 			throw new ServiceException(e);

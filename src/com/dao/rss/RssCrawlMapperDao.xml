@@ -27,8 +27,8 @@
 	<select id="selectList"  resultType="java.util.List" resultMap="rssCrawl">
 		select * from rss_crawl where 1 = 1 
 	   <if test="rssCrawlId != null"> and rssCrawlId = #{rssCrawlId} </if> <if test="rssId != null"> and rssId = #{rssId} </if> <if test="resourceTitle != null"> and resourceTitle = #{resourceTitle} </if> <if test="resourceUrl != null"> and resourceUrl = #{resourceUrl} </if> <if test="updateTime != null"> and updateTime = #{updateTime} </if> <if test="resourceDesc != null"> and resourceDesc = #{resourceDesc} </if> 
-			<if test="condition != null"> ${condition}</if> 
-	        <if test="startPage != -1"> limit #{startPage},#{page}</if>
+			<if test="condition != null"> ${condition}</if> order by updateTime desc,rssCrawlId desc
+	        <if test="startPage != -1"> limit #{startPage},#{page}</if> 
 	</select>
 	
 	<select id="selectCount"  resultType="java.lang.Integer" >

@@ -69,12 +69,21 @@ public class FixQueue<T> extends AbstractList<T> implements Serializable{
         int index = (head + i) % capacity;
         return queue[index];
     }
+    
+    public void reverse(){
+    	T[] newqueue = newArray(capacity);
+    	for(int i = 0; i < capacity; i++){
+    		newqueue[i] = get(capacity - i - 1);
+    	}
+    	this.queue = newqueue;
+    }
 
     public int size() {
         // Can't use % here because it's not mod: -3 % 2 is -1, not +1.
         int diff = tail - head;
-        if (diff < 0)
-            diff += capacity;
+        if (diff < 0){
+        	diff += capacity;
+        }
         return diff;
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.rss.RssMapperDao;
 import com.dao.rss.RssSubscribeMapperDao;
@@ -13,6 +14,7 @@ import com.po.rss.RssSubscribe;
 import com.po.rss.RssType;
 import com.service.rss.RssSubscribeMapperService;
 
+@Transactional
 @Service("rssSubscribeMapperService")
 public class RssSubscribeMapperServiceImpl implements RssSubscribeMapperService{
 

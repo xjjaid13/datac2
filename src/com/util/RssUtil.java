@@ -93,6 +93,9 @@ public class RssUtil {
 					
 					//描述
 					String detailDescription = DataHandle.handleValue(feedDetail.getDescription().toString());
+					if(detailDescription.length() > 1000){
+						detailDescription = detailDescription.substring(0,999);
+					}
 					rssDetailVO.setDescription(detailDescription);
 					
 					//连接
@@ -117,7 +120,7 @@ public class RssUtil {
 	        }
 			return rssVO;
 		} catch (Exception e) {
-			log.error(xmlRemotePath + "异常",e);
+			log.error(xmlRemotePath + "异常: " + e.getMessage());
 		}
 		return null;
 	}
