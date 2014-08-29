@@ -18,6 +18,22 @@
 		
 		<result property="updateTime" column="updateTime" />
 		
+		<collection property="rssCrawlList" ofType="RssCrawl">
+		
+			<result property="rssCrawlId" column="rssCrawlId" />
+		
+			<result property="rssId" column="rssId" />
+			
+			<result property="resourceTitle" column="resourceTitle" />
+			
+			<result property="resourceUrl" column="resourceUrl" />
+			
+			<result property="updateTime" column="updateTime" />
+			
+			<result property="resourceDesc" column="resourceDesc" />
+			
+		</collection>
+		
 	</resultMap>
 
 	<select id="select" resultType="java.util.Map" resultMap="rss">
@@ -71,7 +87,7 @@
 	</select>
 	
 	<select id="selectRssTopCrawl" resultMap="rss" parameterType="Rss">
-  	    select * from rss a left join rss_crawl b on a.rssId = b.rssId where a.rssId = #{rssId} order by b.updateTime desc limit 0,3
+  	    select * from rss a left join rss_crawl b on a.rssId = b.rssId where a.rssId = #{rssId} order by b.updateTime desc,b.rssCrawlId desc limit 0,3
     </select>
     
     <select id="selectRssByUser"  resultType="java.util.List" resultMap="rss" parameterType="RssType">

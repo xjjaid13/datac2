@@ -64,12 +64,14 @@
 						}
 						var rssListTemplateDiv = $("#rssListTemplateDiv").html();
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitleTip#",rss.rssTitle);
-						rssListTemplateDiv = rssListTemplateDiv.replace("#rssId#",rss.rssId);
+						alert(rssListTemplateDiv);
+						rssListTemplateDiv = rssListTemplateDiv.replace(/#rssId#/g,rss.rssId);
+						alert(rssListTemplateDiv);
 						rssListTemplateDiv = rssListTemplateDiv.replace("#rssTitle#",rssTitle);
 						
 						var rssContent = "";
 						var rssCrawlList = rss.rssCrawlList;
-						for(var i = 0; i < rssCrawlList.length; i++){
+						for(var i = rssCrawlList.length - 1; i >= 0; i--){
 							var rssCrawl = rssCrawlList[i];
 							rssContent += '<div class="topic-feed-item">';
 							rssContent += '<a target="_blank" href="'+rssCrawl.resourceUrl+'">'+rssCrawl.resourceTitle+'</a>';

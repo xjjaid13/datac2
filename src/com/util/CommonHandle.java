@@ -1,5 +1,6 @@
 package com.util;
 
+
 public class CommonHandle {
 
 	/**
@@ -14,6 +15,11 @@ public class CommonHandle {
 		}else{
 			return recordSum / recordNum + 1;
 		}
+	}
+	
+	public static void main(String[] args) {
+		String content = "parternerId=ganji&userId=001&timeStamp=1408437700&random=123456&appKey=fPjCs3UIfw4=";
+		System.out.println(Sha1Util.getSha1(content).toLowerCase());
 	}
 	
 }

@@ -52,7 +52,7 @@ public class CacheRssCrawlThread {
 					}
 				}
 				hashMap.put(Constant.RSSCRAWL + "-" + rss.getRssId(), queue);
-				System.out.println(Constant.RSSCRAWL + "-" + rss.getRssId() + " done.");
+				log.info(Constant.RSSCRAWL + "-" + rss.getRssId() + " done.");
 			}
 		}
 	}
