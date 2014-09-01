@@ -2,7 +2,6 @@ package com.service.rss.impl;
 
 import java.net.URLDecoder;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -73,22 +72,25 @@ public class RssMapperServiceImpl implements RssMapperService{
 				RssVO rssVO = RssUtil.getRSSInfo(rssUrl);
 				if(rssVO == null){
 					log.error("获取rss失败,url:" + rssUrl);
-					return null;
+					throw new TipException("获取rss源失败");
 				}
 				rss.setRssIcon(rssVO.getIcon());
 				rss.setRssTitle(rssVO.getTitle());
 				rss.setRssUrl(rssUrl);
 				rss.setFingePrint(rssVO.getFingerPrint());
+				rss.setUpdateTime(TimeHandle.currentTime());
 				rssMapperDao.insert(rss);
 				rssSubscribe.setRssId(rss.getRssId());
-				List<RssCrawl> rssCrawlList = new ArrayList<RssCrawl>();
 				BoundHashOperations<String, String, FixQueue<RssCrawl>> hashMap = redisTemplate.boundHashOps(Constant.RSSCRAWL);
 				FixQueue<RssCrawl> queue = null;
 				if(rssVO.getRssDetailVOList() != null && rssVO.getRssDetailVOList().size() > 0){
-					int i = 0;
 					queue = new FixQueue<RssCrawl>();
-					for(RssDetailVO rssDetailVO : rssVO.getRssDetailVOList()){
-						i++;
+					int i = 2;
+					if(rssVO.getRssDetailVOList().size() < i){
+						i = rssVO.getRssDetailVOList().size();
+					}
+					for(;i >= 0;i--){
+						RssDetailVO rssDetailVO = rssVO.getRssDetailVOList().get(i);
 						RssCrawl rssCrawl = new RssCrawl();
 						rssCrawl.setResourceDesc(rssDetailVO.getDescription());
 						rssCrawl.setResourceTitle(rssDetailVO.getTitle());
@@ -96,20 +98,18 @@ public class RssMapperServiceImpl implements RssMapperService{
 						rssCrawl.setUpdateTime(TimeHandle.currentTime());
 						rssCrawl.setRssId(rss.getRssId());
 						rssCrawlMapperDao.insert(rssCrawl);
-						rssCrawlList.add(rssCrawl);
 						queue.add(rssCrawl);
-						if(i == 3){
-							break;
-						}
 					}
 					queue.reverse();
 					hashMap.put(Constant.RSSCRAWL + "-" + rss.getRssId(), queue);
-					rss.setRssCrawlList(rssCrawlList);
+					rss.setRssCrawlList(queue);
 				}
 			}
 			rssSubscribeMapperDao.insert(rssSubscribe);
 			log.info("insert rss,插入rss为 :" + rss.getRssTitle());
 			return rss;
+		} catch(TipException e) {
+			throw new TipException(e);
 		} catch(Exception e) {
 			throw new ServiceException(e);
 		}
@@ -165,7 +165,7 @@ public class RssMapperServiceImpl implements RssMapperService{
 							rssCrawl.setResourceDesc(rssDetailVO.getDescription());
 							rssCrawl.setResourceTitle(rssDetailVO.getTitle());
 							rssCrawl.setResourceUrl(rssDetailVO.getLink());
-							rssCrawl.setUpdateTime(rssDetailVO.getPubDate());
+							rssCrawl.setUpdateTime(TimeHandle.currentTime());
 							rssCrawlMapperDao.insert(rssCrawl);
 							log.info(queue + "||" + rssCrawl);
 							queue.add(rssCrawl);

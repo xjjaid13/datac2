@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.action.BaseAction;
 import com.exception.common.ControllerException;
+import com.exception.common.TipException;
 import com.po.rss.Rss;
 import com.po.rss.RssCrawl;
 import com.po.rss.RssSubscribe;
@@ -147,6 +148,8 @@ public class RssController extends BaseAction{
 			JSONObject jsonObject = createJosnObject();
 			jsonObject.put("rss", rss);
 			writeResult(response, jsonObject);
+		}catch(TipException e){
+			throw new TipException(e);
 		}catch(Exception e){
 			throw new ControllerException(e);
 		}

@@ -34,7 +34,7 @@
 		}
 		if (display) {
 			$(".sticky-queue").prepend('<div class="sticky border-' + position + '" id="' + uniqID + '"></div>');
-			$("#" + uniqID).append('<img src="./static/js/sticky-info/close.png" class="sticky-close" rel="' + uniqID + '" title="Close" />');
+			$("#" + uniqID).append('<img src="../static/js/sticky-info/close.png" class="sticky-close" rel="' + uniqID + '" title="Close" />');
 			$("#" + uniqID).append('<div class="sticky-note" rel="' + uniqID + '">' + note + "</div>");
 			//var height = $("#" + uniqID).height();
 			//$("#" + uniqID).css("height", height);

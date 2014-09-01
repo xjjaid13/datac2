@@ -12,6 +12,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.exception.common.TipException;
 
 public class MyExceptionHandler implements HandlerExceptionResolver {  
     
@@ -20,17 +21,23 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,  
             Exception ex) {
         try{
+        	String errMsg = "系统异常";
+        	if(ex instanceof TipException){
+        		String msg = ex.getMessage();
+        		errMsg = msg.substring(msg.lastIndexOf(":") + 1);
+        	}
             if(isAjax(request)) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("result", "error");
-                jsonObject.put("message", "系统异常");
+                jsonObject.put("message", errMsg);
+                
                 PrintWriter writer = response.getWriter();
                 writer.write(jsonObject.toString());  
                 writer.flush();
                 return null;
             }else{
                 Map<String,Object> map = new HashMap<String,Object>();
-                map.put("message", "系统异常");
+                map.put("message", errMsg);
                 ex.printStackTrace();
                 return new ModelAndView("error", map);
             }

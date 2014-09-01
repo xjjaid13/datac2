@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndImage;
@@ -92,11 +93,14 @@ public class RssUtil {
 					rssDetailVO.setTitle(detailTitle);
 					
 					//描述
-					String detailDescription = DataHandle.handleValue(feedDetail.getDescription().toString());
-					if(detailDescription.length() > 1000){
-						detailDescription = detailDescription.substring(0,999);
+					SyndContent syndContent = feedDetail.getDescription();
+					if(syndContent != null){
+						String detailDescription = DataHandle.handleValue(feedDetail.getDescription().toString());
+						if(detailDescription.length() > 1000){
+							detailDescription = detailDescription.substring(0,999);
+						}
+						rssDetailVO.setDescription(detailDescription);
 					}
-					rssDetailVO.setDescription(detailDescription);
 					
 					//连接
 					String detailLink = DataHandle.handleValue(feedDetail.getLink());
@@ -123,6 +127,12 @@ public class RssUtil {
 			log.error(xmlRemotePath + "异常: " + e.getMessage());
 		}
 		return null;
+	}
+	
+	public static void main(String[] args) {
+		RssVO rssVo = RssUtil.getRSSInfo("http://www.guao.hk/feed");
+		System.out.println(rssVo.getTitle());
+		
 	}
 	
 }
