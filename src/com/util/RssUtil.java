@@ -32,9 +32,8 @@ public class RssUtil {
 	 */
 	public static RssVO getRSSInfo(String xmlRemotePath) {
 		try {
-			
 			URL feedUrl = new URL(xmlRemotePath);
-			
+            
 	        SyndFeedInput input = new SyndFeedInput();
 	        XmlReader xmlReader = new XmlReader(feedUrl);
 	        SyndFeed feed = input.build(xmlReader);
@@ -124,6 +123,7 @@ public class RssUtil {
 	        }
 			return rssVO;
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error(xmlRemotePath + "异常: " + e.getMessage());
 		}
 		return null;
