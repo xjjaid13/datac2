@@ -1,4 +1,4 @@
-package test.mainTest;
+package test.mainTest.DBTest;
 
 import java.sql.Timestamp;
 import java.util.Random;

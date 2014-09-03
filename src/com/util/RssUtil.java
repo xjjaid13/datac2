@@ -1,5 +1,7 @@
 package com.util;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -29,15 +32,21 @@ public class RssUtil {
 	 * 获得rss结果
 	 * @param xmlRemotePath rssurl
 	 * @return
+	 * @throws IOException 
 	 */
 	public static RssVO getRSSInfo(String xmlRemotePath) {
 		try {
-			URL feedUrl = new URL(xmlRemotePath);
-            
-	        SyndFeedInput input = new SyndFeedInput();
-	        XmlReader xmlReader = new XmlReader(feedUrl);
-	        SyndFeed feed = input.build(xmlReader);
-	        
+			SyndFeed feed = null;
+			SyndFeedInput input = new SyndFeedInput();
+			
+			if(!xmlRemotePath.startsWith("http")){
+				feed = input.build(new StringReader(xmlRemotePath));
+			}else{
+				URL feedUrl = new URL(xmlRemotePath);
+		        XmlReader xmlReader = new XmlReader(feedUrl);
+		        feed = input.build(xmlReader);
+			}
+			
 	        //新建一个rssVO对象
 	        RssVO rssVO = new RssVO();
 	        
@@ -123,14 +132,26 @@ public class RssUtil {
 	        }
 			return rssVO;
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(xmlRemotePath + "异常: " + e.getMessage());
+			try{
+				if(xmlRemotePath.startsWith("http")){
+					e.printStackTrace();
+					log.error(xmlRemotePath + "异常,替换成字符串再次解析: " + e.getMessage());
+					String urlContent = new String(Jsoup.connect(xmlRemotePath).execute().bodyAsBytes());
+					return getRSSInfo(urlContent);
+				}else{
+					log.error("再次rss解析异常");
+				}
+			}catch(Exception e1){
+				e.printStackTrace();
+				log.error(xmlRemotePath + "异常1: " + e.getMessage());
+			}
 		}
 		return null;
 	}
 	
 	public static void main(String[] args) {
-		RssVO rssVo = RssUtil.getRSSInfo("http://www.guao.hk/feed");
+		
+		RssVO rssVo = RssUtil.getRSSInfo("http://rss.huanqiu.com/world/hot.xml");
 		System.out.println(rssVo.getTitle());
 		
 	}
