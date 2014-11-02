@@ -45,6 +45,13 @@ public class DataHandle {
 			}else{
 				return false;
 			}
+		}else if(object instanceof Object[]){
+			Object[] arr = (Object[]) object;
+			if(arr.length == 0){
+				return true;
+			}else{
+				return false;
+			}
 		}
 		return true;
 	}

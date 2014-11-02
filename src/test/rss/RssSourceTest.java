@@ -6,11 +6,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,9 +22,10 @@ public class RssSourceTest {
 	@Test
 	public void run() throws HttpException, IOException{
 		
-		String url = "http://www.iteye.com";
-		String keyword = "不要让大数据成大窥探";
-		String keyword1 = "盘点“PayPal黑帮”成员的传奇创业故事";
+		String url = "http://www.csdn.net";
+		String keyword = "专业人士解读《被投资人“送”入看守所》一案";
+		String keyword1 = "一周极客热文：JavaScript的诞生与死亡";
+		
 		
 		HttpClient httpClient = new HttpClient();
 		HttpMethod httpMethod = new GetMethod(url);
@@ -93,7 +89,6 @@ public class RssSourceTest {
 		loop : for(Element element : allE){
 			Elements childE = element.select(compare);
 			for(Element e : childE){
-				System.out.println(e.html() + "|||" + keyword);
 				if(e.html().equals(keyword)){
 					break loop;
 				}

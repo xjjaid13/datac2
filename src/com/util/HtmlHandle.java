@@ -1,7 +1,17 @@
 package com.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.mozilla.intl.chardet.nsDetector;
+import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
+import org.mozilla.intl.chardet.nsPSMDetector;
 
 /**
  * html字符串处理类
@@ -131,6 +141,31 @@ public final class HtmlHandle {
 		}
 
 		return textStr;// 返回文本字符串
+	}
+	
+	public static String getWebCon(String domain) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			java.net.URL url = new java.net.URL(domain);
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					url.openStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
+			}
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Log.Error("无法解析" + e.getMessage());
+		}
+		return sb.toString();
+	}
+	
+	public static void main(String[] args) {
+		String s  = HtmlHandle.getWebCon("http://www.iteye.com");
+		System.out.println(s);
+		//System.out.println(HtmlHandle.foundCharset);
 	}
 	
 }
