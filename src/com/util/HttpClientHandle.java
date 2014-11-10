@@ -49,4 +49,8 @@ public class HttpClientHandle {
 		return null;
 	}
 	
+	public static void main(String[] args) {
+		System.out.println(HttpClientHandle.returnHtmlContent("http://www.oschina.net"));
+	}
+	
 }

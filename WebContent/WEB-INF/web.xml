@@ -13,7 +13,6 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
-	
 	<servlet-mapping>
 		<servlet-name>spring</servlet-name>
 		<url-pattern>/</url-pattern>
@@ -22,6 +21,26 @@
 	<servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.ico</url-pattern>
+    </servlet-mapping>
+	
+	<servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.eot</url-pattern>
+    </servlet-mapping>
+    
+	<servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.svg</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ttf</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.woff</url-pattern>
     </servlet-mapping>
 	
 	 <filter>

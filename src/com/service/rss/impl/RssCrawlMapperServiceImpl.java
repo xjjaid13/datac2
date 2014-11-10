@@ -35,5 +35,10 @@ public class RssCrawlMapperServiceImpl implements RssCrawlMapperService{
 			throw new ServiceException(e);
 		}
 	}
+
+	@Override
+	public int selectCount(RssCrawl rssCrawl) {
+		return rssCrawlMapperDao.selectCount(rssCrawl);
+	}
 	
 }

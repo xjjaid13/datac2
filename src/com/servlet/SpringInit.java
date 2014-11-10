@@ -17,8 +17,8 @@ public class SpringInit implements ApplicationListener<ContextRefreshedEvent> {
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
-		fetchNewRss.init();
-		CacheRssCrawl.init();
+//		fetchNewRss.init();
+//		CacheRssCrawl.init();
 	}
 
 }

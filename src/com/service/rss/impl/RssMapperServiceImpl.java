@@ -211,5 +211,10 @@ public class RssMapperServiceImpl implements RssMapperService{
 			throw new ServiceException(e);
 		}
 	}
+
+	@Override
+	public int selectCount(Rss rss) {
+		return rssMapperDao.selectCount(rss);
+	}
 	
 }

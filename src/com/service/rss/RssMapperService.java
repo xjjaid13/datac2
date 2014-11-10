@@ -32,4 +32,6 @@ public interface RssMapperService{
 	
 	public List<Rss> selectList(Rss rss);
 	
+	public int selectCount(Rss rss);
+	
 }
