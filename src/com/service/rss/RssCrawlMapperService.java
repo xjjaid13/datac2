@@ -10,4 +10,6 @@ public interface RssCrawlMapperService{
 	
 	public List<RssCrawl> selectList(RssCrawl rssCrawl);
 	
+	public int selectCount(RssCrawl rssCrawl);
+	
 }
