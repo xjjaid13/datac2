@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.carve.CarveTypeMapperDao">
+  <resultMap id="carveType" type="CarveType">
+    <result property="carveTypeId" column="carveTypeId"/>
+    <result property="url" column="url"/>
+    <result property="typeName" column="typeName"/>
+    <result property="content" column="content"/>
+    <result property="seqNum" column="seqNum"/>
+    <result property="pattern" column="pattern"/>
+    <result property="hash" column="hash"/>
+  </resultMap>
+  <select id="select" resultType="java.util.Map" resultMap="carveType">select * from carve_type where 1 = 1 
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="content != null">and content = #{content}</if>  
+    <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="pattern != null">and pattern = #{pattern}</if>  
+    <if test="hash != null">and hash = #{hash}</if>  
+    <if test="condition != null">${condition}</if>
+  </select>
+  <select id="selectList" resultType="java.util.List" resultMap="carveType">select * from carve_type where 1 = 1 
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="content != null">and content = #{content}</if>  
+    <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="pattern != null">and pattern = #{pattern}</if>  
+    <if test="hash != null">and hash = #{hash}</if>  
+    <if test="condition != null">${condition}</if>  
+    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">select count(carveTypeId) from carve_type where 1 = 1 
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="content != null">and content = #{content}</if>  
+    <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="pattern != null">and pattern = #{pattern}</if>  
+    <if test="hash != null">and hash = #{hash}</if>  
+    <if test="condition != null">${condition}</if>
+  </select>
+  <insert id="insert" parameterType="CarveType">insert into carve_type (carveTypeId,url,typeName,content,seqNum,pattern,hash,) values (#{carveTypeId},#{url},#{typeName},#{content},#{seqNum},#{pattern},#{hash},)</insert>
+  <update id="update" parameterType="CarveType">update carve_type 
+    <set> 
+      <if test="carveTypeId != null">carveTypeId = #{carveTypeId},</if>
+      <if test="url != null">url = #{url},</if>
+      <if test="typeName != null">typeName = #{typeName},</if>
+      <if test="content != null">content = #{content},</if>
+      <if test="seqNum != null">seqNum = #{seqNum},</if>
+      <if test="pattern != null">pattern = #{pattern},</if>
+      <if test="hash != null">hash = #{hash},</if> 
+    </set> where 1 = 1 
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>
+    <if test="condition != null">${condition}</if>
+  </update>
+  <delete id="delete" parameterType="CarveType">delete from carve_type where 1 = 1 
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="content != null">and content = #{content}</if>  
+    <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="pattern != null">and pattern = #{pattern}</if>  
+    <if test="hash != null">and hash = #{hash}</if>  
+    <if test="condition != null">${condition}</if>
+  </delete>
+  <delete id="deleteByIds" parameterType="CarveType">delete from carve_type where carveTypeId in (${ids})</delete>
+  <select id="maxId" resultType="java.lang.Integer">select max(carveTypeId) from carve_type</select>
+</mapper>

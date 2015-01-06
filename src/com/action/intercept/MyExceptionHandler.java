@@ -21,6 +21,7 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,  
             Exception ex) {
         try{
+        	response.setContentType("application/json;charset=UTF-8");
         	String errMsg = "系统异常";
         	if(ex instanceof TipException){
         		String msg = ex.getMessage();

@@ -8,3 +8,23 @@ a:hover{
 .popover{
 	max-width : 316px;
 }
+
+
+.ui-dialog{
+	padding : 0;
+}
+.ui-widget-header{
+	border : 0;
+}
+.ui-widget-header{
+	background : linear-gradient(to bottom, #f5f5f5 0px, #e8e8e8 100%);
+}
+.ui-dialog .ui-dialog-buttonpane{
+	background : linear-gradient(to bottom, #f5f5f5 0px, #e8e8e8 100%);
+}
+.ui-dialog .ui-dialog-titlebar{
+	padding : 1em;
+}
+.ui-dialog .ui-dialog-titlebar-close{
+	right : 1.5em;
+}

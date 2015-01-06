@@ -56,6 +56,10 @@ public class DataHandle {
 		return true;
 	}
 	
+	public static boolean isNotNullOrEmpty(Object object){
+		return !isNullOrEmpty(object);
+	}
+	
 	/**
 	 * 获取字段长度、全角算一个长度，半角算半个长度
 	 * @param text 字段
@@ -359,6 +363,17 @@ public class DataHandle {
 	public static int returnUserId(HttpSession session){
 		//String userid = (String) session.getAttribute("userid");
 		return 1;
+	}
+	
+	public static String returnStringFromIntArray(Integer[] array){
+		if(!isNullOrEmpty(array)){
+			StringBuilder content = new StringBuilder();
+			for(Integer val : array){
+				content.append(val + ",");
+			}
+			return content.toString().substring(0,content.length() - 1);
+		}
+		return null;
 	}
 	
 }

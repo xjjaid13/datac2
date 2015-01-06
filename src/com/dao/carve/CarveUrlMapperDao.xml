@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.carve.CarveUrlMapperDao">
+  <resultMap id="carveUrl" type="CarveUrl">
+    <result property="carveUrlId" column="carveUrlId"/>
+    <result property="title" column="title"/>
+    <result property="url" column="url"/>
+    <result property="carveTypeId" column="carveTypeId"/>
+    <result property="createTime" column="createTime"/>
+  </resultMap>
+  <select id="select" resultType="java.util.Map" resultMap="carveUrl">select * from carve_url where 1 = 1 
+    <if test="carveUrlId != null">and carveUrlId = #{carveUrlId}</if>  
+    <if test="title != null">and title = #{title}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="createTime != null">and createTime = #{createTime}</if>  
+    <if test="condition != null">${condition}</if> 
+  </select>
+  <select id="selectList" resultType="java.util.List" resultMap="carveUrl">select * from carve_url where 1 = 1 
+    <if test="carveUrlId != null">and carveUrlId = #{carveUrlId}</if>  
+    <if test="title != null">and title = #{title}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="createTime != null">and createTime = #{createTime}</if>  
+    <if test="condition != null">${condition}</if>  
+    <if test="startPage != -1">limit #{startPage},#{page}</if> 
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">select count(carveUrlId) from carve_url where 1 = 1 
+    <if test="carveUrlId != null">and carveUrlId = #{carveUrlId}</if>  
+    <if test="title != null">and title = #{title}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="createTime != null">and createTime = #{createTime}</if>  
+    <if test="condition != null">${condition}</if> 
+  </select>
+  <insert id="insert" parameterType="CarveUrl">insert into carve_url (carveUrlId,title,url,carveTypeId,createTime,) values (#{carveUrlId},#{title},#{url},#{carveTypeId},#{createTime},)</insert>
+  <update id="update" parameterType="CarveUrl">update carve_url 
+    <set> 
+      <if test="carveUrlId != null">carveUrlId = #{carveUrlId},</if>
+      <if test="title != null">title = #{title},</if>
+      <if test="url != null">url = #{url},</if>
+      <if test="carveTypeId != null">carveTypeId = #{carveTypeId},</if>
+      <if test="createTime != null">createTime = #{createTime},</if> 
+    </set> where 1 = 1 
+    <if test="carveUrlId != null">and carveUrlId = #{carveUrlId}</if>  
+    <if test="condition != null">${condition}</if> 
+  </update>
+  <delete id="delete" parameterType="CarveUrl">delete from carve_url where 1 = 1 
+    <if test="carveUrlId != null">and carveUrlId = #{carveUrlId}</if>  
+    <if test="title != null">and title = #{title}</if>  
+    <if test="url != null">and url = #{url}</if>  
+    <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
+    <if test="createTime != null">and createTime = #{createTime}</if>  
+    <if test="condition != null">${condition}</if> 
+  </delete>
+  <delete id="deleteByIds" parameterType="CarveUrl">delete from carve_url where carveUrlId in (${ids})</delete>
+  <select id="maxId" resultType="java.lang.Integer">select max(carveUrlId) from carve_url</select>
+</mapper>

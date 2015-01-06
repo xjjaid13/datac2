@@ -65,6 +65,18 @@ public class DBHandle {
 		}
 	}
 	
+	public void openConnMysql(String ip,String user,String password){
+		String strDirverPath = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://"+ip+":3306/datac?characterEncoding=utf-8";
+		try {
+			Class.forName(strDirverPath);
+			conn = DriverManager.getConnection(url,user,password);
+			st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void openConnMysqlParam(String driver,String url,String user,String password){
 		String strDirverPath = driver;
 		try {
