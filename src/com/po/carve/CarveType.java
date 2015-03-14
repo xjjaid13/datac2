@@ -12,9 +12,13 @@ public class CarveType extends BasePO{
 
 	private String typeName;
 
+	private Integer enable;
+
 	private String content;
 
 	private Integer seqNum;
+
+	private String selector;
 
 	private String pattern;
 
@@ -33,12 +37,20 @@ public class CarveType extends BasePO{
 		return typeName;
 	}
 	
+	public Integer getEnable() {
+		return enable;
+	}
+	
 	public String getContent() {
 		return content;
 	}
 	
 	public Integer getSeqNum() {
 		return seqNum;
+	}
+	
+	public String getSelector() {
+		return selector;
 	}
 	
 	public String getPattern() {
@@ -62,12 +74,20 @@ public class CarveType extends BasePO{
 		this.typeName = typeName;
 	}
 
+	public void setEnable(Integer enable) {
+		this.enable = enable;
+	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
 
 	public void setSeqNum(Integer seqNum) {
 		this.seqNum = seqNum;
+	}
+
+	public void setSelector(String selector) {
+		this.selector = selector;
 	}
 
 	public void setPattern(String pattern) {

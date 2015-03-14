@@ -26,7 +26,7 @@ public class CarveTypeMapperServiceImpl implements CarveTypeMapperService{
 	public void insert(CarveType carveType) {
 		try{
 			SelectorVO selectorVO = carveHandle.returnTemplatePattern(carveType.getContent(), carveType.getUrl());
-			carveType.setPattern(selectorVO.getSelectString());
+			carveType.setSelector(selectorVO.getSelectString());
 			carveType.setSeqNum(selectorVO.getSeqNum());
 			carveTypeMapperDao.insert(carveType);
 		} catch(Exception e) {
@@ -59,7 +59,7 @@ public class CarveTypeMapperServiceImpl implements CarveTypeMapperService{
 		try{
 			if(DataHandle.isNotNullOrEmpty(carveType.getContent())){
 				SelectorVO selectorVO = carveHandle.returnTemplatePattern(carveType.getContent(), carveType.getUrl());
-				carveType.setPattern(selectorVO.getSelectString());
+				carveType.setSelector(selectorVO.getSelectString());
 				carveType.setSeqNum(selectorVO.getSeqNum());
 			}
 			carveTypeMapperDao.update(carveType);

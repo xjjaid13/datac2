@@ -18,6 +18,8 @@
         
         <typeAlias alias="CarveType" type="com.po.carve.CarveType" /> 
 		
+		<typeAlias alias="CarveUrl" type="com.po.carve.CarveUrl" /> 
+		
     </typeAliases>    
     
 </configuration> 

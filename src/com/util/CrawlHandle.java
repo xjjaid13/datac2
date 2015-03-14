@@ -40,6 +40,18 @@ public class CrawlHandle {
 		return list;
 	}
 	
+	public static List<String> returnTitle(String htmlContent){
+		List<String> list = new ArrayList<String>();
+		Document doc = Jsoup.parse(htmlContent);
+		Elements links = doc.select("a");
+		if(DataHandle.isNotNullOrEmpty(links)){
+			for(Element e : links){
+				list.add(e.text());
+			}
+		}
+		return list;
+	}
+	
 	public static String returnPathUrl(String url){
 		return url.replaceAll("http(.*?)//(.+?)/(.*)", "$2/$3").replace(":", "-");
 	}

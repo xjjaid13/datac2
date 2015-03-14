@@ -58,10 +58,14 @@ public class Main {
 				PackageInfo xmlInfo = IbatisTemplateHandle.returnPackageInfo(xmlPath, classPre);
 				PackageInfo entityInfo = IbatisTemplateHandle.returnPackageInfo(entityPath, classPre);
 				
-				String schSelectAllcolumn = "SELECT column_name from information_schema.columns WHERE table_schema = '"+dbName+"' AND table_name = '"+tableName+"';";
+				String priKey = "";
+				String schSelectAllcolumn = "SELECT column_name,column_key from information_schema.columns WHERE table_schema = '"+dbName+"' AND table_name = '"+tableName+"';";
 				String[][] schSelectAllColumn = db.executeQuery(schSelectAllcolumn);
 				List<FieldVo> fieldList = new ArrayList<FieldVo>();
 				for(int c = 0; schSelectAllColumn != null && c < schSelectAllColumn.length; c++){
+					if("PRI".equals(schSelectAllColumn[c][1])){
+						priKey = schSelectAllColumn[c][0];
+					}
 					FieldVo fieldVo = new FieldVo();
 					fieldVo.setFieldName(schSelectAllColumn[c][0]);
 					int fieldType = db.getColumnType(tableName,schSelectAllColumn[c][0] );
@@ -77,7 +81,7 @@ public class Main {
 				
 				IbatisTemplateHandle.daoAndEntityHandle(daoString, fieldList, daoInfo.getFilePath() + "/" + daoInfo.getFileNameWithSuffix(),tableName,replaceMap,false);
 				IbatisTemplateHandle.daoAndEntityHandle(poString, fieldList, entityInfo.getFilePath() + "/" + entityInfo.getFileNameWithSuffix(),tableName,replaceMap,true);
-				IbatisTemplateHandle.xmlHandle(templateJSONObject, xmlString, fieldList,  xmlInfo.getFilePath() + "/" + xmlInfo.getFileNameWithSuffix(), tableName, replaceMap);
+				IbatisTemplateHandle.xmlHandle(templateJSONObject, xmlString, fieldList,  xmlInfo.getFilePath() + "/" + xmlInfo.getFileNameWithSuffix(), tableName, replaceMap,priKey);
 				
 			}
 		}
@@ -108,13 +112,13 @@ public class Main {
 		
 		public static void daoAndEntityHandle(String daoTemplate,List<FieldVo> fieldVoList,String path,String tableName,Map<String,String> replaceMap,boolean cover){
 			StringBuilder result = new StringBuilder();
-			String content = returnContent(daoTemplate, result, fieldVoList,tableName);
+			String content = returnContent(daoTemplate, result, fieldVoList,tableName,"");
 			content = transferOther(content, replaceMap);
 			FileHandle.write(path, content ,cover);
 		}
 		
 		@SuppressWarnings("unchecked")
-		public static void xmlHandle(JSONObject templateJSONObject,String xmlString,List<FieldVo> fieldVoList,String path,String tableName,Map<String,String> replaceMap) throws IOException, DocumentException{
+		public static void xmlHandle(JSONObject templateJSONObject,String xmlString,List<FieldVo> fieldVoList,String path,String tableName,Map<String,String> replaceMap,String priKey) throws IOException, DocumentException{
 			File file = new File(path);
 			if(file.exists()){
 
@@ -194,28 +198,28 @@ public class Main {
 		        
 		        StringBuilder result = new StringBuilder();
 		        
-		        templateContent = templateContent.replace("#resultMapResult#", returnContent(templateJSONObject.getString("resultMapString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#resultMapResult#", returnContent(templateJSONObject.getString("resultMapString"),result,fieldVoList,tableName,""));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#selectResult#", returnContent(templateJSONObject.getString("selectString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#selectResult#", returnContent(templateJSONObject.getString("selectString"),result,fieldVoList,tableName,""));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#selectListResult#", returnContent(templateJSONObject.getString("selectListString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#selectListResult#", returnContent(templateJSONObject.getString("selectListString"),result,fieldVoList,tableName,""));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#selectCountResult#", returnContent(templateJSONObject.getString("selectCountString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#selectCountResult#", returnContent(templateJSONObject.getString("selectCountString"),result,fieldVoList,tableName,""));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#maxIdResult#", returnContent(templateJSONObject.getString("maxIdString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#maxIdResult#", returnContent(templateJSONObject.getString("maxIdString"),result,fieldVoList,tableName,""));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#insertResult#", returnContent(templateJSONObject.getString("insertString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#insertResult#", returnContent(templateJSONObject.getString("insertString"),result,fieldVoList,tableName,priKey));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#updateResult#", returnContent(templateJSONObject.getString("updateString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#updateResult#", returnContent(templateJSONObject.getString("updateString"),result,fieldVoList,tableName,priKey));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#deleteResult#", returnContent(templateJSONObject.getString("deleteString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#deleteResult#", returnContent(templateJSONObject.getString("deleteString"),result,fieldVoList,tableName,""));
 		        result.delete(0, result.length());
-		        templateContent = templateContent.replace("#deleteByIdsResult#", returnContent(templateJSONObject.getString("deleteByIdsString"),result,fieldVoList,tableName));
+		        templateContent = templateContent.replace("#deleteByIdsResult#", returnContent(templateJSONObject.getString("deleteByIdsString"),result,fieldVoList,tableName,""));
 		        FileHandle.write(path, templateContent);
 		        formatXMLFile(path);
 			}else{
 				StringBuilder result = new StringBuilder();
-				xmlString = returnContent(xmlString, result, fieldVoList,tableName);
+				xmlString = returnContent(xmlString, result, fieldVoList,tableName,"");
 				xmlString = transferOther(xmlString, replaceMap);
 				FileHandle.write(path, xmlString);
 				formatXMLFile(path);
@@ -225,7 +229,7 @@ public class Main {
 		
 		
 		/** 解析栏目模板文件 */
-		public static String returnContent(String content,StringBuilder result,List<FieldVo> fieldVoList,String tableName){
+		public static String returnContent(String content,StringBuilder result,List<FieldVo> fieldVoList,String tableName,String priKey){
 			int start = content.indexOf("{for}");
 			int end = content.indexOf("{endfor}");
 			if(start == -1){
@@ -235,15 +239,21 @@ public class Main {
 			result.append(transferContent(content.substring(0,start),tableName,"",""));
 			String forContent = content.substring(start+5,end);
 			
+			int i = 0;
 			for(FieldVo fieldVo : fieldVoList){
+				i++;
+				if(fieldVo.getFieldName().equals(priKey)){
+					continue;
+				}
 				String forTemContent  = transferContent(forContent,tableName,fieldVo.getFieldName(),fieldVo.getFieldString());
-//				if(forTemContent.endsWith(",") && i == field.size() - 1){
-//					forTemContent = forTemContent.substring(0,forTemContent.length() - 1);
-//				}
+				if(forTemContent.endsWith(",") && i == fieldVoList.size()){
+					forTemContent = forTemContent.substring(0,forTemContent.length() - 1);
+				}
 				result.append(forTemContent);
+				
 			}
 			
-			return returnContent(content.substring(end + 8),result,fieldVoList,tableName);
+			return returnContent(content.substring(end + 8),result,fieldVoList,tableName,priKey);
 		}
 		
 		/** 解析表模板文件 */
@@ -257,8 +267,13 @@ public class Main {
 			result.append(transferContent(content.substring(0,start),"","",""));
 			String forContent = content.substring(start+5,end);
 			
+			int i = 0;
 			for(FieldVo fieldVo : fieldList){
+				i++;
 				String forTemContent = transferContent(forContent,fieldVo.getFieldName(),"","");
+				if(forTemContent.endsWith(",") && i == fieldList.size()){
+					forTemContent = forTemContent.substring(0,forTemContent.length() - 1);
+				}
 				result.append(forTemContent);
 			}
 			return returnTableContent(content.substring(end + 8),result,fieldList);

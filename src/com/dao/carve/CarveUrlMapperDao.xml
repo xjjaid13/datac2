@@ -34,10 +34,9 @@
     <if test="createTime != null">and createTime = #{createTime}</if>  
     <if test="condition != null">${condition}</if> 
   </select>
-  <insert id="insert" parameterType="CarveUrl">insert into carve_url (carveUrlId,title,url,carveTypeId,createTime,) values (#{carveUrlId},#{title},#{url},#{carveTypeId},#{createTime},)</insert>
+  <insert id="insert" parameterType="CarveUrl">insert into carve_url (title,url,carveTypeId,createTime) values (#{title},#{url},#{carveTypeId},#{createTime})</insert>
   <update id="update" parameterType="CarveUrl">update carve_url 
     <set> 
-      <if test="carveUrlId != null">carveUrlId = #{carveUrlId},</if>
       <if test="title != null">title = #{title},</if>
       <if test="url != null">url = #{url},</if>
       <if test="carveTypeId != null">carveTypeId = #{carveTypeId},</if>

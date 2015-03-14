@@ -2,6 +2,7 @@ package test.crawlTest;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.util.DBHandle;
@@ -20,10 +21,10 @@ public class Crawl {
 				String content = HttpClientHandle.returnHtmlContent(rowResult[1]);
 				Document document = Jsoup.parse(content);
 				
-				String[] pattern = rowResult[4].split(";");
-				
-				Elements elements = document.select(pattern[0]);
-				System.out.println(elements.get(Integer.parseInt(pattern[1])).html());
+				Elements elements = document.select(rowResult[5]);
+				Element element = elements.get(Integer.parseInt(rowResult[4]));
+				Elements children = element.children();
+				System.out.println(element.html());
 			}
 		}
 		db.closeConn();

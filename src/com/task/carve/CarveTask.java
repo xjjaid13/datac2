@@ -20,7 +20,7 @@ public class CarveTask {
 	@Autowired
 	CarveUrlMapperService carveUrlMapperService;
 	
-	@Scheduled(cron = "0 * * * * *")  
+	@Scheduled(fixedDelay = 100000)  
 	public void run(){
 		CarveType sratchCarveType = new CarveType();
 		sratchCarveType.setStartPage(-1);

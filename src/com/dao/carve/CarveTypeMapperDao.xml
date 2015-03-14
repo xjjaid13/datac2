@@ -6,8 +6,10 @@
     <result property="carveTypeId" column="carveTypeId"/>
     <result property="url" column="url"/>
     <result property="typeName" column="typeName"/>
+    <result property="enable" column="enable"/>
     <result property="content" column="content"/>
     <result property="seqNum" column="seqNum"/>
+    <result property="selector" column="selector"/>
     <result property="pattern" column="pattern"/>
     <result property="hash" column="hash"/>
   </resultMap>
@@ -15,8 +17,10 @@
     <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
     <if test="url != null">and url = #{url}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="enable != null">and enable = #{enable}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
     <if test="condition != null">${condition}</if>
@@ -25,8 +29,10 @@
     <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
     <if test="url != null">and url = #{url}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="enable != null">and enable = #{enable}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
     <if test="condition != null">${condition}</if>  
@@ -36,20 +42,23 @@
     <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
     <if test="url != null">and url = #{url}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="enable != null">and enable = #{enable}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
     <if test="condition != null">${condition}</if>
   </select>
-  <insert id="insert" parameterType="CarveType">insert into carve_type (carveTypeId,url,typeName,content,seqNum,pattern,hash,) values (#{carveTypeId},#{url},#{typeName},#{content},#{seqNum},#{pattern},#{hash},)</insert>
+  <insert id="insert" parameterType="CarveType">insert into carve_type (url,typeName,enable,content,seqNum,selector,pattern,hash) values (#{url},#{typeName},#{enable},#{content},#{seqNum},#{selector},#{pattern},#{hash})</insert>
   <update id="update" parameterType="CarveType">update carve_type 
     <set> 
-      <if test="carveTypeId != null">carveTypeId = #{carveTypeId},</if>
       <if test="url != null">url = #{url},</if>
       <if test="typeName != null">typeName = #{typeName},</if>
+      <if test="enable != null">enable = #{enable},</if>
       <if test="content != null">content = #{content},</if>
       <if test="seqNum != null">seqNum = #{seqNum},</if>
+      <if test="selector != null">selector = #{selector},</if>
       <if test="pattern != null">pattern = #{pattern},</if>
       <if test="hash != null">hash = #{hash},</if> 
     </set> where 1 = 1 
@@ -60,8 +69,10 @@
     <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
     <if test="url != null">and url = #{url}</if>  
     <if test="typeName != null">and typeName = #{typeName}</if>  
+    <if test="enable != null">and enable = #{enable}</if>  
     <if test="content != null">and content = #{content}</if>  
     <if test="seqNum != null">and seqNum = #{seqNum}</if>  
+    <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
     <if test="condition != null">${condition}</if>

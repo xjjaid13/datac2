@@ -219,6 +219,12 @@
 		          <textarea class="col-sm-12 form-control" id="content" name="content" style="height:200px;"></textarea>
 		    </div>
 	    </div>
+	    <div class="form-group">
+		    <label for="content" class="col-sm-2 control-label">正则</label>
+		    <div class="col-sm-10">
+		          <textarea class="col-sm-12 form-control" id="pattern" name="pattern" style="height:200px;"></textarea>
+		    </div>
+	    </div>
 	</form>
 </div>
 <jsp:include page="../top.jsp"></jsp:include>

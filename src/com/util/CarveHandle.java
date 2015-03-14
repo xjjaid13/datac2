@@ -36,21 +36,20 @@ public class CarveHandle {
 					currentE = e;
 				}
 			}
+			if(currentE == null){
+				currentE = elements.get(0);
+			}
 		}
 		
-		if(currentE == null){
-			System.out.println("null");
-			return null;
-		}
 		
 		SelectorVO selectorVO = HtmlSelectorHandle.returnOnlySelector(currentE, doc);
 		return selectorVO;
 	}
 	
 	public static String featureMd5(Element e){
-		String text = e.text();
-		List<String> linkList = CrawlHandle.returnExtract(e.html());
-		StringBuilder stringBuilder = new StringBuilder(text);
+//		String text = e.text();
+		List<String> linkList = CrawlHandle.returnTitle(e.html());
+		StringBuilder stringBuilder = new StringBuilder();
 		for(String s : linkList){
 			stringBuilder.append(s);
 		}
@@ -74,7 +73,13 @@ public class CarveHandle {
 			if(!DataHandle.isNullOrEmpty(element.attr("id"))){
 				result += "#" + element.attr("id");
 			}else if(!DataHandle.isNullOrEmpty(element.attr("class"))){
-				result += "." + element.attr("class");
+				String classString = element.attr("class");
+				int blankIndex = classString.indexOf(" ");
+				if(blankIndex != -1){
+					result += "." + classString.substring(0,blankIndex);
+				}else{
+					result += "." + classString;
+				}
 			}else{
 				result += element.tagName();
 			}
@@ -86,7 +91,7 @@ public class CarveHandle {
 			Element elementParentParent = element.parent();
 			Elements elements = elementParentParent.children();
 			for(int i = 0; i < elements.size(); i++){
-				if(elements.get(i) == element.parent()){
+				if(elements.get(i).text().equals(element.text())){
 					seqNum = i;
 				}
 			}
@@ -95,7 +100,7 @@ public class CarveHandle {
 			for(;;){
 				selector = returnCurrentSelector(element) + " " + selector;
 				Element elementParent = element.parent();
-				if(elementParent.tag().equals("body")){
+				if(elementParent.tag().toString().equals("body")){
 					selectorVO.setSelectString(selector);
 					selectorVO.setSeqNum(seqNum);
 					return selectorVO;

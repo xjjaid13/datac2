@@ -1,17 +1,11 @@
 package com.util;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.mozilla.intl.chardet.nsDetector;
-import org.mozilla.intl.chardet.nsICharsetDetectionObserver;
-import org.mozilla.intl.chardet.nsPSMDetector;
 
 /**
  * html字符串处理类
@@ -143,6 +137,25 @@ public final class HtmlHandle {
 		return textStr;// 返回文本字符串
 	}
 	
+	public static String joinUrl(String curl, String file) {
+		if(file.startsWith("http")){
+			return file;
+		}
+		URL url = null;
+		String q = "";
+		try {
+			url = new URL(new URL(curl), file);
+			q = url.toExternalForm();
+		} catch (MalformedURLException e) {
+			//Log.Error(e.getMessage());
+		}
+		url = null;
+		if (q.indexOf("#") != -1){
+			q = q.replaceAll("^(.+?)#.*?$", "$1");
+		}
+		return q;
+	}
+	
 	public static String getWebCon(String domain) {
 		StringBuffer sb = new StringBuffer();
 		try {
@@ -160,12 +173,6 @@ public final class HtmlHandle {
 			//Log.Error("无法解析" + e.getMessage());
 		}
 		return sb.toString();
-	}
-	
-	public static void main(String[] args) {
-		String s  = HtmlHandle.getWebCon("http://www.iteye.com");
-		System.out.println(s);
-		//System.out.println(HtmlHandle.foundCharset);
 	}
 	
 }
