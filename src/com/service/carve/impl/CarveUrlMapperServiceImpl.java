@@ -1,7 +1,10 @@
 package com.service.carve.impl;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,55 +45,86 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 			selectCarveType = carveTypeMapperDao.select(selectCarveType);
 
 			String httpContent = HttpClientHandle.returnHtmlContent(selectCarveType.getUrl());
-			Document document = Jsoup.parse(httpContent);
-			Element element = document.select(selectCarveType.getSelector()).get(selectCarveType.getSeqNum());
-			
-			String hash = Md5Util.getMD5(element.text().getBytes());
-			if(hash.equals(selectCarveType.getHash())){
-				return;
+			if(StringUtils.isEmpty(selectCarveType.getSelector())){
+				Pattern pattern = Pattern.compile(selectCarveType.getPattern());
+				Matcher matcher = pattern.matcher(httpContent);
+				//to do
 			}else{
-				CarveUrl searchCarveUrl = new CarveUrl();
-				searchCarveUrl.setStartPage(0);
-				searchCarveUrl.setPage(1);
-				searchCarveUrl.setCarveTypeId(carveTypeId);
-				searchCarveUrl.setCondition("order by carveUrlId desc");
-				List<CarveUrl> carveUrlList = carveUrlMapperDao.selectList(searchCarveUrl);
+				Document document = Jsoup.parse(httpContent);
+				Element element = document.select(selectCarveType.getSelector()).get(selectCarveType.getSeqNum());
 				
-				boolean newFlag = false;
-				
-				if(DataHandle.isNotNullOrEmpty(carveUrlList)){
-					searchCarveUrl = carveUrlList.get(0);
+				String hash = Md5Util.getMD5(element.text().getBytes());
+				if(hash.equals(selectCarveType.getHash())){
+					return;
 				}else{
-					newFlag = true;
-				}
-				
-				if(!newFlag && element.html().indexOf(searchCarveUrl.getTitle()) == -1){
-					newFlag = true;
-				}
-				
-				Elements childrenElement = element.children();
-				if(DataHandle.isNotNullOrEmpty(childrenElement)){
-					for(int i = childrenElement.size() - 1; i >= 0; i--){
-						Element childElement = childrenElement.get(i);
-						Elements links = childElement.select("a[href]");
-						if(DataHandle.isNotNullOrEmpty(links)){
-							Element link = links.get(0);
+					CarveUrl searchCarveUrl = new CarveUrl();
+					searchCarveUrl.setStartPage(0);
+					searchCarveUrl.setPage(1);
+					searchCarveUrl.setCarveTypeId(carveTypeId);
+					searchCarveUrl.setCondition("order by carveUrlId desc");
+					List<CarveUrl> carveUrlList = carveUrlMapperDao.selectList(searchCarveUrl);
+					
+					boolean newFlag = false;
+					
+					if(DataHandle.isNotNullOrEmpty(carveUrlList)){
+						searchCarveUrl = carveUrlList.get(0);
+					}else{
+						newFlag = true;
+					}
+					
+					String elementHtml = element.html();
+					
+					if(!newFlag && elementHtml.indexOf(searchCarveUrl.getTitle()) == -1){
+						newFlag = true;
+					}
+					
+					if(!StringUtils.isEmpty(selectCarveType.getPattern())){
+						Pattern pattern = Pattern.compile(selectCarveType.getPattern());
+						Matcher matcher = pattern.matcher(elementHtml);
+						String patternGroup = selectCarveType.getPatternGroup();
+						String[] group = patternGroup.split(";");
+						while(matcher.find()){
+							String url = HtmlHandle.joinUrl(selectCarveType.getUrl(), matcher.group(Integer.parseInt(group[0])));
+							String title = matcher.group(Integer.parseInt(group[1]));
 							if(newFlag){
 								CarveUrl carveUrl = new CarveUrl();
 								carveUrl.setCarveTypeId(carveTypeId);
 								carveUrl.setCreateTime(TimeHandle.currentTime());
-								carveUrl.setTitle(link.text());
-								carveUrl.setUrl(HtmlHandle.joinUrl(searchCarveUrl.getUrl(), link.attr("href")));
+								carveUrl.setTitle(title);
+								carveUrl.setUrl(url);
 								carveUrlMapperDao.insert(carveUrl);
 							}
-							if(!newFlag && DataHandle.isNotNullOrEmpty(selectCarveType.getHash()) && link.text().equals(searchCarveUrl.getTitle())){
+							if(!newFlag && DataHandle.isNotNullOrEmpty(selectCarveType.getHash()) && title.equals(searchCarveUrl.getTitle())){
 								newFlag = true;
 							}
 						}
+					}else{
+						Elements childrenElement = element.children();
+						if(DataHandle.isNotNullOrEmpty(childrenElement)){
+							for(int i = childrenElement.size() - 1; i >= 0; i--){
+								Element childElement = childrenElement.get(i);
+								Elements links = childElement.select("a[href]");
+								if(DataHandle.isNotNullOrEmpty(links)){
+									Element link = links.get(0);
+									if(newFlag){
+										CarveUrl carveUrl = new CarveUrl();
+										carveUrl.setCarveTypeId(carveTypeId);
+										carveUrl.setCreateTime(TimeHandle.currentTime());
+										carveUrl.setTitle(link.text());
+										carveUrl.setUrl(HtmlHandle.joinUrl(searchCarveUrl.getUrl(), link.attr("href")));
+										carveUrlMapperDao.insert(carveUrl);
+									}
+									if(!newFlag && DataHandle.isNotNullOrEmpty(selectCarveType.getHash()) && link.text().equals(searchCarveUrl.getTitle())){
+										newFlag = true;
+									}
+								}
+							}
+						}
 					}
-				}
-				selectCarveType.setHash(hash);
-				carveTypeMapperDao.update(selectCarveType);
+					
+					selectCarveType.setHash(hash);
+					carveTypeMapperDao.update(selectCarveType);
+			}
 			}
 		}catch(Exception e){
 			log.error("carve exception",e);

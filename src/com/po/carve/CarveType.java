@@ -24,6 +24,8 @@ public class CarveType extends BasePO{
 
 	private String hash;
 
+	private String patternGroup;
+
 
 	public Integer getCarveTypeId() {
 		return carveTypeId;
@@ -61,6 +63,10 @@ public class CarveType extends BasePO{
 		return hash;
 	}
 	
+	public String getPatternGroup() {
+		return patternGroup;
+	}
+	
 	
 	public void setCarveTypeId(Integer carveTypeId) {
 		this.carveTypeId = carveTypeId;
@@ -96,6 +102,10 @@ public class CarveType extends BasePO{
 
 	public void setHash(String hash) {
 		this.hash = hash;
+	}
+
+	public void setPatternGroup(String patternGroup) {
+		this.patternGroup = patternGroup;
 	}
 
 }

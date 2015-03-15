@@ -12,6 +12,7 @@
     <result property="selector" column="selector"/>
     <result property="pattern" column="pattern"/>
     <result property="hash" column="hash"/>
+    <result property="patternGroup" column="patternGroup"/>
   </resultMap>
   <select id="select" resultType="java.util.Map" resultMap="carveType">select * from carve_type where 1 = 1 
     <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>  
@@ -23,6 +24,7 @@
     <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
+    <if test="patternGroup != null">and patternGroup = #{patternGroup}</if>  
     <if test="condition != null">${condition}</if>
   </select>
   <select id="selectList" resultType="java.util.List" resultMap="carveType">select * from carve_type where 1 = 1 
@@ -35,6 +37,7 @@
     <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
+    <if test="patternGroup != null">and patternGroup = #{patternGroup}</if>  
     <if test="condition != null">${condition}</if>  
     <if test="startPage != -1">limit #{startPage},#{page}</if> 
   </select>
@@ -48,9 +51,10 @@
     <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
+    <if test="patternGroup != null">and patternGroup = #{patternGroup}</if>  
     <if test="condition != null">${condition}</if>
   </select>
-  <insert id="insert" parameterType="CarveType">insert into carve_type (url,typeName,enable,content,seqNum,selector,pattern,hash) values (#{url},#{typeName},#{enable},#{content},#{seqNum},#{selector},#{pattern},#{hash})</insert>
+  <insert id="insert" parameterType="CarveType">insert into carve_type (url,typeName,enable,content,seqNum,selector,pattern,hash,patternGroup) values (#{url},#{typeName},#{enable},#{content},#{seqNum},#{selector},#{pattern},#{hash},#{patternGroup})</insert>
   <update id="update" parameterType="CarveType">update carve_type 
     <set> 
       <if test="url != null">url = #{url},</if>
@@ -60,7 +64,8 @@
       <if test="seqNum != null">seqNum = #{seqNum},</if>
       <if test="selector != null">selector = #{selector},</if>
       <if test="pattern != null">pattern = #{pattern},</if>
-      <if test="hash != null">hash = #{hash},</if> 
+      <if test="hash != null">hash = #{hash},</if>
+      <if test="patternGroup != null">patternGroup = #{patternGroup},</if> 
     </set> where 1 = 1 
     <if test="carveTypeId != null">and carveTypeId = #{carveTypeId}</if>
     <if test="condition != null">${condition}</if>
@@ -75,6 +80,7 @@
     <if test="selector != null">and selector = #{selector}</if>  
     <if test="pattern != null">and pattern = #{pattern}</if>  
     <if test="hash != null">and hash = #{hash}</if>  
+    <if test="patternGroup != null">and patternGroup = #{patternGroup}</if>  
     <if test="condition != null">${condition}</if>
   </delete>
   <delete id="deleteByIds" parameterType="CarveType">delete from carve_type where carveTypeId in (${ids})</delete>

@@ -41,7 +41,6 @@ public class CarveHandle {
 			}
 		}
 		
-		
 		SelectorVO selectorVO = HtmlSelectorHandle.returnOnlySelector(currentE, doc);
 		return selectorVO;
 	}

@@ -214,15 +214,18 @@
 		    </div>
 	    </div>
 	    <div class="form-group">
-		    <label for="content" class="col-sm-2 control-label">内容</label>
-		    <div class="col-sm-10">
-		          <textarea class="col-sm-12 form-control" id="content" name="content" style="height:200px;"></textarea>
+		    <label for="selector" class="col-sm-2 control-label">选择器</label>
+		    <div class="col-sm-8">
+		          <input type="text" class="form-control" id="selector" name="selector" >
+		    </div>
+		    <div class="col-sm-2">
+		          <input type="text" class="form-control" id="seqNum" name="seqNum" >
 		    </div>
 	    </div>
 	    <div class="form-group">
 		    <label for="content" class="col-sm-2 control-label">正则</label>
 		    <div class="col-sm-10">
-		          <textarea class="col-sm-12 form-control" id="pattern" name="pattern" style="height:200px;"></textarea>
+		          <input type="text" class="form-control" id="pattern" name="pattern" />
 		    </div>
 	    </div>
 	</form>

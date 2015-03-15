@@ -2,6 +2,7 @@ package com.service.carve.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,11 @@ public class CarveTypeMapperServiceImpl implements CarveTypeMapperService{
 	@Override
 	public void insert(CarveType carveType) {
 		try{
-			SelectorVO selectorVO = carveHandle.returnTemplatePattern(carveType.getContent(), carveType.getUrl());
-			carveType.setSelector(selectorVO.getSelectString());
-			carveType.setSeqNum(selectorVO.getSeqNum());
+			if(!StringUtils.isEmpty(carveType.getContent())){
+				SelectorVO selectorVO = carveHandle.returnTemplatePattern(carveType.getContent(), carveType.getUrl());
+				carveType.setSelector(selectorVO.getSelectString());
+				carveType.setSeqNum(selectorVO.getSeqNum());
+			}
 			carveTypeMapperDao.insert(carveType);
 		} catch(Exception e) {
 			throw new ServiceException(e);
