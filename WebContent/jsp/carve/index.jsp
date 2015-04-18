@@ -158,6 +158,10 @@
 				$("#typeName").val(data.object.typeName);
 				$("#url").val(data.object.url);
 				$("#carveTypeId").val(data.object.carveTypeId);
+				$("#selector").val(data.object.selector);
+				$("#seqNum").val(data.object.seqNum);
+				$("#pattern").val(data.object.pattern);
+				$("#patternGroup").val(data.object.patternGroup);
 				$("#patternDiv").dialog({
 		            title:'修改',
 		            autoOpen: true,
@@ -224,8 +228,11 @@
 	    </div>
 	    <div class="form-group">
 		    <label for="content" class="col-sm-2 control-label">正则</label>
-		    <div class="col-sm-10">
+		    <div class="col-sm-8">
 		          <input type="text" class="form-control" id="pattern" name="pattern" />
+		    </div>
+		    <div class="col-sm-2">
+		          <input type="text" class="form-control" id="patternGroup" name="patternGroup" >
 		    </div>
 	    </div>
 	</form>

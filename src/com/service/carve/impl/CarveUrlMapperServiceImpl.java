@@ -1,5 +1,6 @@
 package com.service.carve.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.carve.CarveTypeMapperDao;
 import com.dao.carve.CarveUrlMapperDao;
+import com.exception.common.ServiceException;
 import com.po.carve.CarveType;
 import com.po.carve.CarveUrl;
 import com.service.carve.CarveUrlMapperService;
@@ -40,6 +42,7 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 	@Override
 	public void insertNew(int carveTypeId) {
 		try{
+			log.info("进行统计,carveTypeId=" + carveTypeId);
 			CarveType selectCarveType = new CarveType();
 			selectCarveType.setCarveTypeId(carveTypeId);
 			selectCarveType = carveTypeMapperDao.select(selectCarveType);
@@ -64,59 +67,60 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 					searchCarveUrl.setCondition("order by carveUrlId desc");
 					List<CarveUrl> carveUrlList = carveUrlMapperDao.selectList(searchCarveUrl);
 					
-					boolean newFlag = false;
-					
 					if(DataHandle.isNotNullOrEmpty(carveUrlList)){
 						searchCarveUrl = carveUrlList.get(0);
-					}else{
-						newFlag = true;
 					}
 					
 					String elementHtml = element.html();
-					
-					if(!newFlag && elementHtml.indexOf(searchCarveUrl.getTitle()) == -1){
-						newFlag = true;
-					}
 					
 					if(!StringUtils.isEmpty(selectCarveType.getPattern())){
 						Pattern pattern = Pattern.compile(selectCarveType.getPattern());
 						Matcher matcher = pattern.matcher(elementHtml);
 						String patternGroup = selectCarveType.getPatternGroup();
 						String[] group = patternGroup.split(";");
+						if(!matcher.find()){
+							throw new ServiceException("正则无法取得结果,carveTypeId:" + carveTypeId);
+						}
+						matcher = matcher.reset();
+						List<CarveUrl> carveUrlListReverse = new ArrayList<CarveUrl>();
 						while(matcher.find()){
 							String url = HtmlHandle.joinUrl(selectCarveType.getUrl(), matcher.group(Integer.parseInt(group[0])));
 							String title = matcher.group(Integer.parseInt(group[1]));
-							if(newFlag){
-								CarveUrl carveUrl = new CarveUrl();
-								carveUrl.setCarveTypeId(carveTypeId);
-								carveUrl.setCreateTime(TimeHandle.currentTime());
-								carveUrl.setTitle(title);
-								carveUrl.setUrl(url);
-								carveUrlMapperDao.insert(carveUrl);
+							
+							if(title.equals(searchCarveUrl.getTitle())){
+								break;
 							}
-							if(!newFlag && DataHandle.isNotNullOrEmpty(selectCarveType.getHash()) && title.equals(searchCarveUrl.getTitle())){
-								newFlag = true;
+							CarveUrl carveUrl = new CarveUrl();
+							carveUrl.setCarveTypeId(carveTypeId);
+							carveUrl.setCreateTime(TimeHandle.currentTime());
+							carveUrl.setTitle(title);
+							carveUrl.setUrl(url);
+							carveUrlListReverse.add(carveUrl);
+							
+						}
+						if(DataHandle.isNotNullOrEmpty(carveUrlListReverse)){
+							for(int i = carveUrlListReverse.size() - 1; i > -1; i--){
+								carveUrlMapperDao.insert(carveUrlListReverse.get(i));
 							}
 						}
 					}else{
 						Elements childrenElement = element.children();
 						if(DataHandle.isNotNullOrEmpty(childrenElement)){
-							for(int i = childrenElement.size() - 1; i >= 0; i--){
+							for(int i = childrenElement.size() - 1; i > -1; i--){
 								Element childElement = childrenElement.get(i);
 								Elements links = childElement.select("a[href]");
 								if(DataHandle.isNotNullOrEmpty(links)){
 									Element link = links.get(0);
-									if(newFlag){
-										CarveUrl carveUrl = new CarveUrl();
-										carveUrl.setCarveTypeId(carveTypeId);
-										carveUrl.setCreateTime(TimeHandle.currentTime());
-										carveUrl.setTitle(link.text());
-										carveUrl.setUrl(HtmlHandle.joinUrl(searchCarveUrl.getUrl(), link.attr("href")));
-										carveUrlMapperDao.insert(carveUrl);
+									if(DataHandle.isNotNullOrEmpty(selectCarveType.getHash()) && link.text().equals(searchCarveUrl.getTitle())){
+										break;
 									}
-									if(!newFlag && DataHandle.isNotNullOrEmpty(selectCarveType.getHash()) && link.text().equals(searchCarveUrl.getTitle())){
-										newFlag = true;
-									}
+									CarveUrl carveUrl = new CarveUrl();
+									carveUrl.setCarveTypeId(carveTypeId);
+									carveUrl.setCreateTime(TimeHandle.currentTime());
+									carveUrl.setTitle(link.text());
+									carveUrl.setUrl(HtmlHandle.joinUrl(searchCarveUrl.getUrl(), link.attr("href")));
+									carveUrlMapperDao.insert(carveUrl);
+									
 								}
 							}
 						}
@@ -124,10 +128,20 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 					
 					selectCarveType.setHash(hash);
 					carveTypeMapperDao.update(selectCarveType);
-			}
+				}
 			}
 		}catch(Exception e){
 			log.error("carve exception",e);
 		}
 	}
+	
+	public static void main(String[] args) {
+		String content = "<a target=\"_blank\" title=\"OSChina 周六乱弹 &mdash;&mdash; 知道乱弹为什么会迟发吗？\" href=\"http://my.oschina.net/xxiaobian/blog/403256\" aasasa>OSChina 周六乱弹 &mdash;&mdash; 知道乱弹为什么会迟发吗？</a>";
+		Pattern pattern = Pattern.compile("<a(.*?)href=\"(.*?)\"(.*?)>(.*?)</a>");
+		Matcher matcher = pattern.matcher(content);
+		while(matcher.find()){
+			System.out.println(matcher.group(4));
+		}
+	}
+	
 }
