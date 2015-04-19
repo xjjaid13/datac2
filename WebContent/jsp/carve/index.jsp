@@ -48,6 +48,7 @@
 			});
 		});
 		$("#addPattern").click(function(){
+			alert('1');
 			$("#patternForm")[0].reset();
 			$("#patternDiv").dialog({
 	            title:'新增',

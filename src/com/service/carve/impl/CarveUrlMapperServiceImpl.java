@@ -54,9 +54,20 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 				//to do
 			}else{
 				Document document = Jsoup.parse(httpContent);
-				Element element = document.select(selectCarveType.getSelector()).get(selectCarveType.getSeqNum());
+				Elements elements = document.select(selectCarveType.getSelector());
+				if(DataHandle.isNullOrEmpty(elements)){
+					throw new ServiceException("jsoup无法获得内容,carveTypeId:" + carveTypeId);
+				}
 				
-				String hash = Md5Util.getMD5(element.text().getBytes());
+				Element firstElement = null;
+				
+				if(selectCarveType.getSeqNum() == -1){
+					firstElement = elements.get(0);
+				}else{
+					firstElement = document.select(selectCarveType.getSelector()).get(selectCarveType.getSeqNum());
+				}
+				
+				String hash = Md5Util.getMD5(firstElement.text().getBytes());
 				if(hash.equals(selectCarveType.getHash())){
 					return;
 				}else{
@@ -71,32 +82,53 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 						searchCarveUrl = carveUrlList.get(0);
 					}
 					
-					String elementHtml = element.html();
+					String elementHtml = firstElement.html();
 					
 					if(!StringUtils.isEmpty(selectCarveType.getPattern())){
-						Pattern pattern = Pattern.compile(selectCarveType.getPattern());
-						Matcher matcher = pattern.matcher(elementHtml);
 						String patternGroup = selectCarveType.getPatternGroup();
 						String[] group = patternGroup.split(";");
-						if(!matcher.find()){
-							throw new ServiceException("正则无法取得结果,carveTypeId:" + carveTypeId);
-						}
-						matcher = matcher.reset();
 						List<CarveUrl> carveUrlListReverse = new ArrayList<CarveUrl>();
-						while(matcher.find()){
-							String url = HtmlHandle.joinUrl(selectCarveType.getUrl(), matcher.group(Integer.parseInt(group[0])));
-							String title = matcher.group(Integer.parseInt(group[1]));
-							
-							if(title.equals(searchCarveUrl.getTitle())){
-								break;
+						if(selectCarveType.getSeqNum() == -1){
+							for(Element element : elements){
+								Pattern pattern = Pattern.compile(selectCarveType.getPattern());
+								Matcher matcher = pattern.matcher(element.html());
+								
+								if(matcher.find()){
+									String url = HtmlHandle.joinUrl(selectCarveType.getUrl(), matcher.group(Integer.parseInt(group[0])));
+									String title = matcher.group(Integer.parseInt(group[1]));
+									if(title.equals(searchCarveUrl.getTitle())){
+										break;
+									}
+									CarveUrl carveUrl = new CarveUrl();
+									carveUrl.setCarveTypeId(carveTypeId);
+									carveUrl.setCreateTime(TimeHandle.currentTime());
+									carveUrl.setTitle(title);
+									carveUrl.setUrl(url);
+									carveUrlListReverse.add(carveUrl);
+								}
 							}
-							CarveUrl carveUrl = new CarveUrl();
-							carveUrl.setCarveTypeId(carveTypeId);
-							carveUrl.setCreateTime(TimeHandle.currentTime());
-							carveUrl.setTitle(title);
-							carveUrl.setUrl(url);
-							carveUrlListReverse.add(carveUrl);
-							
+						}else{
+							Pattern pattern = Pattern.compile(selectCarveType.getPattern());
+							Matcher matcher = pattern.matcher(elementHtml);
+							if(!matcher.find()){
+								throw new ServiceException("正则无法取得结果,carveTypeId:" + carveTypeId);
+							}
+							matcher = matcher.reset();
+							while(matcher.find()){
+								String url = HtmlHandle.joinUrl(selectCarveType.getUrl(), matcher.group(Integer.parseInt(group[0])));
+								String title = matcher.group(Integer.parseInt(group[1]));
+								
+								if(title.equals(searchCarveUrl.getTitle())){
+									break;
+								}
+								CarveUrl carveUrl = new CarveUrl();
+								carveUrl.setCarveTypeId(carveTypeId);
+								carveUrl.setCreateTime(TimeHandle.currentTime());
+								carveUrl.setTitle(title);
+								carveUrl.setUrl(url);
+								carveUrlListReverse.add(carveUrl);
+								
+							}
 						}
 						if(DataHandle.isNotNullOrEmpty(carveUrlListReverse)){
 							for(int i = carveUrlListReverse.size() - 1; i > -1; i--){
@@ -104,7 +136,7 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 							}
 						}
 					}else{
-						Elements childrenElement = element.children();
+						Elements childrenElement = firstElement.children();
 						if(DataHandle.isNotNullOrEmpty(childrenElement)){
 							for(int i = childrenElement.size() - 1; i > -1; i--){
 								Element childElement = childrenElement.get(i);
@@ -136,10 +168,11 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 	}
 	
 	public static void main(String[] args) {
-		String content = "<a target=\"_blank\" title=\"OSChina 周六乱弹 &mdash;&mdash; 知道乱弹为什么会迟发吗？\" href=\"http://my.oschina.net/xxiaobian/blog/403256\" aasasa>OSChina 周六乱弹 &mdash;&mdash; 知道乱弹为什么会迟发吗？</a>";
 		Pattern pattern = Pattern.compile("<a(.*?)href=\"(.*?)\"(.*?)>(.*?)</a>");
-		Matcher matcher = pattern.matcher(content);
-		while(matcher.find()){
+		Matcher matcher = pattern.matcher("<h1> <a href=\"http://36kr.com/p/532003.html\" target=\"_blank\" class=\"info_flow_news_title\">在这个标题党横行的时代，Medium如何保持优质的内容和纯净的环境</a> </h1>");
+		
+		if(matcher.find()){
+			System.out.println(matcher.group(2));
 			System.out.println(matcher.group(4));
 		}
 	}
