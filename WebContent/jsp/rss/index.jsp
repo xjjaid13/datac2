@@ -45,7 +45,6 @@
 				$("#deleteTypeNameBtn").removeAttr("disabled");
 			}
 			$(".loadMore").on("click").html("load more").attr("attr","1");
-		});
 		$(document).on("click","#book",function(){
 			var rssUrl = $("#rssLink").val();
 			sel = jsTree.get_selected();

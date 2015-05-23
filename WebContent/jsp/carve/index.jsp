@@ -39,6 +39,11 @@
 				});
 			});
 		});
+		$(document).on("click",".openTask",function(){
+			alert("1");
+		}).on("click",".closeTask",function(){
+			alert("2");
+		});
 		$("#carveTypeTableForm").bind('submit',function(e){
 			e.preventDefault();
 			$(this).ajaxSubmit(function(data){
@@ -48,7 +53,7 @@
 			});
 		});
 		$("#addPattern").click(function(){
-			alert('1');
+			chooseRadio('enable','closeTask');
 			$("#patternForm")[0].reset();
 			$("#patternDiv").dialog({
 	            title:'新增',
@@ -114,13 +119,14 @@
                 "sTitle" : "序号",
                 "sName" : "carveTypeId",
                 "mData" : "carveTypeId",
+                "sClass":"w50p center",
                 "bSortable" : false
             }, {
                 "sTitle" : "<input class='checkAll' type='checkbox'/>",
                 "mData" : function(data,type,row){
                 	return "<input type='checkbox' name='ids' value='"+data.carveTypeId+"'/>";
                 },
-                "sClass":"w5 center",
+                "sClass":"w5p center",
                 "bSortable" : false
             },{
                 "sTitle" : "名称",
@@ -136,20 +142,33 @@
                     return data.url;
                 }
             }, {
-                "sTitle" : "pattern",
-                "sName" : "pattern",
+                "sTitle" : "状态",
+                "sName" : "enable",
+                "sClass":"w50p center",
                 "mData" : function(data,type,row){
-                    return data.pattern;
+                	if(data.enable == 1){
+                		return "启用";
+                	}else if(data.enable == 0){
+                		return "禁用";
+                	}
                 }
             }, {
                 "sTitle" : "操作",
+                "sClass":"w50p",
                 "mData" : function(data,type,row){
-                	return "<a href='javascript:updatePattern("+data.carveTypeId+")'><i class='fa fa-angellist'></i></a>";
+                	var str = "<a href='javascript:updatePattern("+data.carveTypeId+")'><i class='fa fa-angellist'></i></a>&nbsp;&nbsp;";
+                	
+                	return str;
                 },
                 "bSortable" : false
             }]
 		});
 	});
+	function chooseRadio(radioName,chooseId){
+		$("input:radio[name="+radioName+"]").removeAttr("checked");
+		$("input:radio[name="+radioName+"]").parent().removeClass("active");
+		$("#" + chooseId).attr("checked","checked").parent().addClass("active");
+	}
 	function updatePattern(carveTypeId){
 		$("#patternForm")[0].reset();
 		$.ajax({
@@ -163,6 +182,12 @@
 				$("#seqNum").val(data.object.seqNum);
 				$("#pattern").val(data.object.pattern);
 				$("#patternGroup").val(data.object.patternGroup);
+				if(data.object.enable == 0){
+					chooseRadio('enable','closeTask');
+				}else{
+					chooseRadio('enable','openTask');
+				}
+				
 				$("#patternDiv").dialog({
 		            title:'修改',
 		            autoOpen: true,
@@ -234,6 +259,17 @@
 		    </div>
 		    <div class="col-sm-2">
 		          <input type="text" class="form-control" id="patternGroup" name="patternGroup" >
+		    </div>
+	    </div>
+	    <div class="form-group">
+		    <label for="content" class="col-sm-2 control-label">是否启用</label>
+		    <div class="col-sm-8">
+		          <label class="btn btn-primary">
+				      <input type="radio" name="enable" id="openTask" value="1" autocomplete="off">启用
+				  </label>
+				  <label class="btn btn-primary active">
+				      <input type="radio" name="enable" id="closeTask" value="0" autocomplete="off" checked>禁用
+				  </label>
 		    </div>
 	    </div>
 	</form>

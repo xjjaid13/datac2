@@ -16,7 +16,7 @@ public class HttpClientHandle {
 
 	private static Logger log = Logger.getLogger(RssUtil.class);
 	
-	public static String returnHtmlContent(String url){
+	public static String returnHtmlContent(String url) throws Exception{
 		CloseableHttpResponse response1 = null;
 		try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -39,14 +39,16 @@ public class HttpClientHandle {
 		    return strBuf.toString();
 		} catch(Exception e){
 			log.error(e);
+			throw e;
 		} finally {
 		    try {
-				response1.close();
+		    	if(response1 != null){
+		    		response1.close();
+		    	}
 			} catch (IOException e) {
 				log.error(e);
 			}
 		}
-		return null;
 	}
 	
 }
