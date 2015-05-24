@@ -7,13 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.action.BaseAction;
 import com.alibaba.fastjson.JSONObject;
 import com.exception.common.ControllerException;
 import com.po.carve.CarveType;
+import com.po.carve.CarveUrl;
 import com.service.carve.CarveTypeMapperService;
+import com.service.carve.CarveUrlMapperService;
 import com.util.DataHandle;
 import com.vo.PageInfoVO;
 
@@ -24,9 +27,21 @@ public class CarveController extends BaseAction{
 	@Autowired
 	CarveTypeMapperService carveTypeMapperService;
 	
+	@Autowired
+	CarveUrlMapperService carveUrlMapperService;
+	
 	@RequestMapping("index")
 	public String index(){
 		return "carve/index";
+	}
+	
+	@RequestMapping("view")
+	public String view(Model model){
+		CarveType carveType = new CarveType();
+		carveType.setEnable(1);
+		List<CarveType> carveTypeList = carveTypeMapperService.selectList(carveType);
+		model.addAttribute("carveTypeList", carveTypeList);
+		return "carve/view";
 	}
 	
 	@RequestMapping("list")
@@ -39,6 +54,31 @@ public class CarveController extends BaseAction{
 	        carveType.setCondition(pageInfoVO.getOrderCol());
 			List<CarveType> menuList = carveTypeMapperService.selectList(carveType);
 			int count = carveTypeMapperService.selectCount(carveType);
+			JSONObject json = new JSONObject();
+			json.put("iTotalRecords", 10);  //本次查询记录数
+			json.put("iTotalDisplayRecords", count); //记录总数
+			json.put("aaData", menuList); 
+			json.put("result", "success");
+			writeResult(response, json);
+		}catch(Exception e){
+			throw new ControllerException(e);
+		}
+	}
+	
+	@RequestMapping("listDetail")
+	public void listDetail(HttpServletRequest request,HttpServletResponse response){
+		try{
+			Integer carveTypeId = DataHandle.returnValueInt(request, "carveTypeId");
+			PageInfoVO pageInfoVO = returnPageInfo(request);
+			CarveUrl carveUrl = new CarveUrl();
+			if(carveTypeId != -1){
+				carveUrl.setCarveTypeId(carveTypeId);
+			}
+	        carveUrl.setStartPage(pageInfoVO.getStartPage());
+	        carveUrl.setPage(pageInfoVO.getPage());
+	        carveUrl.setCondition(pageInfoVO.getOrderCol());
+			List<CarveUrl> menuList = carveUrlMapperService.selectList(carveUrl); 
+			int count = carveUrlMapperService.selectCount(carveUrl);
 			JSONObject json = new JSONObject();
 			json.put("iTotalRecords", 10);  //本次查询记录数
 			json.put("iTotalDisplayRecords", count); //记录总数
@@ -89,5 +129,6 @@ public class CarveController extends BaseAction{
 			throw new ControllerException(e);
 		}
 	}
+	
 	
 }

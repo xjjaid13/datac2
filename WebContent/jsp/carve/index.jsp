@@ -8,11 +8,9 @@
 <title>rss</title>
 <link rel="shortcut icon" type="image/x-icon" href="${base}/static/image/favicon.ico" media="screen" />
 <%@include file="../css-file.jsp" %>
-<link rel="stylesheet" href="${base}/static/js/jstree/dist/themes/default/style.min.css" />
 <link rel="stylesheet" href="${base}/static/css/rss.css" />
 <link href="${base}/static/js/datatables/css/datatables_bootstrap.css" rel="stylesheet" type="text/css"/>
 <%@include file="../js-file.jsp" %>
-<script src="${base}/static/js/jstree/dist/jstree.min.js"></script>
 <script src="${base}/static/js/datatables/js/jquery.dataTables.min.js"></script>
 <script src="${base}/static/js/datatables/js/jquery.dataTables.rowGrouping.js"></script>
 <script src="${base}/static/js/datatables/js/ColReorderWithResize.js"></script>
@@ -21,15 +19,12 @@
 <script src="${base}/static/js/ajaxsubmit/jquery.form.js"></script>
 <script src="${base}/static/js/config/bootstrap-dialog.min.js"></script>
 <script>
-	var jsTree;
 	var datatables;
 	$(function(){
+		$(".menu").removeClass("active");
+		$("#menuSetting").addClass("active");
 		$('.btn-default').popover({
 		    'trigger' : 'click'
-		});
-		$('#js-tree').jstree();
-		$('#js-tree').on('changed.jstree', function (e, data) {
-			alert('1');
 		});
 		$('#patternForm').bind('submit', function(e) {
 			e.preventDefault();
@@ -39,11 +34,7 @@
 				});
 			});
 		});
-		$(document).on("click",".openTask",function(){
-			alert("1");
-		}).on("click",".closeTask",function(){
-			alert("2");
-		});
+		
 		$("#carveTypeTableForm").bind('submit',function(e){
 			e.preventDefault();
 			$(this).ajaxSubmit(function(data){
@@ -280,7 +271,7 @@
 	
 	<jsp:include page="../menu.jsp"></jsp:include>
 	
-	<div class="content-wrapper col-lg-12" style="padding-left:210px;min-width:500px;z-index:-1;">
+	<div class="content-wrapper col-lg-12" style="padding-left:160px;min-width:500px;z-index:-1;">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 			    <div class="btn-group" role="group" aria-label="...">

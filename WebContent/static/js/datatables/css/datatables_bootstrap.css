@@ -353,7 +353,7 @@ div.DTFC_LeftFootWrapper table {
     background-color: #f9f9f9;
 }
 .dt_foot{
-	margin-top:20px;
+	//margin-top:20px;
 }
 .table-number{
 	width:10%;
@@ -366,4 +366,7 @@ div.DTFC_LeftFootWrapper table {
 }
 .w50p{
 	width:50px;
+}
+.w160p{
+	width:160px;
 }

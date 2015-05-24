@@ -176,5 +176,15 @@ public class CarveUrlMapperServiceImpl implements CarveUrlMapperService{
 			System.out.println(matcher.group(4));
 		}
 	}
+
+	@Override
+	public List<CarveUrl> selectList(CarveUrl carveUrl) {
+		return carveUrlMapperDao.selectList(carveUrl);
+	}
+
+	@Override
+	public Integer selectCount(CarveUrl carveUrl) {
+		return carveUrlMapperDao.selectCount(carveUrl);
+	}
 	
 }
